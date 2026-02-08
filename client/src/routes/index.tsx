@@ -8,7 +8,8 @@ import { Register } from '@pages/Auth/Register';
 import { ProfileInput } from '@pages/ProfileInput/ProfileInput';
 import { Results } from '@pages/Results/Results';
 import { Dashboard } from '@pages/Dashboard/Dashboard';
-//import { SchemeDetail } from '@pages/SchemeDetail/SchemeDetail.tsx';
+import { Schemes } from '@pages/Schemes/Schemes';
+import { SchemeDetail } from '@pages/SchemeDetail/SchemeDetail';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated } = useAuth();
@@ -21,7 +22,8 @@ export const AppRoutes: React.FC = () => {
       <Route path="/" element={<Layout><Home /></Layout>} />
       <Route path="/login" element={<Layout><Login /></Layout>} />
       <Route path="/register" element={<Layout><Register /></Layout>} />
-      
+      <Route path="/schemes" element={<Layout><Schemes /></Layout>} />
+      <Route path="/scheme/:id" element={<Layout><SchemeDetail /></Layout>} />
     
       <Route
         path="/profile"
