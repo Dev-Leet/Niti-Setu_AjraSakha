@@ -1,0 +1,6 @@
+export interface CardProps {
+  children: React.ReactNode;
+  className?: string;
+  onClick?: () => void;
+  hoverable?: boolean;
+}

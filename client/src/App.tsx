@@ -1,13 +1,21 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from '@store/index';
+import { ErrorBoundary } from '@components/common/ErrorBoundary/ErrorBoundary';
+import { AppRoutes } from './routes';
+import './styles/global.css';
 
-function App() {
+const App: React.FC = () => {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<div>Home</div>} />
-      </Routes>
-    </Router>
+    <ErrorBoundary>
+      <Provider store={store}>
+        <BrowserRouter>
+          <AppRoutes />
+        </BrowserRouter>
+      </Provider>
+    </ErrorBoundary>
   );
-}
+};
 
 export default App;

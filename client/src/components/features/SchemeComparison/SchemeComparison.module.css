@@ -1,0 +1,52 @@
+.container {
+  padding: var(--spacing-lg);
+}
+
+.container h2 {
+  margin-bottom: var(--spacing-lg);
+  color: var(--text-primary);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+.card h3 {
+  margin-bottom: var(--spacing-md);
+  color: var(--primary-green);
+}
+
+.row {
+  margin-bottom: var(--spacing-md);
+}
+
+.label {
+  font-weight: 600;
+  color: var(--text-primary);
+  display: block;
+  margin-bottom: var(--spacing-xs);
+}
+
+.value {
+  font-size: 18px;
+  color: var(--accent-yellow);
+  font-weight: 700;
+}
+
+.list {
+  list-style: disc;
+  padding-left: var(--spacing-lg);
+  color: var(--text-secondary);
+}
+
+.deadline {
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-sm);
+  background: var(--error);
+  color: var(--text-white);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  text-align: center;
+}

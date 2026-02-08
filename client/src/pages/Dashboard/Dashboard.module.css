@@ -1,0 +1,108 @@
+.container {
+  /* max-width: 1200px; */
+  width : 100%;
+  margin: 0 auto;
+  padding: var(--spacing-2xl) var(--spacing-md);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-xl);
+}
+
+.header h1 {
+  font-size: 32px;
+  color: var(--text-primary);
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-2xl);
+}
+
+.statCard {
+  text-align: center;
+}
+
+.statCard h3 {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.statValue {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--primary-green);
+}
+
+.section {
+  margin-bottom: var(--spacing-2xl);
+}
+
+.section h2 {
+  font-size: 24px;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-lg);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.checkCard {
+  cursor: pointer;
+}
+
+.checkHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.date {
+  color: var(--text-secondary);
+}
+
+.count {
+  font-weight: 600;
+  color: var(--primary-green);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--spacing-lg);
+}
+
+.schemeCard {
+  cursor: pointer;
+}
+
+.schemeCard h3 {
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.schemeCard p {
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: var(--spacing-md);
+    align-items: flex-start;
+  }
+  
+  .stats {
+    grid-template-columns: 1fr;
+  }
+}

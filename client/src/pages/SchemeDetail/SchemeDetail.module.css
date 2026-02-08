@@ -1,0 +1,210 @@
+.container {
+  /* max-width: 900px; */
+  width : 75%;
+  margin: 0 auto;
+  padding: var(--spacing-2xl) var(--spacing-md);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-xl);
+}
+
+.heroCard {
+  position: relative;
+  padding: var(--spacing-2xl);
+  background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-dark) 100%);
+  color: var(--text-white);
+}
+
+.badge {
+  display: inline-block;
+  padding: 6px 16px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: var(--radius-full);
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: var(--spacing-md);
+}
+
+.title {
+  font-size: 32px;
+  margin-bottom: var(--spacing-sm);
+}
+
+.ministry {
+  font-size: 14px;
+  opacity: 0.9;
+  margin-bottom: var(--spacing-md);
+}
+
+.description {
+  font-size: 16px;
+  line-height: 1.6;
+  opacity: 0.95;
+}
+
+.section {
+  margin-top: var(--spacing-xl);
+}
+
+.section h2 {
+  font-size: 24px;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-md);
+}
+
+.sectionSubtitle {
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-lg);
+}
+
+.benefitsGrid {
+  display: grid;
+  gap: var(--spacing-lg);
+}
+
+.benefitItem {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.benefitLabel {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.benefitValue {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--accent-yellow);
+}
+
+.benefitType {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.nonFinancial {
+  margin-top: var(--spacing-lg);
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--border-light);
+}
+
+.nonFinancial h3 {
+  font-size: 18px;
+  margin-bottom: var(--spacing-md);
+}
+
+.nonFinancial ul {
+  list-style: disc;
+  padding-left: var(--spacing-lg);
+  color: var(--text-secondary);
+}
+
+.citationsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.citationCard {
+  border-left: 3px solid var(--primary-green);
+}
+
+.citationHeader {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-sm);
+}
+
+.citationNumber {
+  font-weight: 600;
+  color: var(--primary-green);
+}
+
+.citationPage {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.citationText {
+  font-style: italic;
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-md);
+  line-height: 1.6;
+}
+
+.citationLink {
+  font-size: 14px;
+  color: var(--primary-green);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.citationLink:hover {
+  text-decoration: underline;
+}
+
+.criteriaList,
+.documentsList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.criteriaList li,
+.documentsList li {
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: var(--bg-light);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+}
+
+.documentsList li {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.docIcon {
+  font-size: 20px;
+}
+
+.deadlineCard {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  background: rgba(255, 152, 0, 0.1);
+  border-left: 4px solid var(--warning);
+}
+
+.deadlineIcon {
+  font-size: 32px;
+}
+
+.deadlineCard h3 {
+  font-size: 16px;
+  margin-bottom: var(--spacing-xs);
+  color: var(--text-primary);
+}
+
+.deadlineCard p {
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.actions {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-xl);
+}
+
+@media (max-width: 768px) {
+  .actions {
+    flex-direction: column;
+  }
+}

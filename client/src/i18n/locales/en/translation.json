@@ -1,0 +1,56 @@
+{
+  "common": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "login": "Login",
+    "logout": "Logout",
+    "register": "Register",
+    "save": "Save",
+    "cancel": "Cancel",
+    "submit": "Submit",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success"
+  },
+  "home": {
+    "title": "Find Your Eligible Agricultural Schemes",
+    "subtitle": "Get instant eligibility results for 100+ government schemes with AI-powered analysis",
+    "ctaCheck": "Check Eligibility Now",
+    "ctaBrowse": "Browse Schemes",
+    "howItWorks": "How It Works",
+    "step1Title": "Share Your Profile",
+    "step1Desc": "Use voice or form to provide your farming details",
+    "step2Title": "AI Analysis",
+    "step2Desc": "Our system analyzes 100+ schemes in seconds",
+    "step3Title": "Get Results",
+    "step3Desc": "View eligible schemes with verified citations"
+  },
+  "profile": {
+    "createTitle": "Create Your Profile",
+    "editTitle": "Edit Profile",
+    "fullName": "Full Name",
+    "state": "State",
+    "district": "District",
+    "pincode": "Pincode",
+    "landArea": "Total Land (acres)",
+    "cropTypes": "Crop Types",
+    "socialCategory": "Social Category"
+  },
+  "results": {
+    "title": "Your Eligibility Results",
+    "eligible": "Eligible Schemes",
+    "notEligible": "Not Eligible",
+    "totalBenefits": "Total Potential Benefits",
+    "viewDetails": "View Details",
+    "confidence": "Confidence"
+  },
+  "scheme": {
+    "benefits": "Benefits",
+    "eligibility": "Eligibility Criteria",
+    "documents": "Required Documents",
+    "deadline": "Application Deadline",
+    "apply": "Apply Now",
+    "save": "Save for Later"
+  }
+}

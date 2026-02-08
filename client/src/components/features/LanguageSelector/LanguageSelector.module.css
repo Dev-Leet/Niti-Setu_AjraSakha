@@ -1,0 +1,32 @@
+.selector {
+  display: flex;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  background: var(--bg-light);
+  border-radius: var(--radius-md);
+}
+
+.langBtn {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-primary);
+  font-weight: 500;
+  transition: all var(--transition-fast);
+}
+
+.langBtn:hover {
+  background: var(--bg-white);
+}
+
+.langBtn.active {
+  background: var(--primary-green);
+  color: var(--text-white);
+}
+
+.flag {
+  font-size: 20px;
+}
