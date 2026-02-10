@@ -1,0 +1,24 @@
+export const CONSTANTS = {
+  BCRYPT_ROUNDS: 12,
+  MAX_FILE_SIZE: 10 * 1024 * 1024,
+  ALLOWED_FILE_TYPES: ['application/pdf'],
+  CACHE_TTL: {
+    SHORT: 300,
+    MEDIUM: 3600,
+    LONG: 86400,
+  },
+  RATE_LIMITS: {
+    AUTH: { windowMs: 15 * 60 * 1000, max: 5 },
+    API: { windowMs: 60 * 60 * 1000, max: 100 },
+    ELIGIBILITY: { windowMs: 60 * 60 * 1000, max: 10 },
+  },
+};
+
+export const ERROR_CODES = {
+  VALIDATION_ERROR: 'VALIDATION_ERROR',
+  AUTHENTICATION_ERROR: 'AUTHENTICATION_ERROR',
+  AUTHORIZATION_ERROR: 'AUTHORIZATION_ERROR',
+  NOT_FOUND: 'NOT_FOUND',
+  CONFLICT: 'CONFLICT',
+  INTERNAL_ERROR: 'INTERNAL_ERROR',
+};

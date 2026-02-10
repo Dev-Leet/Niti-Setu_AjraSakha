@@ -1,14 +1,10 @@
-import { Role } from '@agri-schemes/types';
+import { Request } from 'express';
 
 declare global {
   namespace Express {
     interface Request {
-      user?: {
-        id: string;
-        role: Role;
-      };
+      userId?: string;
+      userRole?: string;
     }
   }
 }
-
-export {};

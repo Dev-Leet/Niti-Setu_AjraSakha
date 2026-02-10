@@ -23,5 +23,10 @@
     "type-check": "npm run type-check:client && npm run type-check:server",
     "type-check:client": "cd client && npm run type-check",
     "type-check:server": "cd server && npm run type-check"
+  },
+  "dependencies": {
+    "@google-cloud/speech": "^7.2.1",
+    "cookie-parser": "^1.4.7",
+    "multer": "^2.0.2"
   }
 }

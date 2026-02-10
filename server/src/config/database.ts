@@ -1,14 +1,26 @@
 import mongoose from 'mongoose';
+import { logger } from './logger.js';
 
-export async function connectDatabase(): Promise<void> {
+export const connectDatabase = async (): Promise<void> => {
   try {
-    const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017/agri-schemes';
-    
-    await mongoose.connect(uri);
-    
-    console.log('MongoDB connected successfully');
+    const conn = await mongoose.connect(process.env.MONGODB_URI!, {
+      maxPoolSize: 10,
+      minPoolSize: 5,
+      serverSelectionTimeoutMS: 5000,
+    });
+
+    logger.info(`MongoDB Connected: ${conn.connection.host}`);
+
+    mongoose.connection.on('error', (err) => {
+      logger.error('MongoDB connection error:', err);
+    });
+
+    mongoose.connection.on('disconnected', () => {
+      logger.warn('MongoDB disconnected. Attempting to reconnect...');
+    });
+
   } catch (error) {
-    console.error('MongoDB connection error:', error);
-    throw error;
+    logger.error('Database connection failed:', error);
+    process.exit(1);
   }
-}
+};
