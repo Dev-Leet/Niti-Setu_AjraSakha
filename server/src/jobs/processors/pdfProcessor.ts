@@ -23,3 +23,26 @@ export const pdfProcessor = {
     logger.info(`Processed PDF: ${fileName} (${pages.length} pages)`);
   },
 };
+
+/*second
+import type { Job } from 'bull';
+import { pdfIngestionService } from '@services/rag/pdfIngestion.service.js';
+import { s3Adapter } from '@adapters/storage/s3.adapter.js';
+import { logger } from '@utils/logger.js';
+
+interface PDFJobData {
+  pdfId: string;
+  fileUrl: string;
+  schemeId: string;
+}
+
+export const pdfProcessorJob = async (job: Job<PDFJobData>): Promise<void> => {
+  const { pdfId, fileUrl, schemeId } = job.data;
+
+  logger.info(`Processing PDF: ${pdfId}`);
+
+  const buffer = await s3Adapter.downloadFile(fileUrl);
+  await pdfIngestionService.processPDF(pdfId, buffer, schemeId);
+
+  logger.info(`PDF processed: ${pdfId}`);
+};*/

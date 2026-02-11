@@ -1,22 +1,55 @@
-version: "3.8"
+version: '3.8'
 
 services:
   mongodb:
-    image: mongo:7.0
+    image: mongo:7
+    container_name: agri-mongodb
     ports:
-      - "27017:27017"
+      - '27017:27017'
     volumes:
-      - mongo-data:/data/db
+      - mongodb_data:/data/db
     environment:
-      - MONGO_INITDB_DATABASE=agri-schemes
+      MONGO_INITDB_DATABASE: agri-schemes
 
   redis:
     image: redis:7-alpine
+    container_name: agri-redis
     ports:
-      - "6379:6379"
+      - '6379:6379'
     volumes:
-      - redis-data:/data
+      - redis_data:/data
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: agri-server
+    ports:
+      - '5000:5000'
+    environment:
+      - NODE_ENV=production
+      - MONGODB_URI=mongodb://mongodb:27017/agri-schemes
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - mongodb
+      - redis
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: agri-client
+    ports:
+      - '5173:5173'
+    environment:
+      - VITE_API_URL=http://localhost:5000/api/v1
+    volumes:
+      - ./client:/app
+      - /app/node_modules
 
 volumes:
-  mongo-data:
-  redis-data:
+  mongodb_data:
+  redis_data:

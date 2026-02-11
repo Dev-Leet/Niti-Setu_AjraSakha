@@ -4,11 +4,19 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx watch src/server.ts",
+    "dev": "tsx watch src/index.ts",
     "build": "tsc",
-    "start": "node dist/server.js",
+    "start": "node dist/index.js",
     "lint": "eslint . --ext .ts",
-    "type-check": "tsc --noEmit"
+    "lint:fix": "eslint . --ext .ts --fix",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "type-check": "tsc --noEmit",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "seed": "tsx src/db/seeders/index.ts",
+    "migrate": "tsx scripts/migrate.ts",
+    "generate:jwt": "tsx scripts/generate-jwt-secret.ts"
   },
   "keywords": [],
   "author": "",

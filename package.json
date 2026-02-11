@@ -8,25 +8,35 @@
     "packages/*"
   ],
   "scripts": {
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "dev:client": "cd client && npm run dev",
     "dev:server": "cd server && npm run dev",
     "build:types": "cd packages/types && npm run build",
     "build:client": "cd client && npm run build",
     "build:server": "cd server && npm run build",
     "build": "npm run build:types && npm run build:client && npm run build:server",
+    "start:server": "npm start --workspace=server",
+    "start:client": "npm run preview --workspace=client",
     "test": "npm run test:client && npm run test:server",
     "test:client": "cd client && npm test",
     "test:server": "cd server && npm test",
     "lint": "npm run lint:client && npm run lint:server",
     "lint:client": "cd client && npm run lint",
     "lint:server": "cd server && npm run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "type-check": "npm run type-check:client && npm run type-check:server",
     "type-check:client": "cd client && npm run type-check",
-    "type-check:server": "cd server && npm run type-check"
+    "type-check:server": "cd server && npm run type-check",
+    "clean": "rm -rf node_modules client/node_modules server/node_modules packages/*/node_modules client/dist server/dist packages/*/dist"
   },
   "dependencies": {
     "@google-cloud/speech": "^7.2.1",
     "cookie-parser": "^1.4.7",
     "multer": "^2.0.2"
-  }
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  },
+  "devDependencies": {
 }
