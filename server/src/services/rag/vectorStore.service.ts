@@ -1,6 +1,7 @@
 import { Pinecone } from '@pinecone-database/pinecone';
 import { OpenAIEmbeddings } from '@langchain/openai';
 import { logger } from '@config/logger.js';
+import { pineconeIndex } from '@config/pinecone.js';
 
 const pinecone = new Pinecone({
   apiKey: process.env.PINECONE_API_KEY!,
@@ -24,7 +25,7 @@ export const vectorStore = {
       }))
     );
 
-    await index.upsert(vectors);
+    await pineconeIndex.upsert(vectors);
     logger.info(`Upserted ${vectors.length} documents to Pinecone`);
   },
 

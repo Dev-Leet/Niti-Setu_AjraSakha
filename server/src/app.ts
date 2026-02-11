@@ -1,10 +1,10 @@
 import express from 'express';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
-import { corsMiddleware } from '@middleware/cors.middleware.js';
-import { loggerMiddleware } from '@middleware/logger.middleware.js';
-import { errorHandler } from '@middleware/errorHandler.js';
-import { apiLimiter } from '@middleware/rateLimiter.js';
+import { corsMiddleware } from '@middleware/index.js';
+import { loggerMiddleware } from '@middleware/index.js';
+import { errorHandler } from '@middleware/index.js';
+import { apiLimiter } from '@middleware/index.js';
 import routes from '@routes/index.js';
 
 export const app = express();
@@ -16,13 +16,15 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
 app.use(loggerMiddleware);
 
-app.get('/health', (req, res) => {
+app.get('/health', (_req, res) => {
   res.json({ status: 'OK', timestamp: new Date().toISOString() });
 });
 
 app.use('/api/v1', apiLimiter, routes);
 
 app.use(errorHandler);
+
+
 
 
 /* import express, { Application } from 'express';

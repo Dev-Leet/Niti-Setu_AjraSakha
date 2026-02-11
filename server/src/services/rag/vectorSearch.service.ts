@@ -22,6 +22,6 @@ export const vectorSearchService = {
   },
 
   async deleteBySchemeId(schemeId: string): Promise<void> {
-    await pineconeIndex.deleteMany({ schemeId });
+    await pineconeIndex.deleteMany({ filter: { schemeId } });
   },
 };

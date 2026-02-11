@@ -1,7 +1,8 @@
-import { FarmerProfile } from '@models/FarmerProfile.js';
-import { AppError } from '@utils/AppError.js';
+import { FarmerProfile } from '@models/index.js';
+import { AppError } from '@utils/index.js';
 import { cacheService } from './cache.service.js';
-import type { CreateProfileDTO } from '@/types/models/FarmerProfile.types.js';
+
+
 
 export const profileService = {
   async create(userId: string, profileData: CreateProfileDTO) {

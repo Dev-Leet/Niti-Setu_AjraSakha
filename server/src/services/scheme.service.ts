@@ -1,7 +1,7 @@
-import { Scheme } from '@models/Scheme.js';
-import { SavedScheme } from '@models/SavedScheme.js';
-import { AppError } from '@utils/AppError.js';
+import { Scheme, SavedScheme } from '@models/index.js';
+import { AppError } from '@utils/index.js';
 import { cacheService } from './cache.service.js';
+
 
 export const schemeService = {
   async getAll(filters: { state?: string; ministry?: string; category?: string }) {
@@ -50,9 +50,9 @@ export const schemeService = {
   },
 
   async getSavedSchemes(userId: string) {
-    const saved = await SavedScheme.find({ userId });
-    const schemeIds = saved.map((s) => s.schemeId);
-    const schemes = await Scheme.find({ schemeId: { $in: schemeIds } }).select('-pdfDocuments');
-    return schemes;
-  },
+  const saved = await SavedScheme.find({ userId });
+  const schemeIds = saved.map((s) => s.schemeId);
+  const schemes = await Scheme.find({ schemeId: { $in: schemeIds } });
+  return schemes;
+},
 };

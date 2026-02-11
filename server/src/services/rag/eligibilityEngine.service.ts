@@ -1,9 +1,8 @@
 import { ChatOpenAI } from '@langchain/openai';
-import { vectorStore } from './vectorStore.js';
-import { Scheme } from '@models/Scheme.js';
-import { IFarmerProfile } from '@models/FarmerProfile.js';
-import { logger } from '@config/logger.js';
-
+import { vectorSearchService } from './vectorSearch.service.js';
+import { IFarmerProfile } from '@models/FarmerProfile.model.js';
+import { IScheme } from '@models/Scheme.model.js';
+import { env } from '@config/env.js';
 const llm = new ChatOpenAI({
   openAIApiKey: process.env.OPENAI_API_KEY!,
   modelName: 'gpt-4-turbo-preview',

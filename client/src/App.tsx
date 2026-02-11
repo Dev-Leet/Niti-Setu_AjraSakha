@@ -4,16 +4,19 @@ import { Provider } from 'react-redux';
 import { store } from '@store/index';
 import { ErrorBoundary } from '@components/common/ErrorBoundary/ErrorBoundary';
 import { AppRoutes } from './routes';
+import { ThemeProvider } from '@/context/ThemeContext';
 import './styles/global.css';
 
 const App: React.FC = () => {
   return (
     <ErrorBoundary>
-      <Provider store={store}>
-        <BrowserRouter>
-          <AppRoutes />
-        </BrowserRouter>
-      </Provider>
+      <ThemeProvider>
+        <Provider store={store}>
+          <BrowserRouter>
+            <AppRoutes />
+          </BrowserRouter>
+        </Provider>
+      </ThemeProvider>
     </ErrorBoundary>
   );
 };

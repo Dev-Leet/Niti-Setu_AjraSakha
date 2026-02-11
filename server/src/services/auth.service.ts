@@ -1,7 +1,7 @@
-import { User } from '@models/User.js';
-import { AppError } from '@utils/AppError.js';
-import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from '@utils/jwt.js';
-import type { CreateUserDTO } from '@/types/models/User.types.js';
+import { User } from '@models/index.js';
+import { AppError } from '@utils/index.js';
+import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from '@utils/index.js';
+import { CreateUserDTO } from '@dtos/index.js';
 
 export const authService = {
   async register(userData: CreateUserDTO) {

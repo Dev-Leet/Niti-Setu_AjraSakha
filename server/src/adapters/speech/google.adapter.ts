@@ -1,23 +1,25 @@
-import speech from '@google-cloud/speech';
+import { SpeechClient } from '@google-cloud/speech';
 import type { SpeechAdapter, TranscriptionResult } from './types.js';
 
 export class GoogleSpeechAdapter implements SpeechAdapter {
-  private client: speech.SpeechClient;
+  private client: SpeechClient;
 
   constructor() {
-    this.client = new speech.SpeechClient();
+    this.client = new SpeechClient();
   }
 
   async transcribe(audioBuffer: Buffer, languageCode = 'hi-IN'): Promise<TranscriptionResult> {
     const audio = { content: audioBuffer.toString('base64') };
     const config = {
-      encoding: speech.protos.google.cloud.speech.v1.RecognitionConfig.AudioEncoding.WEBM_OPUS,
+      encoding: 'WEBM_OPUS' as const,
       sampleRateHertz: 16000,
       languageCode,
     };
 
     const [response] = await this.client.recognize({ audio, config });
-    const transcription = response.results?.map((result) => result.alternatives?.[0]?.transcript).join('\n') || '';
+    const transcription = response.results
+      ?.map((result: any) => result.alternatives?.[0]?.transcript)
+      .join('\n') || '';
 
     return {
       transcript: transcription,

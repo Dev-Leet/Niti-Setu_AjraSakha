@@ -1,4 +1,4 @@
-import { Scheme } from '@models/Scheme.js';
+import { Scheme } from '@models/index.js';
 import { logger } from '@utils/logger.js';
 
 const schemes = [

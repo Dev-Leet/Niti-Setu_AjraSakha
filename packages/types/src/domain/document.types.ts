@@ -17,5 +17,5 @@ export interface PDFDocumentEntity {
 
 export interface UploadDocumentInput {
   schemeId: string;
-  file: File | Buffer;
+  file: ArrayBuffer | Uint8Array;
 }

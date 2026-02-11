@@ -1,48 +1,35 @@
 import pdfParse from 'pdf-parse';
-import { vectorStore } from './vectorStore.js';
-import { logger } from '@config/logger.js';
-
-export const pdfProcessor = {
-  async processPDF(pdfBuffer: Buffer, schemeId: string, fileName: string): Promise<void> {
-    const data = await pdfParse(pdfBuffer);
-    const text = data.text;
-    const pages = text.split('\f');
-
-    const documents = pages.map((pageText, index) => ({
-      id: `${schemeId}-page-${index + 1}`,
-      text: pageText.trim(),
-      metadata: {
-        schemeId,
-        fileName,
-        page: index + 1,
-        totalPages: pages.length,
-      },
-    }));
-
-    await vectorStore.upsertDocuments(documents);
-    logger.info(`Processed PDF: ${fileName} (${pages.length} pages)`);
-  },
-};
-
-/*second
-import type { Job } from 'bull';
-import { pdfIngestionService } from '@services/rag/pdfIngestion.service.js';
-import { s3Adapter } from '@adapters/storage/s3.adapter.js';
+import { embeddingService } from './embedding.service.js';
+import { vectorSearchService } from './vectorSearch.service.js';
 import { logger } from '@utils/logger.js';
 
-interface PDFJobData {
-  pdfId: string;
-  fileUrl: string;
-  schemeId: string;
-}
 
-export const pdfProcessorJob = async (job: Job<PDFJobData>): Promise<void> => {
-  const { pdfId, fileUrl, schemeId } = job.data;
+export const pdfProcessor = async (job: { data: { pdfBuffer: Buffer; schemeId: string } }) => {
+  const { pdfBuffer, schemeId } = job.data;
 
-  logger.info(`Processing PDF: ${pdfId}`);
+  try {
+    const data = await pdfParse(pdfBuffer);
+    const pages = data.text.split('\f').map((pageText: string, index: number) => ({
+      text: pageText.trim(),
+      page: index + 1,
+    }));
 
-  const buffer = await s3Adapter.downloadFile(fileUrl);
-  await pdfIngestionService.processPDF(pdfId, buffer, schemeId);
+    const embeddings = await embeddingService.embedDocuments(pages.map((p: { text: string }) => p.text));
+    await vectorSearchService.upsertVectors(
+      embeddings.map((embedding, idx) => ({
+        id: `${schemeId}-page-${pages[idx].page}`,
+        values: embedding,
+        metadata: {
+          schemeId,
+          page: pages[idx].page,
+          text: pages[idx].text,
+        },
+      }))
+    );
 
-  logger.info(`PDF processed: ${pdfId}`);
-};*/
+    logger.info(`PDF processed for scheme: ${schemeId}`);
+  } catch (error) {
+    logger.error('PDF processing failed:', error);
+    throw error;
+  }
+};

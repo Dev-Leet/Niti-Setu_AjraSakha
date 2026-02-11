@@ -10,6 +10,7 @@ import { Results } from '@pages/Results/Results';
 import { Dashboard } from '@pages/Dashboard/Dashboard';
 import { Schemes } from '@pages/Schemes/Schemes';
 import { SchemeDetail } from '@pages/SchemeDetail/SchemeDetail';
+import { AsyncErrorBoundary } from '@components/common/ErrorBoundary/AsyncErrorBoundary';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated } = useAuth();
@@ -49,7 +50,14 @@ export const AppRoutes: React.FC = () => {
           </ProtectedRoute>
         }
       />
-      
+      <Route
+        path="/"
+        element={
+          <AsyncErrorBoundary>
+            <Layout><Home /></Layout>
+          </AsyncErrorBoundary>
+        }
+      />
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );

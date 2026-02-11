@@ -1,5 +1,5 @@
 export interface TranscribeRequest {
-  audio: Blob | Buffer;
+  audio: ArrayBuffer | Uint8Array;
   languageHint?: string;
 }
 

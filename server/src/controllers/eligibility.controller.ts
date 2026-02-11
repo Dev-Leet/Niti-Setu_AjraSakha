@@ -1,12 +1,11 @@
 import { Response, NextFunction } from 'express';
-import { FarmerProfile } from '@models/FarmerProfile.js';
-import { Scheme } from '@models/Scheme.js';
-import { EligibilityCheck } from '@models/EligibilityCheck.js';
-import { AuthRequest } from '@middleware/auth.js';
-import { AppError } from '@utils/AppError.js';
-import { eligibilityEngine } from '@services/rag/eligibilityEngine.js';
+import { FarmerProfile, Scheme, EligibilityCheck } from '@models/index.js';
+import { AuthRequest } from '@middleware/index.js';
+import { AppError } from '@utils/index.js';
+import { eligibilityEngine } from '@services/rag/eligibilityEngine.service.js';
+import { cacheKeys } from '@utils/cacheKey.utils.js';
 import { redis } from '@config/redis.js';
-import { cacheKeys } from '@utils/cacheKey.js';
+
 
 export const eligibilityController = {
   async checkEligibility(req: AuthRequest, res: Response, next: NextFunction): Promise<void> {

@@ -4,8 +4,18 @@ import { connectDatabase } from '@config/database.js';
 import { connectRedis } from '@config/redis.js';
 import { logger } from '@utils/logger.js';
 import { initializeJobs } from './jobs/index.js';
+import { createServer } from 'http';
+import { initializeWebSocket, setIO } from './websocket/index.js';
+
+const httpServer = createServer(app);
+const ioInstance = initializeWebSocket(httpServer);
+setIO(ioInstance);
 
 const PORT = process.env.PORT || 5000;
+
+httpServer.listen(PORT, () => {
+  logger.info(`Server running on port ${PORT}`);
+});
 
 const startServer = async (): Promise<void> => {
   try {

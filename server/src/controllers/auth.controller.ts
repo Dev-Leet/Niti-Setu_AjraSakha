@@ -1,7 +1,8 @@
-import { Request, Response, NextFunction } from 'express';
-import { User } from '@models/User.js';
-import { AppError } from '@utils/AppError.js';
-import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from '@utils/jwt.js';
+import { Response, NextFunction } from 'express';
+import { User } from '@models/index.js';
+import { AuthRequest } from '@middleware/index.js';
+import { AppError } from '@utils/index.js';
+import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from '@utils/index.js';
 
 export const authController = {
   async register(req: Request, res: Response, next: NextFunction): Promise<void> {

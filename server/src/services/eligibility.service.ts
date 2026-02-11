@@ -1,8 +1,8 @@
-import { FarmerProfile } from '@models/FarmerProfile.js';
-import { Scheme } from '@models/Scheme.js';
-import { EligibilityCheck } from '@models/EligibilityCheck.js';
-import { AppError } from '@utils/AppError.js';
-import { eligibilityEngine } from './rag/eligibilityEngine.js';
+import { FarmerProfile } from '@models/FarmerProfile.model.js';
+import { Scheme } from '@models/Scheme.model.js';
+import { EligibilityCheck } from '@models/EligibilityCheck.model.js';
+import { AppError } from '@utils/errors.js';
+import { eligibilityEngine } from './rag/eligibilityEngine.service.js';
 import { cacheService } from './cache.service.js';
 
 export const eligibilityService = {

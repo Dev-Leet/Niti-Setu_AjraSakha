@@ -1,7 +1,7 @@
 import { Response, NextFunction } from 'express';
-import { AuthRequest } from '@middleware/auth.js';
+import { AuthRequest } from '@middleware/index.js';
 import { documentService } from '@services/document.service.js';
-import { AppError } from '@utils/AppError.js';
+import { AppError } from '@utils/index.js';
 
 export const documentController = {
   async uploadPDF(req: AuthRequest, res: Response, next: NextFunction): Promise<void> {

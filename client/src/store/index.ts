@@ -4,6 +4,7 @@ import profileReducer from './slices/profileSlice';
 import eligibilityReducer from './slices/eligibilitySlice';
 import schemeReducer from './slices/schemeSlice';
 import uiReducer from './slices/uiSlice';
+import comparisonReducer from './slices/comparisonSlice';
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     eligibility: eligibilityReducer,
     scheme: schemeReducer,
     ui: uiReducer,
+    comparison: comparisonReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

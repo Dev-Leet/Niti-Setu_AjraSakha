@@ -1,6 +1,6 @@
-import { Analytics } from '@models/Analytics.model.js';
-import { EligibilityCheck } from '@models/EligibilityCheck.js';
-import { User } from '@models/User.js';
+import { Analytics } from '@models/index.js';
+import { EligibilityCheck } from '@models/index.js';
+import { User } from '@models/index.js';
 
 export const analyticsService = {
   async trackEvent(eventType: string, userId: string, metadata: any) {

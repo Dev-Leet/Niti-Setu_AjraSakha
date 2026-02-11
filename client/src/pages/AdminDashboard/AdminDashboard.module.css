@@ -1,0 +1,109 @@
+/* AdminDashboard.module.css */
+
+.container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.container h1 {
+  margin-bottom: 2rem;
+  color: #1a1a1a;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+/* Stats Grid Layout */
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.statCard {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  background-color: #ffffff;
+  border-radius: 8px;
+  /* Ensure Card component styles are complemented */
+  min-height: 120px;
+  justify-content: center;
+}
+
+.statCard h3 {
+  margin: 0 0 0.5rem 0;
+  color: #64748b; /* Muted slate color for labels */
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.statValue {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #2563eb; /* Primary blue branding */
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Popular Schemes Section */
+.popularSchemes {
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 8px;
+}
+
+.popularSchemes h2 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font-size: 1.25rem;
+  color: #1e293b;
+}
+
+/* Table Styling */
+.popularSchemes table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.popularSchemes th {
+  text-align: left;
+  padding: 1rem;
+  background-color: #f8fafc;
+  color: #475569;
+  font-weight: 600;
+  font-size: 0.875rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.popularSchemes td {
+  padding: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  color: #334155;
+  font-size: 0.95rem;
+}
+
+.popularSchemes tr:last-child td {
+  border-bottom: none;
+}
+
+.popularSchemes tr:hover {
+  background-color: #f1f5f9;
+  transition: background-color 0.2s ease;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+  
+  .statValue {
+    font-size: 1.75rem;
+  }
+}

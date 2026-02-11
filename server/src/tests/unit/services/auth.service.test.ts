@@ -1,5 +1,5 @@
-import { authService } from '@services/auth.service.js';
-import { User } from '@models/User.js';
+import { authService } from '../../../services/auth.service.js';
+import { User } from '../../../models/index.js';
 
 describe('AuthService', () => {
   describe('register', () => {

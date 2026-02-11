@@ -1,3 +1,5 @@
+import { SocialCategory } from './profile.types.js';
+
 export type SchemeStatus = 'active' | 'inactive' | 'archived';
 
 export type BenefitType = 'subsidy' | 'grant' | 'loan' | 'insurance' | 'other';

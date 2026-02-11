@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import multer from 'multer';
 import { voiceController } from '@controllers/voice.controller.js';
-import { authenticate } from '@middleware/auth.js';
+import { authenticate } from '@middleware/auth.middleware.js';
 
 const upload = multer({ storage: multer.memoryStorage() });
 const router = Router();

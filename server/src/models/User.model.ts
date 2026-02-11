@@ -13,42 +13,19 @@ export interface IUser extends Document {
 
 const userSchema = new Schema<IUser>(
   {
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-      lowercase: true,
-      trim: true,
-      index: true,
-    },
-    passwordHash: {
-      type: String,
-      required: true,
-      select: false,
-    },
-    role: {
-      type: String,
-      enum: ['farmer', 'admin', 'auditor'],
-      default: 'farmer',
-    },
-    phone: {
-      type: String,
-      sparse: true,
-    },
-    isActive: {
-      type: Boolean,
-      default: true,
-    },
+    email: { type: String, required: true, unique: true, lowercase: true, index: true },
+    passwordHash: { type: String, required: true, select: false },
+    role: { type: String, enum: ['farmer', 'admin', 'auditor'], default: 'farmer' },
+    phone: String,
+    isActive: { type: Boolean, default: true },
     lastLogin: Date,
   },
-  {
-    timestamps: true,
-    collection: 'users',
-  }
+  { timestamps: true }
 );
 
 userSchema.pre('save', async function (next) {
-  if (!this.isModified('passwordHash')) return next();
+  if (!this.isModified('passwordHash')) 
+    return next();
   this.passwordHash = await bcrypt.hash(this.passwordHash, 12);
   next();
 });

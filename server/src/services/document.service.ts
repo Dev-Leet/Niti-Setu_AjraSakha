@@ -1,8 +1,6 @@
-import { PDFDocument as PDFDocumentModel } from '@models/PDFDocument.model.js';
-import { Scheme } from '@models/Scheme.js';
-import { AppError } from '@utils/AppError.js';
-import { s3Adapter } from '@adapters/storage/s3.adapter.js';
-import { pdfIngestionService } from './rag/pdfIngestion.service.js';
+import { PDFDocument as PDFDocumentModel } from '@models/index.js';
+import { Scheme } from '@models/index.js';
+import { AppError } from '@utils/index.js';
 
 export const documentService = {
   async uploadPDF(schemeId: string, file: Express.Multer.File) {

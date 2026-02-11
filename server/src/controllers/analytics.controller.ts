@@ -1,5 +1,5 @@
 import { Response, NextFunction } from 'express';
-import { AuthRequest } from '@middleware/auth.js';
+import { AuthRequest } from '@middleware/index.js';
 import { analyticsService } from '@services/analytics.service.js';
 
 export const analyticsController = {

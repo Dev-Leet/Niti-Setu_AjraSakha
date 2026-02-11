@@ -20,15 +20,4 @@ COPY --from=builder /app/dist ./dist
 EXPOSE 5000
 
 CMD ["node", "dist/index.js"]
-```
 
-### `server/.dockerignore`
-```
-node_modules
-dist
-logs
-*.log
-.env
-.git
-.gitignore
-README.md

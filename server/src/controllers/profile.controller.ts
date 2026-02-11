@@ -1,9 +1,9 @@
 import { Response, NextFunction } from 'express';
-import { FarmerProfile } from '@models/FarmerProfile.js';
-import { AuthRequest } from '@middleware/auth.js';
-import { AppError } from '@utils/AppError.js';
+import { FarmerProfile } from '@models/index.js';
+import { AuthRequest } from '@middleware/index.js';
+import { cacheKeys } from '@utils/index.js';
 import { redis } from '@config/redis.js';
-import { cacheKeys } from '@utils/cacheKey.js';
+import { AppError } from '@utils/index.js';
 
 export const profileController = {
   async create(req: AuthRequest, res: Response, next: NextFunction): Promise<void> {

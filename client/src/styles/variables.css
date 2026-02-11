@@ -14,6 +14,15 @@
   --bg-light: #F5F5F5;
   --bg-card: #FFFFFF;
   --bg-overlay: rgba(0, 0, 0, 0.5);
+
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f7fa;
+  --bg-light: #f9fafb;
+  --text-primary: #1a202c;
+  --text-secondary: #4a5568;
+  --border-color: #e2e8f0;
+  --primary-green: #2e7d32;
+  --accent-yellow: #ffa000;
   
   --success: #4CAF50;
   --error: #F44336;
@@ -45,4 +54,21 @@
   --transition-fast: 150ms ease;
   --transition-base: 250ms ease;
   --transition-slow: 350ms ease;
+}
+
+[data-theme='dark'] {
+  --bg-primary: #1a202c;
+  --bg-secondary: #2d3748;
+  --bg-light: #374151;
+  --text-primary: #f7fafc;
+  --text-secondary: #cbd5e0;
+  --border-color: #4a5568;
+  --primary-green: #48bb78;
+  --accent-yellow: #ffc107;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s, color 0.3s;
 }

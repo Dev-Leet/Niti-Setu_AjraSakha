@@ -1,5 +1,5 @@
 import pdfParse from 'pdf-parse';
-import { vectorStore } from './vectorStore.js';
+import { vectorStore } from './vectorStore.service.js';
 import { logger } from '@config/logger.js';
 
 export const pdfProcessor = {
