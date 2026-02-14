@@ -14,4 +14,4 @@ export const embeddingService = {
   async embedDocuments(texts: string[]): Promise<number[][]> {
     return embeddings.embedDocuments(texts);
   },
-};
+}; 

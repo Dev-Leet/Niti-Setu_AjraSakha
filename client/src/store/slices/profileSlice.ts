@@ -12,7 +12,7 @@ const initialState: ProfileState = {
   loading: false,
   error: null,
 };
-
+ 
 export const createProfile = createAsyncThunk(
   'profile/create',
   async (profileData: Omit<FarmerProfile, 'id'>, { rejectWithValue }) => {

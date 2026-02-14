@@ -9,5 +9,5 @@ export interface FooterLink {
 
 export interface FooterSection {
   title: string;
-  links: FooterLink[];
+  links: FooterLink[]; 
 }

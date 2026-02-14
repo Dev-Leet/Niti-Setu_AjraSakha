@@ -9,7 +9,7 @@ export const LanguageSelector: React.FC = () => {
 
   const languages = [
     { code: 'en', label: 'English', flag: '🇬🇧' },
-    { code: 'hi', label: 'हिंदी', flag: '🇮🇳' },
+    { code: 'hi', label: 'हिंदी', flag: '🇮🇳' }, 
     { code: 'mr', label: 'मराठी', flag: '🇮🇳' },
   ];
 

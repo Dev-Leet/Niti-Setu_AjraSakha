@@ -9,7 +9,7 @@ import { Button } from '@components/common/Button/Button';
 import { Input } from '@components/common/Input/Input';
 import type { ExtractedProfileData } from './types';
 import styles from './ProfileInput.module.css';
-
+ 
 export const VoiceInput: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();

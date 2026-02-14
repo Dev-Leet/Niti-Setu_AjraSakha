@@ -16,7 +16,7 @@ export const analyticsService = {
     const totalChecks = await EligibilityCheck.countDocuments({ userId });
     const recentCheck = await EligibilityCheck.findOne({ userId }).sort({ createdAt: -1 });
 
-    return {
+    return { 
       totalChecks,
       lastCheckDate: recentCheck?.createdAt,
       totalEligibleSchemes: recentCheck?.totalEligible || 0,

@@ -10,7 +10,7 @@
   align-items: center;
   padding: var(--spacing-2xl) 5%;
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-}
+} 
 
 .heroContent {
   max-width: none;

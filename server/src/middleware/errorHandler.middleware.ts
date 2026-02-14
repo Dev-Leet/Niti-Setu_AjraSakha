@@ -13,7 +13,7 @@ export const errorHandler = (
     stack: err.stack,
     path: req.path,
     method: req.method,
-  });
+  }); 
 
   if (err instanceof AppError) {
     res.status(err.statusCode).json({

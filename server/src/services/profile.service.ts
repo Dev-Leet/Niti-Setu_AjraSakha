@@ -2,7 +2,25 @@ import { FarmerProfile } from '@models/index.js';
 import { AppError } from '@utils/index.js';
 import { cacheService } from './cache.service.js';
 
-
+interface CreateProfileDTO {
+  fullName: string;
+  state: string;
+  district: string;
+  pincode: string;
+  landholding: {
+    totalArea: number;
+    ownershipType: string;
+    irrigationType?: string;
+  }; 
+  cropTypes: string[];
+  socialCategory: string;
+  bankDetails?: {
+    accountNumber: string;
+    ifscCode: string;
+    bankName: string;
+  };
+  aadharNumber?: string;
+}
 
 export const profileService = {
   async create(userId: string, profileData: CreateProfileDTO) {

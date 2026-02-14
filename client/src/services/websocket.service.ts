@@ -9,7 +9,7 @@ class WebSocketService {
 
     this.socket.on('connect', () => console.log('WebSocket connected'));
     this.socket.on('disconnect', () => console.log('WebSocket disconnected'));
-  }
+  } 
 
   disconnect() {
     this.socket?.disconnect();

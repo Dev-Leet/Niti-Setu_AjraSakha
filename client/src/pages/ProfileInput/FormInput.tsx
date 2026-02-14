@@ -13,7 +13,7 @@ import styles from './ProfileInput.module.css';
 export const FormInput: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-
+ 
   const {
     register,
     handleSubmit,

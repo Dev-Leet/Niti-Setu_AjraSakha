@@ -6,7 +6,7 @@
   max-width: none;
   margin: 0 auto;
   padding: 0 var(--spacing-md);
-}
+} 
 
 .visually-hidden {
   position: absolute;

@@ -10,7 +10,7 @@ export interface SchemeResult {
     page: number;
     text: string;
     documentUrl: string;
-  }>;
+  }>; 
   benefits: {
     financial: {
       amount: number;

@@ -15,6 +15,6 @@ export const ERROR_CODES = {
   TOKEN_INVALID: 'TOKEN_INVALID',
   FILE_TOO_LARGE: 'FILE_TOO_LARGE',
   UNSUPPORTED_FILE_TYPE: 'UNSUPPORTED_FILE_TYPE',
-} as const;
+} as const; 
 
 export type ErrorCode = typeof ERROR_CODES[keyof typeof ERROR_CODES];

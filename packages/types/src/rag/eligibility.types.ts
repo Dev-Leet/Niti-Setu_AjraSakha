@@ -11,7 +11,7 @@ export interface EligibilityContext {
     score: number;
   }>;
 }
-
+ 
 export interface EligibilityPrompt {
   systemPrompt: string;
   userPrompt: string;

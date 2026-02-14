@@ -36,4 +36,4 @@ export const Button: React.FC<ButtonProps> = ({
       {loading ? <span className={styles.spinner} /> : children}
     </button>
   );
-};
+}; 

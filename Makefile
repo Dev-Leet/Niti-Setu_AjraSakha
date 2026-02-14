@@ -10,7 +10,7 @@ dev-server:
 	npm run dev:server
 
 dev-client:
-	npm run dev:client
+	npm run dev:client 
 
 build:
 	npm run build

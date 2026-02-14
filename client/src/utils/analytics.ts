@@ -11,7 +11,7 @@ interface AnalyticsEvent {
   action: string;
   label?: string;
   value?: number;
-}
+} 
 
 class Analytics {
   private enabled: boolean;

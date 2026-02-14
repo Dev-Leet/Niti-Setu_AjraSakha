@@ -6,4 +6,4 @@ export type UpdateProfileRequest = UpdateProfileInput;
 
 export interface ProfileResponse {
   profile: FarmerProfile;
-}
+} 

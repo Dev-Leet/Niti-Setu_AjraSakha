@@ -16,6 +16,6 @@ export const NotFound: React.FC = () => {
       <Button variant="primary" onClick={() => navigate('/')}>
         Go Home
       </Button>
-    </div>
+    </div> 
   );
 };

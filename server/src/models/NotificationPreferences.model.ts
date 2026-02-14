@@ -15,7 +15,7 @@ export interface INotificationPreferences extends Document {
     eligibilityResults: boolean;
     schemeUpdates: boolean;
   };
-}
+} 
 
 const preferencesSchema = new Schema<INotificationPreferences>({
   userId: { type: String, required: true, unique: true },

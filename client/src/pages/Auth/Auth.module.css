@@ -13,7 +13,7 @@
   padding: var(--spacing-2xl);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
-}
+} 
 
 .title {
   font-size: 28px;

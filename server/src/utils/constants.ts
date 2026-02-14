@@ -13,7 +13,7 @@ export const CONSTANTS = {
     ELIGIBILITY: { windowMs: 60 * 60 * 1000, max: 10 },
   },
 };
-
+ 
 export const ERROR_CODES = {
   VALIDATION_ERROR: 'VALIDATION_ERROR',
   AUTHENTICATION_ERROR: 'AUTHENTICATION_ERROR',

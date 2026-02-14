@@ -6,7 +6,7 @@ const llm = new ChatOpenAI({
   openAIApiKey: process.env.OPENAI_API_KEY!,
   modelName: 'gpt-4-turbo-preview',
   temperature: 0.1,
-});
+}); 
 
 export const voiceController = {
   async transcribe(req: Request, res: Response, next: NextFunction): Promise<void> {

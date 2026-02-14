@@ -12,4 +12,4 @@ export class LlamaAdapter implements LLMAdapter {
   async stream(prompt: string, onChunk: (chunk: string) => void): Promise<void> {
     throw new Error('Llama adapter not implemented');
   }
-}
+} 

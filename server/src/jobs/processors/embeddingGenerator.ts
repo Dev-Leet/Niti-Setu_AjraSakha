@@ -6,7 +6,7 @@ import { logger } from '@utils/logger.js';
 interface EmbeddingJobData {
   texts: string[];
   schemeId: string;
-}
+} 
 
 export const embeddingGeneratorJob = async (job: Job<EmbeddingJobData>): Promise<void> => {
   const { texts, schemeId } = job.data;

@@ -14,7 +14,7 @@ export const analyticsController = {
     } catch (error) {
       next(error);
     }
-  },
+  }, 
 
   async getSystemStats(req: AuthRequest, res: Response, next: NextFunction): Promise<void> {
     try {

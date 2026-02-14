@@ -4,12 +4,12 @@
   padding: var(--spacing-lg);
   box-shadow: var(--shadow-sm);
 }
-
+ 
 .hoverable {
   transition: all var(--transition-base);
 }
 
-.hoverable:hover {
+.hoverable:hover { 
   box-shadow: var(--shadow-md);
   transform: translateY(-2px);
 }

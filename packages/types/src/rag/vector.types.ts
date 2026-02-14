@@ -12,7 +12,7 @@ export interface VectorMetadata {
   fileName?: string;
   documentUrl?: string;
   [key: string]: any;
-}
+} 
 
 export interface SearchResult {
   id: string;

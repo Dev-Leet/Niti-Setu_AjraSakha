@@ -7,7 +7,7 @@ interface NotificationJobData {
   recipient: string;
   subject?: string;
   message: string;
-}
+} 
 
 export const notificationSenderJob = async (job: Job<NotificationJobData>): Promise<void> => {
   const { type, recipient, subject, message } = job.data;

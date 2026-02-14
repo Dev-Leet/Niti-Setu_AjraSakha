@@ -10,4 +10,4 @@ export const useAuth = () => {
     isAdmin: user?.role === 'admin',
     isFarmer: user?.role === 'farmer',
   };
-};
+}; 

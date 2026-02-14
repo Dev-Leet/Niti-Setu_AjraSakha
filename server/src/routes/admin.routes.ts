@@ -3,7 +3,7 @@ import { adminController } from '@controllers/admin.controller.js';
 import { authenticate, authorize } from '@middleware/auth.middleware.js';
 import { auditLog } from '@middleware/audit.middleware.js';
 
-const router = Router();
+const router = Router(); 
 
 router.use(authenticate);
 router.use(authorize('admin'));

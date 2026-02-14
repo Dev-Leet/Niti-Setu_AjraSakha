@@ -15,7 +15,7 @@ interface Scheme {
   };
   requiredDocuments: string[];
 }
-
+ 
 interface ComparisonState {
   selectedSchemes: Scheme[];
 }

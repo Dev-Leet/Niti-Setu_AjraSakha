@@ -11,4 +11,4 @@ export interface JobOptions {
 export interface Job<T = JobData> {
   data: T;
   opts: JobOptions;
-}
+} 

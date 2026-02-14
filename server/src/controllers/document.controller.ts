@@ -12,13 +12,10 @@ export const documentController = {
       if (!file) {
         throw new AppError('File is required', 400);
       }
-
+ 
       const document = await documentService.uploadPDF(schemeId, file);
 
-      res.status(201).json({
-        success: true,
-        data: document,
-      });
+      res.status(201).json({ success: true, data: document });
     } catch (error) {
       next(error);
     }
@@ -26,13 +23,12 @@ export const documentController = {
 
   async getPDFsByScheme(req: AuthRequest, res: Response, next: NextFunction): Promise<void> {
     try {
-      const { schemeId } = req.params;
+      const schemeId = Array.isArray(req.params.schemeId) 
+        ? req.params.schemeId[0] 
+        : req.params.schemeId;
+      
       const documents = await documentService.getPDFsByScheme(schemeId);
-
-      res.json({
-        success: true,
-        data: documents,
-      });
+      res.json({ success: true, data: documents });
     } catch (error) {
       next(error);
     }
@@ -40,13 +36,9 @@ export const documentController = {
 
   async deletePDF(req: AuthRequest, res: Response, next: NextFunction): Promise<void> {
     try {
-      const { id } = req.params;
+      const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
       await documentService.deletePDF(id);
-
-      res.json({
-        success: true,
-        data: { message: 'PDF deleted successfully' },
-      });
+      res.json({ success: true, data: { message: 'PDF deleted successfully' } });
     } catch (error) {
       next(error);
     }

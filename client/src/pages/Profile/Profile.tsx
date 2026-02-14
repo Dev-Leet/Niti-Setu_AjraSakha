@@ -15,7 +15,7 @@ export const Profile: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { profile, loading } = useAppSelector((state) => state.profile);
-
+ 
   const {
     register,
     handleSubmit,

@@ -8,7 +8,7 @@ export const auditLog = (resource: string) => {
   return async (req: AuthRequest, res: Response, next: NextFunction) => {
     if (!AUDITABLE_ACTIONS.includes(req.method) || !req.userId) {
       return next();
-    }
+    } 
 
     const originalSend = res.send;
     res.send = function (data: any) {

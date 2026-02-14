@@ -1,12 +1,15 @@
-export const testUsers = {
-  farmer: {
-    email: 'farmer@test.com',
-    password: 'Test123456',
-    role: 'farmer' as const,
+export const mockUsers = [
+  {
+    email: 'farmer1@example.com',
+    passwordHash: 'hashedpassword1',
+    phone: '9876543210',
+    role: 'farmer',
+    isActive: true,
   },
-  admin: {
-    email: 'admin@test.com',
-    password: 'Admin123456',
-    role: 'admin' as const,
+  {
+    email: 'admin@example.com',
+    passwordHash: 'hashedpassword2',
+    role: 'admin',
+    isActive: true,
   },
-};
+];

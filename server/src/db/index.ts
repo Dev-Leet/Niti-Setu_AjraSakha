@@ -12,6 +12,6 @@ const runSeeders = async (): Promise<void> => {
     logger.error('Seeding failed:', error);
     process.exit(1);
   }
-};
+}; 
 
 runSeeders();

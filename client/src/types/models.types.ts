@@ -5,7 +5,7 @@ export interface User {
   createdAt: string;
   updatedAt: string;
 }
-
+ 
 export interface FarmerProfile {
   id: string;
   userId: string;

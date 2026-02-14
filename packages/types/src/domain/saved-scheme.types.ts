@@ -12,7 +12,7 @@ export interface SaveSchemeInput {
   schemeId: string;
   notes?: string;
   reminderDate?: Date;
-}
+} 
 
 export interface UpdateSavedSchemeInput {
   notes?: string;

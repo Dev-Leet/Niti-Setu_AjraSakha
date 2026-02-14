@@ -13,7 +13,7 @@ export const loggerMiddleware = (req: Request, res: Response, next: NextFunction
       duration: `${duration}ms`,
       ip: req.ip,
     });
-  });
+  }); 
 
   next();
 };

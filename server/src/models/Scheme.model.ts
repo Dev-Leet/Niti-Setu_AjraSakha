@@ -11,7 +11,7 @@ export interface IScheme extends Document {
     en: string;
     hi: string;
     mr?: string;
-  };
+  }; 
   ministry: string;
   category: string;
   status: 'active' | 'inactive' | 'archived';

@@ -10,7 +10,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   helperText?: string;
   icon?: React.ReactNode;
   fullWidth?: boolean;
-}
+} 
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ label, error, helperText, icon, fullWidth, className, ...props }, ref) => {

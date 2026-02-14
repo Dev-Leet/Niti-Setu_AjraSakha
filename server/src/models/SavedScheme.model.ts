@@ -6,7 +6,7 @@ export interface ISavedScheme extends Document {
   notes?: string;
   reminderDate?: Date;
 }
-
+ 
 const savedSchemeSchema = new Schema<ISavedScheme>(
   {
     userId: {

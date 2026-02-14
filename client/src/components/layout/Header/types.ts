@@ -8,4 +8,4 @@ export interface UserMenuProps {
     role: string;
   };
   onLogout: () => void;
-}
+} 

@@ -8,4 +8,4 @@ export interface SchemaField {
 
 export interface Schema {
   [field: string]: SchemaField;
-}
+} 

@@ -11,7 +11,7 @@ export const Schemes: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { schemes, loading } = useAppSelector((state) => state.scheme as { schemes: Scheme[]; loading: boolean });
-
+ 
   useEffect(() => {
     dispatch(fetchSchemes());
   }, [dispatch]);

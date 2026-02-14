@@ -7,4 +7,4 @@ export interface NavItem {
 export interface SidebarProps {
   isOpen: boolean;
   onClose: () => void;
-}
+} 

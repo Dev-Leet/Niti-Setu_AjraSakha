@@ -1,4 +1,4 @@
-import pdfParse from 'pdf-parse';
+/* import pdfParse from 'pdf-parse';
 import { vectorStore } from './vectorStore.service.js';
 import { logger } from '@config/logger.js';
 
@@ -13,7 +13,7 @@ export const pdfProcessor = {
       text: pageText.trim(),
       metadata: {
         schemeId,
-        fileName,
+        fileName, 
         page: index + 1,
         totalPages: pages.length,
       },
@@ -22,4 +22,19 @@ export const pdfProcessor = {
     await vectorStore.upsertDocuments(documents);
     logger.info(`Processed PDF: ${fileName} (${pages.length} pages)`);
   },
-};
+}; */
+
+import { vectorStoreService } from './vectorStore.service.js';
+
+const pdfParse = require('pdf-parse');
+
+export async function processPDF(pdfBuffer: Buffer, schemeId: string) {
+  const data = await pdfParse(pdfBuffer);
+  
+  const pages = data.text.split('\f').map((pageText: string, index: number) => ({
+    text: pageText.trim(),
+    page: index + 1,
+  }));
+
+  return pages;
+}

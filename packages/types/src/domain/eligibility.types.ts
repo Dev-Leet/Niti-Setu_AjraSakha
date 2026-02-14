@@ -6,7 +6,7 @@ export interface Citation {
   confidence?: number;
 }
 
-export interface SchemeResult {
+export interface SchemeResult { 
   schemeId: string;
   schemeName: string;
   isEligible: boolean;

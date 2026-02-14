@@ -12,7 +12,7 @@ interface CardProps {
 export const Card: React.FC<CardProps> = ({ children, className, onClick, hoverable }) => {
   return (
     <div
-      className={cn(
+      className={cn( 
         styles.card,
         hoverable && styles.hoverable,
         onClick && styles.clickable,

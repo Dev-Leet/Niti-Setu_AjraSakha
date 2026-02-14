@@ -13,7 +13,7 @@ export const formatDate = (date: string | Date): string => {
     day: 'numeric',
   }).format(new Date(date));
 };
-
+ 
 export const formatNumber = (num: number): string => {
   return new Intl.NumberFormat('en-IN').format(num);
 };

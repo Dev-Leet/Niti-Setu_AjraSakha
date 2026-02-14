@@ -10,4 +10,4 @@ export const ThemeToggle: React.FC = () => {
       {theme === 'light' ? '🌙' : '☀️'}
     </button>
   );
-};
+}; 

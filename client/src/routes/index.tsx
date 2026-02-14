@@ -11,7 +11,7 @@ import { Dashboard } from '@pages/Dashboard/Dashboard';
 import { Schemes } from '@pages/Schemes/Schemes';
 import { SchemeDetail } from '@pages/SchemeDetail/SchemeDetail';
 import { AsyncErrorBoundary } from '@components/common/ErrorBoundary/AsyncErrorBoundary';
-
+ 
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { isAuthenticated } = useAuth();
   return isAuthenticated ? <>{children}</> : <Navigate to="/login" />;

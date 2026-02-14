@@ -7,7 +7,7 @@ interface CitationCardProps {
   citation: Citation;
   index: number;
 }
-
+ 
 export const CitationCard: React.FC<CitationCardProps> = ({ citation, index }) => {
   return (
     <Card className={styles.citationCard}>

@@ -12,4 +12,4 @@ const runMigrations = async (): Promise<void> => {
   }
 };
 
-runMigrations();
+runMigrations(); 

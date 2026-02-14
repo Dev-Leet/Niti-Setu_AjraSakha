@@ -6,7 +6,7 @@ interface UseVoiceRecognitionReturn {
   error: string | null;
   startRecording: () => Promise<void>;
   stopRecording: () => void;
-}
+} 
 
 // type SpeechRecognitionType = typeof window.SpeechRecognition;
 

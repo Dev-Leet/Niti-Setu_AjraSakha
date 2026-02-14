@@ -1,18 +1,31 @@
-export interface ApiResponse<T> {
+export interface ApiResponse<T = any> {
   success: boolean;
   data?: T;
-  error?: {
+  error?: ApiError;
+  message?: string;
+  timestamp: string;
+}
+
+export interface ApiError {
+  code: string;
+  message: string;
+  details?: Record<string, any>;
+  stack?: string;
+}
+
+export interface ValidationError {
+  field: string;
+  message: string;
+  code: string;
+}
+
+export interface ApiErrorResponse {
+  success: false;
+  error: {
     code: string;
     message: string;
     details?: Record<string, any>;
+    validationErrors?: ValidationError[];
   };
-}
-
-export interface PaginatedResponse<T> {
-  total: number;
-  limit: number;
-  offset: number;
-  data: T[];
-  next: string | null;
-  previous: string | null;
+  timestamp: string;
 }

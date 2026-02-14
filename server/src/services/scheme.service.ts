@@ -1,8 +1,7 @@
 import { Scheme, SavedScheme } from '@models/index.js';
 import { AppError } from '@utils/index.js';
 import { cacheService } from './cache.service.js';
-
-
+ 
 export const schemeService = {
   async getAll(filters: { state?: string; ministry?: string; category?: string }) {
     const query: any = { status: 'active' };

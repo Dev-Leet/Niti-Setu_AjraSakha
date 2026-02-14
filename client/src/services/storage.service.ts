@@ -1,5 +1,5 @@
 import Dexie, { Table } from 'dexie';
-
+ 
 interface CachedScheme<T = unknown> {
   id: string;
   data: T;

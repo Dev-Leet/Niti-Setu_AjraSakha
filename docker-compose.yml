@@ -12,7 +12,7 @@ services:
       MONGO_INITDB_DATABASE: agri-schemes
 
   redis:
-    image: redis:7-alpine
+    image: redis:7-alpine 
     container_name: agri-redis
     ports:
       - '6379:6379'

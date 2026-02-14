@@ -10,7 +10,7 @@ export const SchemeComparison: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { selectedSchemes } = useAppSelector(state => state.comparison);
-
+ 
   if (selectedSchemes.length === 0) {
     return (
       <div className={styles.empty}>

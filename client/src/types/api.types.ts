@@ -9,7 +9,7 @@ export interface ApiError {
   message: string;
   details?: Record<string, unknown>;
 }
-
+ 
 export interface PaginatedResponse<T> {
   total: number;
   limit: number;

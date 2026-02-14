@@ -11,7 +11,7 @@ export interface Landholding {
 }
 
 export interface BankDetails {
-  accountNumber: string;
+  accountNumber: string; 
   ifscCode: string;
   bankName: string;
 }

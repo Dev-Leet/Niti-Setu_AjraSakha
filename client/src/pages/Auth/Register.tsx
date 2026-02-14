@@ -8,7 +8,7 @@ import { registerSchema, RegisterInput } from '@utils/validators';
 import { Input } from '@components/common/Input/Input';
 import { Button } from '@components/common/Button/Button';
 import styles from './Auth.module.css';
-
+ 
 export const Register: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();

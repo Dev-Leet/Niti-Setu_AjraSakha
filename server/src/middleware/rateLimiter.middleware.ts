@@ -14,7 +14,7 @@ export const apiLimiter = rateLimit({
   message: 'Too many requests, please try again later',
   standardHeaders: true,
   legacyHeaders: false,
-});
+}); 
 
 export const eligibilityLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,

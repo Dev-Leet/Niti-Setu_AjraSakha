@@ -11,7 +11,7 @@ export interface SchemeQuery {
 export interface SchemesResponse {
   schemes: Scheme[];
   total?: number;
-}
+} 
 
 export interface SchemeResponse {
   scheme: Scheme;

@@ -10,7 +10,7 @@ export interface IPDFDocument extends Document {
   processedAt?: Date;
   totalPages?: number;
   errorMessage?: string;
-}
+} 
 
 const pdfDocumentSchema = new Schema<IPDFDocument>(
   {

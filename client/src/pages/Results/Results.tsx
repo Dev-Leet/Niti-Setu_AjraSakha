@@ -7,7 +7,7 @@ import { Loader } from '@components/common/Loader/Loader';
 import { Button } from '@components/common/Button/Button';
 import { formatCurrency, formatNumber } from '@utils/formatters';
 import styles from './Results.module.css';
-
+ 
 export const Results: React.FC = () => {
   const navigate = useNavigate();
   const { currentCheck, loading } = useAppSelector((state) => state.eligibility);

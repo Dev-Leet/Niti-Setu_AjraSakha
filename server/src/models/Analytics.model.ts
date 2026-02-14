@@ -6,7 +6,7 @@ export interface IAnalytics extends Document {
   metadata: Record<string, any>;
   timestamp: Date;
 }
-
+ 
 const analyticsSchema = new Schema<IAnalytics>(
   {
     eventType: {

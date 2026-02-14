@@ -15,7 +15,7 @@ export interface ExtractedData {
   socialCategory?: string;
   confidence: Record<string, number>;
   missingFields: string[];
-}
+} 
 
 export const voiceService = {
   transcribe: async (audioBlob: Blob, languageHint?: string): Promise<TranscriptResponse> => {

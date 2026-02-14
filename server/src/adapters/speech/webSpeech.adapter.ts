@@ -8,4 +8,4 @@ export class WebSpeechAdapter implements SpeechAdapter {
       language: languageCode,
     };
   }
-}
+} 

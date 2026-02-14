@@ -13,7 +13,7 @@ export const INDIAN_STATES = [
   'Kerala',
   'Madhya Pradesh',
   'Maharashtra',
-  'Manipur',
+  'Manipur', 
   'Meghalaya',
   'Mizoram',
   'Nagaland',

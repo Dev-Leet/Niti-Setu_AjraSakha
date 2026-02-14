@@ -15,7 +15,7 @@ interface Scheme {
       amount: number;
       type: string;
     };
-  };
+  }; 
 }
 
 interface SchemeCardProps {

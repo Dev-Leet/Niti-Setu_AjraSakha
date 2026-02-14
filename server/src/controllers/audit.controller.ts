@@ -16,7 +16,7 @@ export const auditController = {
         .skip(Number(offset));
 
       const total = await AuditLog.countDocuments(query);
-
+ 
       res.json({ success: true, data: logs, total });
     } catch (error) {
       next(error);

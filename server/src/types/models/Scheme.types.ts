@@ -12,7 +12,7 @@ export interface EligibilityRules {
   allowedCrops?: string[];
   minAge?: number;
   maxAge?: number;
-}
+} 
 
 export interface FinancialBenefit {
   amount: number;

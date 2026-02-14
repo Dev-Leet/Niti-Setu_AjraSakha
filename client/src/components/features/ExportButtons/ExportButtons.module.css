@@ -6,7 +6,7 @@
   align-items: center;
   margin-top: 1.5rem;
   flex-wrap: wrap; /* Allows wrapping on smaller screens */
-}
+} 
 
 /* Optional: Specific styling if you want to override the default Button component styles for this specific context */
 .container button {

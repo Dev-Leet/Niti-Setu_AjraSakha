@@ -6,4 +6,4 @@ export const startSchemeScraper = (): void => {
     logger.info('Starting scheme scraper job');
     // Implement scheme scraping logic
   });
-};
+}; 

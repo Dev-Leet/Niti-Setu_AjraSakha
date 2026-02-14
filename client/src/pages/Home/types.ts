@@ -10,7 +10,7 @@ export interface FeatureStep {
   title: string;
   description: string;
 }
-
+ 
 export interface StatItem {
   value: string;
   label: string;

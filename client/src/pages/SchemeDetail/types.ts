@@ -9,7 +9,7 @@ export interface FinancialBenefit {
   type: string;
   frequency: string;
   disbursementMode: string;
-}
+} 
 
 export interface SchemeDetailData {
   id: string;

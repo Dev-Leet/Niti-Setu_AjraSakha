@@ -15,7 +15,7 @@ export const exportController = {
     } catch (error) {
       next(error);
     }
-  },
+  }, 
 
   async exportPDF(req: AuthRequest, res: Response, next: NextFunction): Promise<void> {
     try {

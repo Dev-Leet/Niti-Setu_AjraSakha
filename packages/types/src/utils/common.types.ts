@@ -15,5 +15,5 @@ export type DeepRequired<T> = {
 export type Timestamp = Date | string | number;
 
 export type ID = string;
-
+ 
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;

@@ -9,7 +9,7 @@ export const exportService = {
   async exportEligibilityCSV(checkId: string): Promise<string> {
     const check = await EligibilityCheck.findById(checkId).populate('profileId');
     if (!check) throw new Error('Check not found');
-
+ 
     const filepath = path.join('/tmp', `eligibility-${helpers.generateId()}.csv`);
     const csvWriter = createObjectCsvWriter({
       path: filepath,

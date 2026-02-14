@@ -13,7 +13,7 @@ export interface FarmerProfile {
   cropTypes: string[];
   socialCategory: string;
 }
-
+ 
 export const profileService = {
   create: async (profileData: Omit<FarmerProfile, 'id'>): Promise<FarmerProfile> => {
     const { data } = await api.post('/profile', profileData);

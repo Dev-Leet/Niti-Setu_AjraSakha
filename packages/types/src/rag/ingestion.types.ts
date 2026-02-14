@@ -13,7 +13,7 @@ export interface IngestionJob {
   processedPages?: number;
   errorMessage?: string;
   startedAt?: Date;
-  completedAt?: Date;
+  completedAt?: Date; 
 }
 
 export interface TextChunk {

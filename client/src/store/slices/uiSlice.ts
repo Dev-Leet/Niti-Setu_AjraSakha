@@ -16,7 +16,7 @@ const initialState: UiState = {
   sidebarOpen: false,
   theme: 'light',
   notifications: [],
-};
+}; 
 
 const uiSlice = createSlice({
   name: 'ui',

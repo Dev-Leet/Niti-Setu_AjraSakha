@@ -8,4 +8,4 @@ export const MINISTRIES = [
   'Ministry of Fisheries, Animal Husbandry and Dairying',
 ] as const;
 
-export type Ministry = typeof MINISTRIES[number];
+export type Ministry = typeof MINISTRIES[number]; 

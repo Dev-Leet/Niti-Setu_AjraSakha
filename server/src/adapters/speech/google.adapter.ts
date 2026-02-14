@@ -14,7 +14,7 @@ export class GoogleSpeechAdapter implements SpeechAdapter {
       encoding: 'WEBM_OPUS' as const,
       sampleRateHertz: 16000,
       languageCode,
-    };
+    }; 
 
     const [response] = await this.client.recognize({ audio, config });
     const transcription = response.results

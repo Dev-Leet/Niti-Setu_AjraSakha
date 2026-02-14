@@ -14,7 +14,7 @@ interface EligibilityState {
   history: CheckHistoryItem[];
   loading: boolean;
   error: string | null;
-}
+} 
 
 const initialState: EligibilityState = {
   currentCheck: null,

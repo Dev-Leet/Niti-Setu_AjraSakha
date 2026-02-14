@@ -5,7 +5,7 @@ import eligibilityReducer from './slices/eligibilitySlice';
 import schemeReducer from './slices/schemeSlice';
 import uiReducer from './slices/uiSlice';
 import comparisonReducer from './slices/comparisonSlice';
-
+ 
 export const store = configureStore({
   reducer: {
     auth: authReducer,

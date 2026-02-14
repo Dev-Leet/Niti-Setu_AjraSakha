@@ -13,7 +13,7 @@ export const preferencesController = {
     } catch (error) {
       next(error);
     }
-  },
+  }, 
 
   async update(req: AuthRequest, res: Response, next: NextFunction): Promise<void> {
     try {

@@ -13,4 +13,4 @@ export interface RegisterFormData {
 export interface AuthError {
   field?: string;
   message: string;
-}
+} 

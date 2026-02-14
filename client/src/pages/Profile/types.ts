@@ -9,4 +9,4 @@ export interface ProfileFormData {
   socialCategory: string;
   bankAccount?: string;
   aadharNumber?: string;
-}
+} 

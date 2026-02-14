@@ -9,7 +9,7 @@ export const profileSchema = z.object({
     totalArea: z.number().positive('Area must be positive'),
     ownershipType: z.enum(['owned', 'leased', 'shared']),
     irrigationType: z.string().optional(),
-  }),
+  }), 
   cropTypes: z.array(z.string()).min(1, 'At least one crop required'),
   socialCategory: z.enum(['General', 'SC', 'ST', 'OBC']),
   bankDetails: z.object({

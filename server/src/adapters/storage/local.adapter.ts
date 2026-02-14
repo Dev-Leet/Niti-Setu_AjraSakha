@@ -1,24 +1,46 @@
 import fs from 'fs/promises';
 import path from 'path';
-import { helpers } from '@utils/helpers.js';
-import type { StorageAdapter } from './types.js';
+import { StorageAdapter } from './types.js';
 
-const UPLOAD_DIR = path.join(process.cwd(), 'uploads');
+export class LocalStorageAdapter implements StorageAdapter {
+  private uploadDir: string;
 
-export const localAdapter: StorageAdapter = {
-  async uploadFile(buffer: Buffer, filename: string): Promise<string> {
-    await fs.mkdir(UPLOAD_DIR, { recursive: true });
-    const sanitized = helpers.sanitizeFilename(filename);
-    const filepath = path.join(UPLOAD_DIR, `${helpers.generateId()}-${sanitized}`);
-    await fs.writeFile(filepath, buffer);
-    return filepath;
-  },
+  constructor(uploadDir = './uploads') {
+    this.uploadDir = path.resolve(uploadDir);
+    this.ensureUploadDir();
+  }
 
-  async downloadFile(filepath: string): Promise<Buffer> {
-    return fs.readFile(filepath);
-  },
+  private async ensureUploadDir(): Promise<void> {
+    try {
+      await fs.mkdir(this.uploadDir, { recursive: true });
+    } catch (error) {
+      console.error('Failed to create upload directory:', error);
+    }
+  }
 
-  async deleteFile(filepath: string): Promise<void> {
-    await fs.unlink(filepath);
-  },
-};
+  async uploadFile(buffer: Buffer, fileName: string): Promise<string> {
+    const sanitizedName = fileName.replace(/[^a-zA-Z0-9.-]/g, '_');
+    const timestamp = Date.now();
+    const uniqueName = `${timestamp}_${sanitizedName}`;
+    const filePath = path.join(this.uploadDir, uniqueName);
+
+    await fs.writeFile(filePath, buffer);
+    return `local://${uniqueName}`;
+  }
+
+  async downloadFile(fileUrl: string): Promise<Buffer> {
+    const fileName = fileUrl.replace('local://', '');
+    const filePath = path.join(this.uploadDir, fileName);
+    return fs.readFile(filePath);
+  }
+
+  async deleteFile(fileUrl: string): Promise<void> {
+    const fileName = fileUrl.replace('local://', '');
+    const filePath = path.join(this.uploadDir, fileName);
+    await fs.unlink(filePath);
+  }
+
+  async getSignedUrl(fileUrl: string, _expiresIn = 3600): Promise<string> {
+    return fileUrl;
+  }
+}

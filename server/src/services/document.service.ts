@@ -1,6 +1,10 @@
 import { PDFDocument as PDFDocumentModel } from '@models/index.js';
 import { Scheme } from '@models/index.js';
 import { AppError } from '@utils/index.js';
+import { getStorageAdapter } from '@/adapters/storage/index.js';
+import { pdfIngestionService } from './rag/pdfIngestion.service.js';
+
+const storage = getStorageAdapter();
 
 export const documentService = {
   async uploadPDF(schemeId: string, file: Express.Multer.File) {
@@ -9,7 +13,7 @@ export const documentService = {
       throw new AppError('Scheme not found', 404);
     }
 
-    const fileUrl = await s3Adapter.uploadFile(file.buffer, file.originalname);
+    const fileUrl = await storage.uploadFile(file.buffer, file.originalname);
 
     const pdfDoc = await PDFDocumentModel.create({
       schemeId,
@@ -34,9 +38,14 @@ export const documentService = {
       throw new AppError('PDF not found', 404);
     }
 
-    await s3Adapter.deleteFile(pdf.fileUrl);
+    await storage.deleteFile(pdf.fileUrl);
     await PDFDocumentModel.findByIdAndDelete(pdfId);
 
     return pdf;
   },
+
+  async getSignedUrl(fileUrl: string, expiresIn?: number) {
+    return storage.getSignedUrl(fileUrl, expiresIn);
+  },
 };
+ 

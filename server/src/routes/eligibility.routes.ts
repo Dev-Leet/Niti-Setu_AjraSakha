@@ -11,4 +11,4 @@ router.post('/check', eligibilityLimiter, eligibilityController.checkEligibility
 router.get('/history', eligibilityController.getHistory);
 router.get('/:id', eligibilityController.getCheckById);
 
-export default router;
+export default router; 

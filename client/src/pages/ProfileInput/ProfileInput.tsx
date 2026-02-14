@@ -8,7 +8,7 @@ import styles from './ProfileInput.module.css';
 export const ProfileInput: React.FC = () => {
   const [mode, setMode] = useState<'voice' | 'form'>('form');
   // const navigate = useNavigate();
-
+ 
   return (
     <div className={styles.container}>
       <div className={styles.header}>

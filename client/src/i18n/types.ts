@@ -14,7 +14,7 @@ export interface TranslationKeys {
     loading: string;
     error: string;
     success: string;
-  };
+  }; 
   home: {
     title: string;
     subtitle: string;

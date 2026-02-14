@@ -12,4 +12,4 @@ export interface ComparisonScheme {
 
 export interface SchemeComparisonProps {
   schemes: ComparisonScheme[];
-}
+} 

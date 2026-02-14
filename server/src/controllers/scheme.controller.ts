@@ -4,7 +4,7 @@ import { SavedScheme } from '@models/SavedScheme.model.js';
 import { AuthRequest } from '@middleware/auth.middleware.js';
 import { cacheKeys } from '@utils/cacheKey.utils.js';
 import { redis } from '@config/redis.js';
-
+ 
 export const schemeController = {
   async getAll(req: AuthRequest, res: Response, next: NextFunction): Promise<void> {
     try {

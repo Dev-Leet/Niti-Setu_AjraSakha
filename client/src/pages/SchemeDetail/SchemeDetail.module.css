@@ -10,7 +10,7 @@
   justify-content: space-between;
   margin-bottom: var(--spacing-xl);
 }
-
+ 
 .heroCard {
   position: relative;
   padding: var(--spacing-2xl);

@@ -16,7 +16,7 @@ export const profileController = {
       const profile = await FarmerProfile.create({
         userId: req.userId,
         ...req.body,
-      });
+      }); 
 
       await redis.del(cacheKeys.profile(req.userId!));
 

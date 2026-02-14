@@ -15,7 +15,7 @@ export const Header: React.FC = () => {
   const handleLogout = async () => {
     await dispatch(logout());
     navigate('/login');
-  };
+  }; 
 
   const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch(setLanguage(e.target.value as 'en' | 'hi' | 'mr'));

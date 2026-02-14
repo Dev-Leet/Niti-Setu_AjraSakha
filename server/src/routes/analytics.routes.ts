@@ -12,4 +12,4 @@ router.post('/track', analyticsController.trackEvent);
 
 router.get('/system/stats', authorize('admin'), analyticsController.getSystemStats);
 
-export default router;
+export default router; 

@@ -15,11 +15,11 @@ export const eligibilityController = {
 
       const cached = await redis.get(cacheKeys.eligibilityCheck(profileId));
       if (cached) {
-        res.json({
+        res.json({ 
           success: true,
           data: JSON.parse(cached),
         });
-        return;
+        return; 
       }
 
       const profile = await FarmerProfile.findOne({

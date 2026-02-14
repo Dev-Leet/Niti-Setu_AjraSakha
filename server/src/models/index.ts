@@ -6,4 +6,4 @@ export * from './SavedScheme.model.js';
 export * from './PDFDocument.model.js';
 export * from './Analytics.model.js';
 export * from './AuditLog.model.js';
-export * from './NotificationPreferences.model.js';
+export * from './NotificationPreferences.model.js'; 

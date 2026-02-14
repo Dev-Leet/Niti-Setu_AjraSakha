@@ -3,4 +3,4 @@ export const cacheKeys = {
   scheme: (schemeId: string) => `scheme:${schemeId}`,
   schemes: (filters: string) => `schemes:${filters}`,
   profile: (userId: string) => `profile:${userId}`,
-};
+}; 

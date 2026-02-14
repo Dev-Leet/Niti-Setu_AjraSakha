@@ -1,5 +1,6 @@
 export interface StorageAdapter {
-  uploadFile(buffer: Buffer, filename: string): Promise<string>;
-  downloadFile(url: string): Promise<Buffer>;
-  deleteFile(url: string): Promise<void>;
+  uploadFile(buffer: Buffer, fileName: string): Promise<string>;
+  downloadFile(fileUrl: string): Promise<Buffer>;
+  deleteFile(fileUrl: string): Promise<void>;
+  getSignedUrl(fileUrl: string, expiresIn?: number): Promise<string>;
 }

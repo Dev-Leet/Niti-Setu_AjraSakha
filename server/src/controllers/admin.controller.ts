@@ -10,7 +10,7 @@ export const adminController = {
     } catch (error) {
       next(error);
     }
-  },
+  }, 
 
   async createScheme(req: AuthRequest, res: Response, next: NextFunction): Promise<void> {
     try {

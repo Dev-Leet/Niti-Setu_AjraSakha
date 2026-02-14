@@ -5,7 +5,7 @@ import { store } from '@store/index';
 import { ErrorBoundary } from '@components/common/ErrorBoundary/ErrorBoundary';
 import { AppRoutes } from './routes';
 import { ThemeProvider } from '@/context/ThemeContext';
-import './styles/global.css';
+import './styles/global.css'; 
 
 const App: React.FC = () => {
   return (

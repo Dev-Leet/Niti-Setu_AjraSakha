@@ -17,7 +17,7 @@ export const eligibilityService = {
     const profile = await FarmerProfile.findOne({ _id: profileId, userId });
     if (!profile) {
       throw new AppError('Profile not found', 404);
-    }
+    } 
 
     const schemes = await Scheme.find({ status: 'active' });
 

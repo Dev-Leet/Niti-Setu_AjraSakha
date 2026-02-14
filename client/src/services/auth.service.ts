@@ -10,7 +10,7 @@ export interface RegisterData {
   password: string;
   phone?: string;
 }
-
+ 
 export interface AuthResponse {
   accessToken: string;
   user: {

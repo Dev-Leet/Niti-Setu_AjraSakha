@@ -10,7 +10,7 @@ export interface IFarmerProfile extends Document {
     totalArea: number;
     ownershipType: string;
     irrigationType?: string;
-  };
+  }; 
   cropTypes: string[];
   socialCategory: string;
   bankDetails?: {

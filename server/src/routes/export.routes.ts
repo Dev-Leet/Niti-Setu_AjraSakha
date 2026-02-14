@@ -8,4 +8,4 @@ router.use(authenticate);
 router.get('/csv/:checkId', exportController.exportCSV);
 router.get('/pdf/:checkId', exportController.exportPDF);
 
-export default router;
+export default router; 

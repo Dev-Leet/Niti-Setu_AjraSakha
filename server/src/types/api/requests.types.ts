@@ -7,7 +7,7 @@ export interface RegisterRequest {
   email: string;
   password: string;
   phone?: string;
-}
+} 
 
 export interface CreateProfileRequest {
   fullName: string;

@@ -10,7 +10,7 @@ export const apiMiddleware: Middleware =
       typeof (action as UnknownAction).type === 'string'
     ) {
       const typedAction = action as UnknownAction;
-
+ 
       if (typedAction.type.endsWith('/rejected')) {
         const errorMessage =
           'payload' in typedAction && typeof typedAction.payload === 'string'

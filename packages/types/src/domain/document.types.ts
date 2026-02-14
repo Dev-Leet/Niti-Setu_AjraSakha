@@ -14,7 +14,7 @@ export interface PDFDocumentEntity {
   createdAt: Date;
   updatedAt: Date;
 }
-
+ 
 export interface UploadDocumentInput {
   schemeId: string;
   file: ArrayBuffer | Uint8Array;

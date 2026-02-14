@@ -9,4 +9,4 @@ router.get('/:schemeId', schemeController.getById);
 router.post('/save', authenticate, schemeController.saveScheme);
 router.get('/saved/all', authenticate, schemeController.getSavedSchemes);
 
-export default router;
+export default router; 

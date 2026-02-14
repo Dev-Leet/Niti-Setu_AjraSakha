@@ -8,7 +8,7 @@ interface VoiceRecorderProps {
   language?: string;
 }
 
-// export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onTranscript, language = 'hi' }) => {
+//export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onTranscript, language = 'hi' }) => {
 export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onTranscript }) => {
   const { isRecording, transcript, error, startRecording, stopRecording } = useVoice();
 

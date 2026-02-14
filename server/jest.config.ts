@@ -14,7 +14,7 @@ export default {
     '^@validators/(.*)$': '<rootDir>/src/validators/$1',
   },
   collectCoverageFrom: [
-    'src/**/*.ts',
+    'src/**/*.ts', 
     '!src/**/*.d.ts',
     '!src/**/*.test.ts',
     '!src/**/*.spec.ts',

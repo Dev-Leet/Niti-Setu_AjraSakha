@@ -13,4 +13,4 @@ router.get('/', profileController.get);
 router.patch('/', validateRequest(profileSchema.partial()), profileController.update);
 router.delete('/', profileController.delete);
 
-export default router;
+export default router; 

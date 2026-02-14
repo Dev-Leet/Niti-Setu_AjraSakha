@@ -9,7 +9,7 @@ interface Scheme {
   benefits: { financial: { amount: number } };
   eligibility: string[];
   deadline?: string;
-}
+} 
 
 interface SchemeComparisonProps {
   schemes: Scheme[];

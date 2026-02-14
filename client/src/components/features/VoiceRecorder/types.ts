@@ -9,4 +9,4 @@ export interface VoiceRecognitionHook {
   error: string | null;
   startRecording: () => Promise<void>;
   stopRecording: () => void;
-}
+} 

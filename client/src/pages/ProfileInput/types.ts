@@ -9,7 +9,7 @@ export interface ProfileFormData {
   socialCategory: string;
   bankAccount?: string;
   aadharNumber?: string;
-}
+} 
 
 export interface ExtractedProfileData {
   fullName?: string;

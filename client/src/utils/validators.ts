@@ -14,7 +14,7 @@ export const registerSchema = z.object({
   message: "Passwords don't match",
   path: ['confirmPassword'],
 });
-
+ 
 export const profileSchema = z.object({
   fullName: z.string().min(2, 'Name must be at least 2 characters'),
   state: z.string().min(1, 'State is required'),

@@ -6,17 +6,17 @@ import { logger } from '@utils/logger.js';
 import type { PDFPage } from './types.js';
 
 export const pdfIngestionService = {
-  async processPDF(pdfId: string, buffer: Buffer, schemeId: string): Promise<void> {
+  async processPDF(pdfId: string, pdfBuffer: Buffer, schemeId: string): Promise<void> {
     try {
       await PDFDocumentModel.findByIdAndUpdate(pdfId, { status: 'processing' });
 
-      const data = await pdfParse(buffer);
+      const data = await pdfParse(pdfBuffer);
       const pages = this.splitIntoPages(data.text);
 
       const embeddings = await embeddingService.embedDocuments(
         pages.map((p) => p.text)
       );
-
+ 
       await vectorSearchService.upsertVectors(
         embeddings.map((embedding, idx) => ({
           id: `${schemeId}-page-${pages[idx].pageNumber}`,

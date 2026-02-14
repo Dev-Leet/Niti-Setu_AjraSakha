@@ -13,7 +13,7 @@ export const helpers = {
 
   sanitizeFilename(filename: string): string {
     return filename.replace(/[^a-z0-9.-]/gi, '_').toLowerCase();
-  },
+  }, 
 
   generateId(): string {
     return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;

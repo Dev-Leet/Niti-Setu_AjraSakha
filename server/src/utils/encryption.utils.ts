@@ -13,7 +13,7 @@ export const encryptionUtils = {
 
     const authTag = cipher.getAuthTag();
     return `${iv.toString('hex')}:${authTag.toString('hex')}:${encrypted}`;
-  },
+  }, 
 
   decrypt(encryptedData: string): string {
     const [ivHex, authTagHex, encrypted] = encryptedData.split(':');

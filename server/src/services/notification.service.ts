@@ -15,4 +15,4 @@ export const notificationService = {
     logger.info(`Sending push notification to ${userId}: ${title}`);
     // Implement push notification service (Firebase, OneSignal, etc.)
   },
-};
+}; 

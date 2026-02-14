@@ -5,7 +5,7 @@ import styles from './ExportButtons.module.css';
 
 interface Props {
   checkId: string;
-}
+} 
 
 export const ExportButtons: React.FC<Props> = ({ checkId }) => {
   const handleExport = async (format: 'csv' | 'pdf') => {

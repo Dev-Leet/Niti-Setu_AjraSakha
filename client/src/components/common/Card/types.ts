@@ -3,4 +3,4 @@ export interface CardProps {
   className?: string;
   onClick?: () => void;
   hoverable?: boolean;
-}
+} 

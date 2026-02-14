@@ -15,7 +15,7 @@ export interface AnalyticsEvent {
   eventType: EventType;
   userId?: string;
   metadata: Record<string, any>;
-  timestamp: Date;
+  timestamp: Date; 
 }
 
 export interface UserStats {

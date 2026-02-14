@@ -8,7 +8,7 @@ interface Preferences {
   sms: { eligibilityResults: boolean; deadlineReminders: boolean };
   push: { eligibilityResults: boolean; schemeUpdates: boolean };
 }
-
+ 
 export const NotificationSettings: React.FC = () => {
   const [prefs, setPrefs] = useState<Preferences | null>(null);
 

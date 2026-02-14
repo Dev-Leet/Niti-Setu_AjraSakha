@@ -1,29 +1,45 @@
-import dotenv from 'dotenv';
 import { z } from 'zod';
+import dotenv from 'dotenv';
 
 dotenv.config();
 
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   PORT: z.string().default('5000'),
-  MONGODB_URI: z.string().url(),
-  REDIS_URL: z.string().url(),
-  JWT_SECRET: z.string().min(32),
-  JWT_REFRESH_SECRET: z.string().min(32),
-  JWT_ACCESS_EXPIRY: z.string().default('15m'),
-  JWT_REFRESH_EXPIRY: z.string().default('7d'),
-  OPENAI_API_KEY: z.string().startsWith('sk-'),
+  MONGODB_URI: z.string(),
+  REDIS_URL: z.string(),
+  JWT_SECRET: z.string(),
+  JWT_REFRESH_SECRET: z.string(),
+  GEMINI_API_KEY: z.string(),
   PINECONE_API_KEY: z.string(),
-  PINECONE_ENVIRONMENT: z.string(),
   PINECONE_INDEX: z.string(),
+  STORAGE_TYPE: z.enum(['local', 's3']).default('local'),
+  LOCAL_UPLOAD_DIR: z.string().default('./uploads'),
+  AWS_REGION: z.string().optional(),
   AWS_ACCESS_KEY_ID: z.string().optional(),
   AWS_SECRET_ACCESS_KEY: z.string().optional(),
-  AWS_S3_BUCKET: z.string().optional(),
-  AWS_REGION: z.string().default('ap-south-1'),
-  FRONTEND_URL: z.string().url().default('http://localhost:5173'),
+  S3_BUCKET: z.string().optional(),
+  FRONTEND_URL: z.string().default('http://localhost:5173'),
 });
 
-export const env = envSchema.parse(process.env);
+const parsed = envSchema.safeParse(process.env);
+
+if (!parsed.success) {
+  console.error('Invalid environment variables:');
+  console.error(parsed.error.format());
+  process.exit(1);
+}
+
+export const env = parsed.data;
+
+//const parsed = envSchema.safeParse(process.env);
+
+/* if (!parsed.success) {
+  console.error('Invalid environment variables:', parsed.error.flatten().fieldErrors);
+  throw new Error('Invalid environment configuration');
+} */
+
+//export const env = parsed.data;
 
 /* export const config = {
   port: process.env.PORT || 5000,

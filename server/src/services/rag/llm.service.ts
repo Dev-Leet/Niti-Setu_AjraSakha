@@ -11,7 +11,7 @@ export const llmService = {
   async invoke(prompt: string): Promise<string> {
     const response = await llm.invoke(prompt);
     return response.content as string;
-  },
+  }, 
 
   async stream(prompt: string, onChunk: (chunk: string) => void): Promise<void> {
     const stream = await llm.stream(prompt);

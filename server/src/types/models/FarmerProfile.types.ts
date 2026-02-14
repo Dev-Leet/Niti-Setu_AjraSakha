@@ -11,7 +11,7 @@ export interface BankDetails {
 }
 
 export interface FarmerProfileDocument {
-  _id: string;
+  _id: string; 
   userId: string;
   fullName: string;
   state: string;

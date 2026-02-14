@@ -1,4 +1,4 @@
-import { Response, NextFunction } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { User } from '@models/index.js';
 import { AuthRequest } from '@middleware/index.js';
 import { AppError } from '@utils/index.js';
@@ -12,13 +12,9 @@ export const authController = {
       const existing = await User.findOne({ email });
       if (existing) {
         throw new AppError('Email already registered', 400, 'EMAIL_EXISTS');
-      }
+      } 
 
-      const user = await User.create({
-        email,
-        passwordHash: password,
-        phone,
-      });
+      const user = await User.create({ email, passwordHash: password, phone, role: 'farmer' });
 
       const accessToken = generateAccessToken(user._id.toString(), user.role);
       const refreshToken = generateRefreshToken(user._id.toString());
@@ -35,7 +31,7 @@ export const authController = {
         data: {
           accessToken,
           user: {
-            id: user._id,
+            id: user._id.toString(),
             email: user.email,
             role: user.role,
           },
@@ -77,7 +73,7 @@ export const authController = {
         data: {
           accessToken,
           user: {
-            id: user._id,
+            id: user._id.toString(),
             email: user.email,
             role: user.role,
           },
@@ -90,12 +86,12 @@ export const authController = {
 
   async refresh(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const { refreshToken } = req.cookies;
-      if (!refreshToken) {
+      const token = req.cookies?.refreshToken;
+      if (!token) {
         throw new AppError('Refresh token required', 401);
       }
 
-      const { userId } = verifyRefreshToken(refreshToken);
+      const { userId } = verifyRefreshToken(token);
       const user = await User.findById(userId);
 
       if (!user || !user.isActive) {
@@ -104,24 +100,22 @@ export const authController = {
 
       const accessToken = generateAccessToken(user._id.toString(), user.role);
 
-      res.json({
-        success: true,
-        data: { accessToken },
-      });
+      res.json({ success: true, data: { accessToken } });
     } catch (error) {
       next(error);
     }
   },
 
-  async logout(req: Request, res: Response): Promise<void> {
-    res.clearCookie('refreshToken');
-    res.json({
-      success: true,
-      data: { message: 'Logged out successfully' },
-    });
+  async logout(_req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      res.clearCookie('refreshToken');
+      res.json({ success: true, data: { message: 'Logged out successfully' } });
+    } catch (error) {
+      next(error);
+    }
   },
 
-  async me(req: any, res: Response, next: NextFunction): Promise<void> {
+  async me(req: AuthRequest, res: Response, next: NextFunction): Promise<void> {
     try {
       const user = await User.findById(req.userId);
       if (!user) {
@@ -131,9 +125,13 @@ export const authController = {
       res.json({
         success: true,
         data: {
-          id: user._id,
-          email: user.email,
-          role: user.role,
+          user: {
+            id: user._id.toString(),
+            email: user.email,
+            role: user.role,
+            phone: user.phone,
+            isActive: user.isActive,
+          },
         },
       });
     } catch (error) {

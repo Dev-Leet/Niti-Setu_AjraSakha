@@ -12,7 +12,7 @@ const navItems: NavItem[] = [
   { label: 'Profile', path: '/profile', icon: '👤' },
   { label: 'Check Eligibility', path: '/profile', icon: '✓' },
 ];
-
+ 
 export const Sidebar: React.FC = () => {
   const location = useLocation();
   const dispatch = useAppDispatch();

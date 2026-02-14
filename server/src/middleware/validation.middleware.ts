@@ -15,4 +15,4 @@ export const validateRequest = (schema: ZodSchema) => {
       next(new AppError('Validation failed', 400, 'VALIDATION_ERROR', errors));
     }
   };
-};
+}; 

@@ -12,7 +12,7 @@ export const CROP_TYPES = [
   'sunflower',
   'mustard',
   'pulses',
-  'vegetables',
+  'vegetables', 
   'fruits',
   'spices',
   'tea',

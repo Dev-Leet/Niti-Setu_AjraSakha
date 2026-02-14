@@ -9,7 +9,7 @@ export interface EligibilityCheckResponse {
 export interface EligibilityHistoryQuery {
   limit?: number;
   offset?: number;
-}
+} 
 
 export interface EligibilityHistoryResponse {
   checks: EligibilityCheck[];

@@ -11,7 +11,7 @@ export const initializeWebSocket = (httpServer: HTTPServer) => {
   io.use((socket, next) => {
     const token = socket.handshake.auth.token;
     if (!token) return next(new Error('Authentication required'));
-
+ 
     try {
       const decoded = jwt.verify(token, env.JWT_SECRET) as { userId: string };
       socket.data.userId = decoded.userId;

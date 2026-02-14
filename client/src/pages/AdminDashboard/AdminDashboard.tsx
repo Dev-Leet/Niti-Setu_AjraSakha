@@ -9,7 +9,7 @@ interface DashboardStats {
   totalChecks: number;
   avgProcessingTime: number;
   popularSchemes: Array<{ _id: string; name: string; count: number }>;
-}
+} 
 
 export const AdminDashboard: React.FC = () => {
   const [stats, setStats] = useState<DashboardStats | null>(null);

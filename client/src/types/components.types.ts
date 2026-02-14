@@ -12,7 +12,7 @@ export interface InteractiveComponentProps extends BaseComponentProps {
   disabled?: boolean;
   loading?: boolean;
 }
-
+ 
 export interface FormComponentProps extends BaseComponentProps {
   label?: string;
   error?: string;

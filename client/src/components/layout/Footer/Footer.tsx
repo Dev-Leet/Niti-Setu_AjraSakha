@@ -8,7 +8,7 @@ export const Footer: React.FC = () => {
         <div className={styles.section}>
           <h3>AgriSchemes</h3>
           <p>Simplifying agricultural scheme eligibility</p>
-        </div>
+        </div> 
         
         <div className={styles.section}>
           <h4>Quick Links</h4>

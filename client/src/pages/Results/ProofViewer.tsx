@@ -8,7 +8,7 @@ interface ProofViewerProps {
   isOpen: boolean;
   onClose: () => void;
   proof: ProofData | null;
-}
+} 
 
 export const ProofViewer: React.FC<ProofViewerProps> = ({ isOpen, onClose, proof }) => {
   if (!proof) return null;

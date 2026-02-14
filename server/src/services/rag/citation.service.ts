@@ -13,4 +13,4 @@ export const citationService = {
   formatCitationText(citation: Citation): string {
     return `[Page ${citation.page}] "${citation.text}"`;
   },
-};
+}; 

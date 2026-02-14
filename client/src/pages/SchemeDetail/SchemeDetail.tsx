@@ -8,7 +8,7 @@ import { Loader } from '@components/common/Loader/Loader';
 import { CitationCard } from './CitationCard';
 import { formatCurrency } from '@utils/formatters';
 import styles from './SchemeDetail.module.css';
-
+ 
 export const SchemeDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();

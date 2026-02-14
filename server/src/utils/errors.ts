@@ -9,4 +9,4 @@ export class AppError extends Error {
     this.name = 'AppError';
     Error.captureStackTrace(this, this.constructor);
   }
-}
+} 

@@ -12,7 +12,7 @@ export const debounce = <T extends (...args: unknown[]) => unknown>
 
 export const cn = (...classes: (string | undefined | null | false)[]): string => {
   return classes.filter(Boolean).join(' ');
-};
+}; 
 
 export const getInitials = (name: string): string => {
   return name

@@ -14,7 +14,7 @@ export interface PDFPage {
   pageNumber: number;
   text: string;
   metadata: Record<string, any>;
-}
+} 
 
 export interface EligibilityResult {
   schemeId: string;

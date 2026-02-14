@@ -6,4 +6,4 @@ export interface TranscriptionResult {
   transcript: string;
   confidence: number;
   language: string;
-}
+} 

@@ -16,5 +16,5 @@ export const initializeJobs = async (): Promise<void> => {
 
   logger.info('Job queues initialized');
 };
-
+ 
 export const queues = { pdf: pdfQueue, embedding: embeddingQueue, notification: notificationQueue };

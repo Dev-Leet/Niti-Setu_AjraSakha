@@ -11,7 +11,7 @@ export interface TranscriptionResult {
 
 export interface ExtractProfileRequest {
   transcript: string;
-}
+} 
 
 export interface ExtractedProfileData {
   fullName?: string;

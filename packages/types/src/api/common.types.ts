@@ -9,7 +9,7 @@ export interface ApiError {
   message: string;
   details?: any;
   statusCode?: number;
-}
+} 
 
 export interface PaginatedResponse<T> {
   success: boolean;

@@ -6,7 +6,7 @@ import styles from './Home.module.css';
 
 export const Home: React.FC = () => {
   const navigate = useNavigate();
-
+ 
   return (
     <div className={styles.home}>
       <section className={styles.hero}>

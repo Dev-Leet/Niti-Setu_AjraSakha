@@ -11,7 +11,7 @@ interface Props {
 export const ProgressiveImage: React.FC<Props> = ({ src, placeholder, alt, className }) => {
   const [imgSrc, setImgSrc] = useState(placeholder || src);
   const [isLoading, setIsLoading] = useState(true);
-
+ 
   useEffect(() => {
     const img = new Image();
     img.src = src;

@@ -10,7 +10,7 @@ export interface IAuditLog extends Document {
   ipAddress?: string;
   userAgent?: string;
   timestamp: Date;
-}
+} 
 
 const auditLogSchema = new Schema<IAuditLog>({
   userId: { type: String, required: true, index: true },

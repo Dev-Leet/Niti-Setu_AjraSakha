@@ -4,7 +4,7 @@
   padding: var(--spacing-sm);
   background: var(--bg-light);
   border-radius: var(--radius-md);
-}
+} 
 
 .langBtn {
   display: flex;

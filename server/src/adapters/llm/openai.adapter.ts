@@ -11,7 +11,7 @@ export class OpenAIAdapter implements LLMAdapter {
       temperature: config.temperature || 0.1,
       maxTokens: config.maxTokens,
     });
-  }
+  } 
 
   async invoke(prompt: string): Promise<string> {
     const response = await this.llm.invoke(prompt);

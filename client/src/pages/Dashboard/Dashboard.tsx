@@ -10,7 +10,7 @@ import styles from './Dashboard.module.css';
 //import { EligibilityCheckResponse } from '@services/eligibility.service';
 import { Scheme } from '@services/scheme.service';
 import { CheckHistoryItem } from './types';
-
+ 
 export const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();

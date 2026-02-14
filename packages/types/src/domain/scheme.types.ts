@@ -12,7 +12,7 @@ export interface SchemeTranslation {
   en: string;
   hi: string;
   mr?: string;
-}
+} 
 
 export interface EligibilityRules {
   minLandholding?: number;

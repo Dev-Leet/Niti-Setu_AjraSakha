@@ -13,4 +13,4 @@ router.post('/upload', upload.single('pdf'), documentController.uploadPDF);
 router.get('/scheme/:schemeId', documentController.getPDFsByScheme);
 router.delete('/:id', documentController.deletePDF);
 
-export default router;
+export default router; 

@@ -8,4 +8,4 @@ export interface AsyncState<T> {
 
 export type AsyncOperation<T> = () => Promise<T>;
 
-export type AsyncCallback<T> = (data: T) => void | Promise<void>;
+export type AsyncCallback<T> = (data: T) => void | Promise<void>; 

@@ -5,9 +5,9 @@ import { corsMiddleware } from '@middleware/index.js';
 import { loggerMiddleware } from '@middleware/index.js';
 import { errorHandler } from '@middleware/index.js';
 import { apiLimiter } from '@middleware/index.js';
-import routes from '@routes/index.js';
+import routes from '@/routes/index.js';
 
-export const app = express();
+export const app = express(); 
 
 app.use(helmet());
 app.use(corsMiddleware);

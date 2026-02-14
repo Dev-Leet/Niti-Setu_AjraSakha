@@ -7,7 +7,7 @@ export interface SchemeDescription {
   en: string;
   hi: string;
 }
-
+ 
 export interface Scheme {
   id: string;
   schemeId: string;

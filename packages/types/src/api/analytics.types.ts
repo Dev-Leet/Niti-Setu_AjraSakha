@@ -11,4 +11,4 @@ export interface UserStatsResponse {
 
 export interface SystemStatsResponse {
   stats: SystemStats;
-}
+} 

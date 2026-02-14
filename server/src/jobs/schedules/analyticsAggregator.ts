@@ -6,4 +6,4 @@ export const startAnalyticsAggregator = (): void => {
     logger.info('Starting analytics aggregation job');
     // Implement analytics aggregation logic
   });
-};
+}; 

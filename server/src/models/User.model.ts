@@ -10,7 +10,7 @@ export interface IUser extends Document {
   lastLogin?: Date;
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
-
+ 
 const userSchema = new Schema<IUser>(
   {
     email: { type: String, required: true, unique: true, lowercase: true, index: true },
@@ -23,12 +23,15 @@ const userSchema = new Schema<IUser>(
   { timestamps: true }
 );
 
-userSchema.pre('save', async function (next) {
-  if (!this.isModified('passwordHash')) 
-    return next();
+userSchema.pre('save', async function () {
+  // if passwordHash not modified, do nothing
+  if (!this.isModified('passwordHash')) {
+    return;
+  }
+  // hash and set
   this.passwordHash = await bcrypt.hash(this.passwordHash, 12);
-  next();
 });
+
 
 userSchema.methods.comparePassword = async function (candidatePassword: string): Promise<boolean> {
   return bcrypt.compare(candidatePassword, this.passwordHash);

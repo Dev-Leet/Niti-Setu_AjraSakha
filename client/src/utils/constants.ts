@@ -11,7 +11,7 @@ export const ROUTES = {
   DASHBOARD: '/dashboard',
   PROFILE: '/profile/edit',
 } as const;
-
+ 
 export const LANGUAGES = {
   EN: 'en',
   HI: 'hi',

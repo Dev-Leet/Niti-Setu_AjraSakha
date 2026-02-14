@@ -1,14 +1,20 @@
 import { User } from '@models/index.js';
 import { AppError } from '@utils/index.js';
 import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from '@utils/index.js';
-import { CreateUserDTO } from '@dtos/index.js';
+
+interface CreateUserDTO {
+  email: string;
+  password: string;
+  phone?: string;
+  role?: 'farmer' | 'admin' | 'auditor';
+}
 
 export const authService = {
   async register(userData: CreateUserDTO) {
     const existing = await User.findOne({ email: userData.email });
     if (existing) {
       throw new AppError('Email already registered', 400, 'EMAIL_EXISTS');
-    }
+    } 
 
     const user = await User.create({
       email: userData.email,

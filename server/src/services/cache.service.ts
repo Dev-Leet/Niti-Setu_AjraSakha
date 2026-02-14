@@ -15,7 +15,7 @@ export const cacheService = {
 
   async del(key: string): Promise<void> {
     await redis.del(key);
-  },
+  }, 
 
   async getProfile(userId: string) {
     return this.get(cacheKeys.profile(userId));

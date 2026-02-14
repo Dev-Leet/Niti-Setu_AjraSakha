@@ -13,7 +13,7 @@ export const Loader: React.FC<LoaderProps> = ({ size = 'md', fullScreen }) => {
         <div className={`${styles.spinner} ${styles[size]}`} />
       </div>
     );
-  }
+  } 
 
   return <div className={`${styles.spinner} ${styles[size]}`} />;
 };
