@@ -1,4 +1,5 @@
-import { User } from '../../../models/User.model';
+import { describe, it, expect } from '@jest/globals';
+import { User } from '../../../models/User.model.js';
 
 describe('User Model', () => {
   it('hashes password before save', async () => {

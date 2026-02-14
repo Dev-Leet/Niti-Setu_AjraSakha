@@ -16,6 +16,6 @@ describe('Auth Flow', () => {
     
     await waitFor(() => {
       expect(screen.queryByText(/loading/i)).not.toBeInTheDocument();
-    });
+    }); 
   });
 });

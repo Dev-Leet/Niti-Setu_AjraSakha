@@ -51,4 +51,4 @@ describe('Auth Service', () => {
       ).rejects.toThrow('Invalid credentials');
     });
   });
-});
+}); 

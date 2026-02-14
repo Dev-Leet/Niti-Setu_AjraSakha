@@ -1,7 +1,7 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, type Page } from '@playwright/test';
 
 test.describe('Eligibility Check', () => {
-  test('completes eligibility check flow', async ({ page }) => {
+  test('completes eligibility check flow', async ({ page }: { page: Page }) => {
     await page.goto('/');
     await page.click('text=Get Started');
     

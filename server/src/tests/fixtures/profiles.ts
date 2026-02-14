@@ -21,4 +21,4 @@ export const mockProfiles = [
     socialCategory: 'obc',
     version: 1,
   },
-];
+]; 

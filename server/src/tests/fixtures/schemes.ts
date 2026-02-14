@@ -24,4 +24,4 @@ export const mockSchemes = [
     requiredDocuments: ['aadhar', 'land-records'],
     tags: ['agriculture', 'income-support'],
   },
-];
+]; 

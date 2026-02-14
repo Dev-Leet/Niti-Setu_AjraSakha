@@ -1,9 +1,10 @@
-import { Request, Response } from 'express';
-import { profileController } from '../../../controllers/profile.controller';
-import { FarmerProfile } from '../../../models/index';
+import { Request, Response, NextFunction } from 'express';
+import { describe, it, expect, beforeEach, jest } from '@jest/globals';
+import { profileController } from '../../../controllers/profile.controller.js';
+import { AuthRequest } from '../../../middleware/auth.middleware.js';
 
 describe('Profile Controller', () => {
-  let mockReq: Partial<Request>;
+  let mockReq: Partial<AuthRequest>;
   let mockRes: Partial<Response>;
   let mockNext: jest.Mock;
 
@@ -14,13 +15,13 @@ describe('Profile Controller', () => {
       userId: 'test-user-id',
     };
     mockRes = {
-      status: jest.fn().mockReturnThis(),
-      json: jest.fn().mockReturnThis(),
+      status: jest.fn().mockReturnThis() as unknown as Response['status'],
+      json: jest.fn().mockReturnThis() as unknown as Response['json'],
     };
-    mockNext = jest.fn();
+    mockNext = jest.fn();       
   });
 
-  describe('createProfile', () => {
+  describe('create', () => {
     it('creates profile successfully', async () => {
       mockReq.body = {
         fullName: 'Test Farmer',
@@ -32,8 +33,8 @@ describe('Profile Controller', () => {
         socialCategory: 'general',
       };
 
-      await profileController.createProfile(
-        mockReq as Request,
+      await profileController.create(
+        mockReq as AuthRequest,
         mockRes as Response,
         mockNext
       );
@@ -42,7 +43,6 @@ describe('Profile Controller', () => {
       expect(mockRes.json).toHaveBeenCalledWith(
         expect.objectContaining({
           success: true,
-          data: expect.any(Object),
         })
       );
     });

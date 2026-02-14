@@ -12,4 +12,4 @@ export const mockUsers = [
     role: 'admin',
     isActive: true,
   },
-];
+]; 

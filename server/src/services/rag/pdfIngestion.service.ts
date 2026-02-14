@@ -1,4 +1,4 @@
-import pdfParse from 'pdf-parse';
+import * as pdfParse from 'pdf-parse';
 import { PDFDocument as PDFDocumentModel } from '@models/PDFDocument.model.js';
 import { embeddingService } from './embedding.service.js';
 import { vectorSearchService } from './vectorSearch.service.js';
@@ -10,7 +10,7 @@ export const pdfIngestionService = {
     try {
       await PDFDocumentModel.findByIdAndUpdate(pdfId, { status: 'processing' });
 
-      const data = await pdfParse(pdfBuffer);
+      const data = await (pdfParse as any).default(pdfBuffer);
       const pages = this.splitIntoPages(data.text);
 
       const embeddings = await embeddingService.embedDocuments(
