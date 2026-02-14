@@ -1,10 +1,18 @@
+import type { Job } from 'bull';
+import { createRequire } from 'module';
 import { embeddingService } from '@services/rag/embedding.service.js';
 import { vectorSearchService } from '@services/rag/vectorSearch.service.js';
 import { logger } from '@utils/index.js';
 
+const require = createRequire(import.meta.url);
 const pdfParse = require('pdf-parse');
 
-export const pdfProcessor = async (job: { data: { pdfBuffer: Buffer; schemeId: string } }) => {
+interface PdfProcessorJobData {
+  pdfBuffer: Buffer;
+  schemeId: string;
+}
+
+export const pdfProcessor = async (job: Job<PdfProcessorJobData>) => {
   const { pdfBuffer, schemeId } = job.data;
 
   try {
@@ -14,9 +22,9 @@ export const pdfProcessor = async (job: { data: { pdfBuffer: Buffer; schemeId: s
       page: i + 1,
     }));
 
-    const embeddings: number[][] = await embeddingService.embedDocuments(pages.map((p: any) => p.text));
+    const embeddings = await embeddingService.embedDocuments(pages.map((p: any) => p.text));
     
-    const vectors = embeddings.map((embedding: number[], idx: number) => ({
+    const vectors = embeddings.map((embedding, idx) => ({
       id: `${schemeId}_page_${idx + 1}`,
       values: embedding,
       metadata: {
