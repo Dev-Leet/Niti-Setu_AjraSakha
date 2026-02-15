@@ -6,7 +6,7 @@ export const Footer: React.FC = () => {
     <footer className={styles.footer}>
       <div className={styles.container}>
         <div className={styles.section}>
-          <h3>AgriSchemes</h3>
+          <h3>Niti-Setu</h3>
           <p>Simplifying agricultural scheme eligibility</p>
         </div> 
         
@@ -25,13 +25,13 @@ export const Footer: React.FC = () => {
         
         <div className={styles.section}>
           <h4>Contact</h4>
-          <p>support@agrischemes.com</p>
+          <p>support@nitisetu.com</p>
           <p>+91 1800-XXX-XXXX</p>
         </div>
       </div>
       
       <div className={styles.bottom}>
-        <p>&copy; 2026 AgriSchemes. All rights reserved.</p>
+        <p>&copy; 2026 Niti-Setu. All rights reserved.</p>
       </div>
     </footer>
   );

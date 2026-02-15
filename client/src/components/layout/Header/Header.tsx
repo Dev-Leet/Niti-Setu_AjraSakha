@@ -26,7 +26,7 @@ export const Header: React.FC = () => {
       <div className={styles.container}>
         <Link to="/" className={styles.logo}>
           <img src="/assets/icons/logo.svg" alt="Logo" />
-          <span>AgriSchemes</span>
+          <span>Niti-Setu</span>
         </Link>
 
         <nav className={styles.nav}>

@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '@components/common/Button/Button';
 import { LanguageSelector } from '@components/features/LanguageSelector/LanguageSelector';
 import styles from './Home.module.css';
+//import { HeroSection } from '@/components/layout/Section/HeroSection';
+//import { AnimatedButton } from '@/components/ui/AnimatedButton';
 
 export const Home: React.FC = () => {
   const navigate = useNavigate();

@@ -1,21 +1,19 @@
-import React from 'react';
-import { BrowserRouter } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import { store } from '@store/index';
+import React, { useEffect } from 'react';
 import { ErrorBoundary } from '@components/common/ErrorBoundary/ErrorBoundary';
 import { AppRoutes } from './routes';
 import { ThemeProvider } from '@/context/ThemeContext';
-import './styles/global.css'; 
+import './styles/global.css';
 
 const App: React.FC = () => {
+  useEffect(() => {
+    const isDark = localStorage.getItem('theme') === 'dark';
+    document.documentElement.classList.toggle('dark', isDark);
+  }, []);
+
   return (
     <ErrorBoundary>
       <ThemeProvider>
-        <Provider store={store}>
-          <BrowserRouter>
-            <AppRoutes />
-          </BrowserRouter>
-        </Provider>
+        <AppRoutes />
       </ThemeProvider>
     </ErrorBoundary>
   );
