@@ -10,6 +10,10 @@ import styles from './Dashboard.module.css';
 //import { EligibilityCheckResponse } from '@services/eligibility.service';
 import { Scheme } from '@services/scheme.service';
 import { CheckHistoryItem } from './types';
+/* import { Loader } from '@components/common/Loader/Loader';
+import { Container } from '@/components/layout/Container';
+import { Section } from '@/components/layout/Section';
+import { PageHeader } from '@/components/layout/PageHeader'; */
  
 export const Dashboard: React.FC = () => {
   const navigate = useNavigate();

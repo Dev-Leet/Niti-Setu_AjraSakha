@@ -1,0 +1,21 @@
+@layer utilities {
+  .spacing-stack-xs > * + * {
+    margin-top: 0.5rem;
+  }
+
+  .spacing-stack-sm > * + * {
+    margin-top: 1rem;
+  }
+
+  .spacing-stack-md > * + * {
+    margin-top: 1.5rem;
+  }
+
+  .spacing-stack-lg > * + * {
+    margin-top: 2rem;
+  }
+
+  .spacing-stack-xl > * + * {
+    margin-top: 3rem;
+  }
+}

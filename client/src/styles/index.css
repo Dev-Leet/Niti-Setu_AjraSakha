@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./spacing.css";
 
 @layer base {
   :root {
