@@ -1,88 +1,99 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useNavigate, Link } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '@store/hooks';
-import { register as registerUser } from '@store/slices/authSlice';
-import { registerSchema, RegisterInput } from '@utils/validators';
-import { Input } from '@components/common/Input/Input';
-import { Button } from '@components/common/Button/Button';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { register, clearError } from '@/store/slices/authSlice';
+
 import styles from './Auth.module.css';
- 
-export const Register: React.FC = () => {
-  const navigate = useNavigate();
+interface RegisterProps {
+  onToggle: () => void;
+}
+
+export default function Register({ onToggle }: RegisterProps) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [phone, setPhone] = useState('');
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { loading, error } = useAppSelector((state) => state.auth);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<RegisterInput>({
-    resolver: zodResolver(registerSchema),
-  });
-
-  const onSubmit = async (data: RegisterInput) => {
-    const result = await dispatch(registerUser(data));
-    if (registerUser.fulfilled.match(result)) {
-      navigate('/profile');
+  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
+    e.preventDefault();
+    dispatch(clearError());
+    
+    const result = await dispatch(register({ email, password, phone }));
+    if (register.fulfilled.match(result)) {
+      navigate('/dashboard');
     }
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.card}>
-        <h1 className={styles.title}>Register</h1>
-        <p className={styles.subtitle}>Create your account to get started</p>
+    <>
+      <h2 className={styles.title}>Register</h2>
+      
+      {error && (
+        <div className={styles.error}>
+          {error}
+        </div>
+      )}
 
-        <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
-          <Input
-            label="Email"
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <div>
+          <label htmlFor="register-email" className={styles.label}>
+            Email
+          </label>
+          <input
+            id="register-email"
             type="email"
-            placeholder="farmer@example.com"
-            error={errors.email?.message}
-            {...register('email')}
-            fullWidth
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className={styles.input}
+            required
           />
+        </div>
 
-          <Input
-            label="Phone (Optional)"
+        <div>
+          <label htmlFor="register-password" className={styles.label}>
+            Password
+          </label>
+          <input
+            id="register-password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className={styles.input}
+            required
+            minLength={8}
+          />
+        </div>
+
+        <div>
+          <label htmlFor="register-phone" className={styles.label}>
+            Phone (Optional)
+          </label>
+          <input
+            id="register-phone"
             type="tel"
-            placeholder="9876543210"
-            error={errors.phone?.message}
-            {...register('phone')}
-            fullWidth
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            className={styles.input}
           />
+        </div>
 
-          <Input
-            label="Password"
-            type="password"
-            placeholder="••••••••"
-            error={errors.password?.message}
-            {...register('password')}
-            fullWidth
-          />
+        <button
+          type="submit"
+          disabled={loading}
+          className={styles.button}
+        >
+          {loading ? 'Registering...' : 'Register'}
+        </button>
+      </form>
 
-          <Input
-            label="Confirm Password"
-            type="password"
-            placeholder="••••••••"
-            error={errors.confirmPassword?.message}
-            {...register('confirmPassword')}
-            fullWidth
-          />
-
-          {error && <div className={styles.error}>{error}</div>}
-
-          <Button type="submit" variant="primary" size="lg" fullWidth loading={loading}>
-            Register
-          </Button>
-        </form>
-
-        <p className={styles.footer}>
-          Already have an account? <Link to="/login">Login</Link>
-        </p>
-      </div>
-    </div>
+      <p className={styles.footer}>
+        Already have an account?{' '}
+        <button type="button" onClick={onToggle}>
+          Login
+        </button>
+      </p>
+    </>
   );
-};
+}
