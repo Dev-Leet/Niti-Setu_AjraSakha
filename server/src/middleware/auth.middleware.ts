@@ -8,8 +8,6 @@ export interface AuthRequest extends Request {
   userRole?: string;
 }
 
-
-
 export const authenticate = async (
   req: AuthRequest,
   _res: Response,
@@ -35,7 +33,13 @@ export const authenticate = async (
 
     next();
   } catch (error: unknown) {
-    const err = error as Error;
+    const err = error as { name?: string; message: string };
+    
+    if (err.name === 'TokenExpiredError') {
+      logger.error('Auth middleware error', { error: 'jwt expired', path: req.path });
+      return next(new AppError('Token expired', 401, 'TOKEN_EXPIRED'));
+    }
+    
     logger.error('Auth middleware error', { error: err.message, path: req.path });
     next(new AppError('Invalid token', 401, 'INVALID_TOKEN'));
   }

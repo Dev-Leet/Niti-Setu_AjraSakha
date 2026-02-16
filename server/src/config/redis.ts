@@ -1,25 +1,14 @@
-import Redis from 'ioredis';
-import { logger } from './logger.js';
+import { createClient } from 'redis';
+import { env } from './env.js';
+import { logger } from '@utils/logger.js';
 
-export const redis = new Redis(process.env.REDIS_URL!, {
-  maxRetriesPerRequest: 3,
-  retryStrategy: (times) => Math.min(times * 50, 2000),
-  lazyConnect: true,
+export const redisClient = createClient({
+  url: env.REDIS_URL,
 });
 
-redis.on('connect', () => {
-  logger.info('Redis connected');
-}); 
-
-redis.on('error', (err) => {
-  logger.error('Redis error:', err);
-});
+redisClient.on('error', (err) => logger.error('Redis Client Error', err));
+redisClient.on('connect', () => logger.info('Redis connected'));
 
 export const connectRedis = async (): Promise<void> => {
-  try {
-    await redis.connect();
-  } catch (error) {
-    logger.error('Redis connection failed:', error);
-    process.exit(1);
-  }
+  await redisClient.connect();
 };

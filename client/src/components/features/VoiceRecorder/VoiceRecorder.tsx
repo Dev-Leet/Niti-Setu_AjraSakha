@@ -1,62 +1,87 @@
-import React from 'react';
-import { useVoice } from '@hooks/useVoice';
-import { Button } from '@components/common/Button/Button';
-import styles from './VoiceRecorder.module.css';
+import { useState, useRef } from 'react';
+import { voiceService } from '@/services/voice.service';
+import { useLanguage } from '@/hooks/useLanguage';
+import type { VoiceProfile, ValidationResult } from '@/types/api.types';
 
 interface VoiceRecorderProps {
-  onTranscript: (transcript: string) => void;
-  language?: string;
+  onTranscript: (data: { profile: VoiceProfile; validation: ValidationResult }) => void;
 }
 
-//export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onTranscript, language = 'hi' }) => {
-export const VoiceRecorder: React.FC<VoiceRecorderProps> = ({ onTranscript }) => {
-  const { isRecording, transcript, error, startRecording, stopRecording } = useVoice();
+export const VoiceRecorder = ({ onTranscript }: VoiceRecorderProps) => {
+  const [isRecording, setIsRecording] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const chunksRef = useRef<Blob[]>([]);
+  const { language } = useLanguage();
 
-  React.useEffect(() => {
-    if (transcript) {
-      onTranscript(transcript);
+  const languageMap: Record<string, 'en-IN' | 'hi-IN' | 'mr-IN' | 'ta-IN'> = {
+    en: 'en-IN',
+    hi: 'hi-IN',
+    mr: 'mr-IN',
+    ta: 'ta-IN',
+  };
+
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream);
+      
+      mediaRecorderRef.current = mediaRecorder;
+      chunksRef.current = [];
+
+      mediaRecorder.ondataavailable = (e) => {
+        if (e.data.size > 0) {
+          chunksRef.current.push(e.data);
+        }
+      };
+
+      mediaRecorder.onstop = async () => {
+        const audioBlob = new Blob(chunksRef.current, { type: 'audio/webm' });
+        stream.getTracks().forEach(track => track.stop());
+        await processAudio(audioBlob);
+      };
+
+      mediaRecorder.start();
+      setIsRecording(true);
+    } catch (error) {
+      console.error('Failed to start recording:', error);
     }
-  }, [transcript, onTranscript]);
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && isRecording) {
+      mediaRecorderRef.current.stop();
+      setIsRecording(false);
+    }
+  };
+
+  const processAudio = async (audioBlob: Blob) => {
+    setIsProcessing(true);
+    try {
+      const transcript = await voiceService.transcribe(audioBlob, languageMap[language]);
+      const profileData = await voiceService.extractProfile(transcript);
+      onTranscript(profileData);
+    } catch (error) {
+      console.error('Failed to process audio:', error);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.visualizer}>
-        <div className={`${styles.mic} ${isRecording ? styles.active : ''}`}>
-          🎤
-        </div>
-        {isRecording && (
-          <div className={styles.waves}>
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-        )}
-      </div>
-
-      <div className={styles.controls}>
-        {!isRecording ? (
-          <Button variant="primary" size="lg" onClick={startRecording}>
-            Start Recording
-          </Button>
-        ) : (
-          <Button variant="secondary" size="lg" onClick={stopRecording}>
-            Stop Recording
-          </Button>
-        )}
-      </div>
-
-      {transcript && (
-        <div className={styles.transcript}>
-          <h4>Transcript:</h4>
-          <p>{transcript}</p>
-        </div>
-      )}
-
-      {error && <div className={styles.error}>{error}</div>}
-      
-      <p className={styles.hint}>
-        Speak clearly about your land, crops, and location
-      </p>
+    <div className="flex flex-col items-center gap-4">
+      <button
+        onClick={isRecording ? stopRecording : startRecording}
+        disabled={isProcessing}
+        className={`px-6 py-3 rounded-full font-semibold text-white transition-colors ${
+          isRecording
+            ? 'bg-red-500 hover:bg-red-600 animate-pulse'
+            : 'bg-blue-500 hover:bg-blue-600'
+        } disabled:opacity-50`}
+      >
+        {isRecording ? '⏹️ Stop Recording' : '🎤 Start Recording'}
+      </button>
+      {isProcessing && <p className="text-gray-600">Processing audio...</p>}
     </div>
   );
 };

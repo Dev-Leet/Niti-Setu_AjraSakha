@@ -8,13 +8,16 @@
     "packages/*"
   ],
   "scripts": { 
-    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\" \"npm run dev:ml\"",
     "dev:client": "cd client && npm run dev",
     "dev:server": "cd server && npm run dev",
     "build:types": "cd packages/types && npm run build",
     "build:client": "cd client && npm run build",
     "build:server": "cd server && npm run build",
+    "dev:ml": "cd server && npm run ml:start",
     "build": "npm run build:types && npm run build:client && npm run build:server",
+    "setup:ml": "cd server && npm run ml:setup",
+    "setup:tts": "bash server/scripts/install-tts-dependencies.sh",
     "start:server": "npm start --workspace=server",
     "start:client": "npm run preview --workspace=client",
     "test": "npm run test:client && npm run test:server",
@@ -23,10 +26,13 @@
     "lint": "npm run lint:client && npm run lint:server",
     "lint:client": "cd client && npm run lint",
     "lint:server": "cd server && npm run lint",
+    "install:all": "npm install && cd client && npm install && cd ../server && npm install",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
     "type-check": "npm run type-check:client && npm run type-check:server",
     "type-check:client": "cd client && npm run type-check",
     "type-check:server": "cd server && npm run type-check",
+    "verify:ml": "cd server && npm run ml:verify",
+    "verify:atlas": "bash server/scripts/verify-atlas-index.sh",
     "clean": "rm -rf node_modules client/node_modules server/node_modules packages/*/node_modules client/dist server/dist packages/*/dist"
   },
   "dependencies": {

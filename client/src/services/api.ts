@@ -29,7 +29,9 @@ apiClient.interceptors.response.use(
 
       try {
         const refreshToken = localStorage.getItem('refreshToken');
-        if (!refreshToken) throw new Error('No refresh token');
+        if (!refreshToken) {
+          throw new Error('No refresh token');
+        }
 
         const response = await axios.post(`${API_URL}/auth/refresh`, { refreshToken });
         const { accessToken } = response.data.data;
@@ -43,7 +45,7 @@ apiClient.interceptors.response.use(
       } catch {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
-        window.location.href = '/auth';
+        window.dispatchEvent(new Event('auth:unauthorized'));
         return Promise.reject(error);
       }
     }

@@ -1,36 +1,26 @@
-import api from './api';
-
-export interface TranscriptResponse {
-  transcript: string;
-  confidence: number;
-  language: string;
-}
-
-export interface ExtractedData {
-  fullName?: string;
-  state?: string;
-  district?: string;
-  landholding?: number;
-  cropTypes?: string[];
-  socialCategory?: string;
-  confidence: Record<string, number>;
-  missingFields: string[];
-} 
+import apiClient from './api';
+import type { VoiceProfile, ValidationResult } from '@/types/api.types';
 
 export const voiceService = {
-  transcribe: async (audioBlob: Blob, languageHint?: string): Promise<TranscriptResponse> => {
+  async transcribe(audioBlob: Blob, language: 'en-IN' | 'hi-IN' | 'mr-IN' | 'ta-IN' = 'en-IN'): Promise<string> {
     const formData = new FormData();
     formData.append('audio', audioBlob);
-    if (languageHint) formData.append('languageHint', languageHint);
+    formData.append('language', language);
 
-    const { data } = await api.post('/voice/transcribe', formData, {
+    const response = await apiClient.post('/voice/transcribe', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
-    return data.data;
+
+    return response.data.data.transcript;
   },
 
-  extractProfile: async (transcript: string): Promise<ExtractedData> => {
-    const { data } = await api.post('/voice/extract', { transcript });
-    return data.data;
+  async extractProfile(transcript: string): Promise<{ profile: VoiceProfile; validation: ValidationResult }> {
+    const response = await apiClient.post('/voice/extract', { transcript });
+    return response.data.data;
+  },
+
+  async validateProfile(profile: VoiceProfile): Promise<ValidationResult> {
+    const response = await apiClient.post('/voice/validate', profile);
+    return response.data.data;
   },
 };
