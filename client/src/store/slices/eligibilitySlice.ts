@@ -1,46 +1,74 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { eligibilityService, EligibilityCheckResponse } from '@services/eligibility.service';
-import { CheckHistoryItem } from '@pages/Dashboard/types';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import axios from 'axios';
 
-/* interface EligibilityState {
-  currentCheck: EligibilityCheckResponse | null;
-  history: EligibilityCheckResponse[];
-  loading: boolean;
-  error: string | null;
-} */
+interface Citation {
+  page: number;
+  paragraph: number;
+  text: string;
+  documentUrl: string;
+}
+
+interface EligibilityResult {
+  schemeId: string;
+  schemeName: string;
+  isEligible: boolean;
+  confidence: number;
+  reasoning: string;
+  citations: Citation[];
+  benefits: {
+    financial: { amount: number; type: string; frequency: string };
+    nonFinancial: string[];
+  };
+}
+
+interface EligibilityCheck {
+  _id: string;
+  userId: string;
+  results: EligibilityResult[];
+  totalEligible: number;
+  processingTime: number;
+  createdAt: string;
+}
 
 interface EligibilityState {
-  currentCheck: EligibilityCheckResponse | null;
-  history: CheckHistoryItem[];
+  checks: EligibilityCheck[];
+  currentCheck: EligibilityCheck | null;
   loading: boolean;
   error: string | null;
-} 
+}
 
 const initialState: EligibilityState = {
+  checks: [],
   currentCheck: null,
-  history: [],
   loading: false,
   error: null,
 };
 
 export const checkEligibility = createAsyncThunk(
   'eligibility/check',
-  async (profileId: string, { rejectWithValue }) => {
-    try {
-      return await eligibilityService.checkEligibility(profileId);
-    } catch (error: unknown) {  
-      const message =
-        error instanceof Error
-          ? error.message
-          : 'Eligibility check failed';
-
-      return rejectWithValue(message);
-    }
+  async (profile: { state: string; district: string; landholding: number; cropType: string; socialCategory: string; schemeId: string }) => {
+    const token = localStorage.getItem('accessToken');
+    const { data } = await axios.post(`${import.meta.env.VITE_API_URL}/eligibility/check`, profile, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return data.data;
   }
 );
 
 export const fetchCheckHistory = createAsyncThunk('eligibility/history', async () => {
-  return await eligibilityService.getCheckHistory();
+  const token = localStorage.getItem('accessToken');
+  const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/eligibility/history`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return data.data.checks;
+});
+
+export const fetchCheckById = createAsyncThunk('eligibility/fetchById', async (checkId: string) => {
+  const token = localStorage.getItem('accessToken');
+  const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/eligibility/${checkId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return data.data;
 });
 
 const eligibilitySlice = createSlice({
@@ -55,18 +83,29 @@ const eligibilitySlice = createSlice({
     builder
       .addCase(checkEligibility.pending, (state) => {
         state.loading = true;
-        state.error = null;
       })
-      .addCase(checkEligibility.fulfilled, (state, action) => {
+      .addCase(checkEligibility.fulfilled, (state, action: PayloadAction<EligibilityCheck>) => {
         state.loading = false;
         state.currentCheck = action.payload;
+        state.checks.unshift(action.payload);
       })
       .addCase(checkEligibility.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload as string;
+        state.error = action.error.message || 'Check failed';
       })
-      .addCase(fetchCheckHistory.fulfilled, (state, action) => {
-        state.history = action.payload.data;
+      .addCase(fetchCheckHistory.fulfilled, (state, action: PayloadAction<EligibilityCheck[]>) => {
+        state.checks = action.payload;
+      })
+      .addCase(fetchCheckById.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchCheckById.fulfilled, (state, action: PayloadAction<EligibilityCheck>) => {
+        state.loading = false;
+        state.currentCheck = action.payload;
+      })
+      .addCase(fetchCheckById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || 'Failed to fetch check';
       });
   },
 });

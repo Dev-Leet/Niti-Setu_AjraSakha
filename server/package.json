@@ -16,7 +16,10 @@
     "test:coverage": "jest --coverage",
     "seed": "tsx src/db/seeders/index.ts",
     "migrate": "tsx scripts/migrate.ts",
-    "generate:jwt": "tsx scripts/generate-jwt-secret.ts"
+    "generate:jwt": "tsx scripts/generate-jwt-secret.ts",
+    "ml:start": "bash scripts/start-ml-services.sh",
+    "ml:stop": "bash scripts/stop-ml-services.sh",
+    "ml:setup": "cd python-ml && pip install -r requirements.txt && bash download_model.sh"
   },
   "keywords": [],
   "author": "",

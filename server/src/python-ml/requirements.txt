@@ -1,0 +1,5 @@
+sentence-transformers==2.5.1
+torch==2.2.0
+numpy==1.26.4
+flask==3.0.2
+llama-cpp-python==0.2.56

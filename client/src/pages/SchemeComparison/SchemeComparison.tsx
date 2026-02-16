@@ -1,76 +1,104 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAppSelector, useAppDispatch } from '@store/hooks';
-import { removeFromComparison, clearComparison } from '@store/slices/comparisonSlice';
-import { Button } from '@components/common/Button/Button';
+import { useAppDispatch, useAppSelector } from '@store/hooks';
+import { fetchSavedSchemes } from '@store/slices/schemeSlice';
+import { Container } from '@/components/layout/Container';
+import { Section } from '@/components/layout/Section';
+import { PageHeader } from '@/components/layout/PageHeader';
 import { Card } from '@components/common/Card/Card';
+import { Button } from '@components/common/Button/Button';
+import { Loader } from '@components/common/Loader/Loader';
 import styles from './SchemeComparison.module.css';
+
+interface SavedScheme {
+  id: string;
+  name: { en: string };
+  ministry: string;
+  benefits?: { financial?: { amount: number } };
+  eligibilityRules?: { maxLandholding?: number };
+}
 
 export const SchemeComparison: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { selectedSchemes } = useAppSelector(state => state.comparison);
- 
-  if (selectedSchemes.length === 0) {
-    return (
-      <div className={styles.empty}>
-        <h2>No schemes to compare</h2>
-        <Button onClick={() => navigate('/schemes')}>Browse Schemes</Button>
-      </div>
-    );
-  }
+  const { savedSchemes, loading } = useAppSelector((state) => state.scheme);
+
+  useEffect(() => {
+    dispatch(fetchSavedSchemes());
+  }, [dispatch]);
+
+  if (loading) return <Loader fullScreen />;
+
+  const schemesList = Array.isArray(savedSchemes) ? savedSchemes : [];
 
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <h1>Compare Schemes</h1>
-        <Button variant="outline" onClick={() => dispatch(clearComparison())}>
-          Clear All
-        </Button>
-      </div>
+    <Section>
+      <Container size="xl">
+        <PageHeader
+          title="Compare Schemes"
+          description="Side-by-side comparison of eligible schemes"
+        />
 
-      <div className={styles.grid}>
-        {selectedSchemes.map(scheme => (
-          <Card key={scheme.id} className={styles.schemeCard}>
-            <button
-              className={styles.removeBtn}
-              onClick={() => dispatch(removeFromComparison(scheme.id))}
-            >
-              ✕
-            </button>
-            <h3>{scheme.name.en}</h3>
-            <p className={styles.ministry}>{scheme.ministry}</p>
-            
-            <div className={styles.section}>
-              <h4>Benefits</h4>
-              <p>₹{scheme.benefits.financial.amount}</p>
-              <span>{scheme.benefits.financial.frequency}</span>
-            </div>
-
-            <div className={styles.section}>
-              <h4>Eligibility</h4>
-              <ul>
-                {scheme.eligibilityRules.minLandholding && (
-                  <li>Min: {scheme.eligibilityRules.minLandholding} acres</li>
-                )}
-                {scheme.eligibilityRules.maxLandholding && (
-                  <li>Max: {scheme.eligibilityRules.maxLandholding} acres</li>
-                )}
-              </ul>
-            </div>
-
-            <div className={styles.section}>
-              <h4>Required Documents</h4>
-              <ul>
-                {scheme.requiredDocuments.slice(0, 3).map((doc: string, i: number) => (
-                    <li key={i}>{doc}</li>
-                    ))
-                    }
-              </ul>
+        {schemesList.length === 0 ? (
+          <Card>
+            <div className={styles.emptyState}>
+              <p>No schemes to compare</p>
+              <Button variant="primary" onClick={() => navigate('/schemes')}>
+                Browse Schemes
+              </Button>
             </div>
           </Card>
-        ))}
-      </div>
-    </div>
+        ) : (
+          <div className={styles.comparisonTable}>
+            <table>
+              <thead>
+                <tr>
+                  <th>Feature</th>
+                  {schemesList.map((scheme: SavedScheme) => (
+                    <th key={scheme.id}>{scheme.name.en}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className={styles.featureLabel}>Ministry</td>
+                  {schemesList.map((scheme: SavedScheme) => (
+                    <td key={scheme.id}>{scheme.ministry}</td>
+                  ))}
+                </tr>
+                <tr>
+                  <td className={styles.featureLabel}>Financial Benefit</td>
+                  {schemesList.map((scheme: SavedScheme) => (
+                    <td key={scheme.id}>₹{scheme.benefits?.financial?.amount || 'N/A'}</td>
+                  ))}
+                </tr>
+                <tr>
+                  <td className={styles.featureLabel}>Max Land Holding</td>
+                  {schemesList.map((scheme: SavedScheme) => (
+                    <td key={scheme.id}>
+                      {scheme.eligibilityRules?.maxLandholding || 'No limit'}
+                    </td>
+                  ))}
+                </tr>
+                <tr>
+                  <td className={styles.featureLabel}>Actions</td>
+                  {schemesList.map((scheme: SavedScheme) => (
+                    <td key={scheme.id}>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => navigate(`/scheme/${scheme.id}`)}
+                      >
+                        View Details
+                      </Button>
+                    </td>
+                  ))}
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        )}
+      </Container>
+    </Section>
   );
 };

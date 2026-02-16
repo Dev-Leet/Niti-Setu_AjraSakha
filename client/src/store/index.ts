@@ -5,7 +5,8 @@ import eligibilityReducer from './slices/eligibilitySlice';
 import schemeReducer from './slices/schemeSlice';
 import uiReducer from './slices/uiSlice';
 import comparisonReducer from './slices/comparisonSlice';
- 
+import dashboardReducer from './slices/dashboardSlice';
+
 export const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -14,14 +15,8 @@ export const store = configureStore({
     scheme: schemeReducer,
     ui: uiReducer,
     comparison: comparisonReducer,
+    dashboard: dashboardReducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: ['voice/setAudioBlob'],
-        ignoredPaths: ['voice.audioBlob'],
-      },
-    }),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

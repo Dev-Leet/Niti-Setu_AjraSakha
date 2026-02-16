@@ -1,105 +1,90 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
-import { fetchCheckHistory } from '@store/slices/eligibilitySlice';
-import { fetchSavedSchemes } from '@store/slices/schemeSlice';
-import { Card } from '@components/common/Card/Card';
-import { Button } from '@components/common/Button/Button';
-import { formatDate, formatNumber } from '@utils/formatters';
-import styles from './Dashboard.module.css';
-//import { EligibilityCheckResponse } from '@services/eligibility.service';
-import { Scheme } from '@services/scheme.service';
-import { CheckHistoryItem } from './types';
-/* import { Loader } from '@components/common/Loader/Loader';
+import { fetchDashboardStats } from '@store/slices/dashboardSlice';
 import { Container } from '@/components/layout/Container';
 import { Section } from '@/components/layout/Section';
-import { PageHeader } from '@/components/layout/PageHeader'; */
- 
+import { PageHeader } from '@/components/layout/PageHeader';
+import { Card } from '@components/common/Card/Card';
+import { Button } from '@components/common/Button/Button';
+import { Loader } from '@components/common/Loader/Loader';
+import styles from './Dashboard.module.css';
+
+interface RecentCheck {
+  id: string;
+  schemeName: string;
+  date: string;
+  eligible: boolean;
+}
+
 export const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { history } = useAppSelector((state) => state.eligibility);
-  const { savedSchemes } = useAppSelector((state) => state.scheme);
-  const { profile } = useAppSelector((state) => state.profile);
+  const { stats, loading } = useAppSelector((state) => state.dashboard);
 
   useEffect(() => {
-    dispatch(fetchCheckHistory());
-    dispatch(fetchSavedSchemes());
+    dispatch(fetchDashboardStats());
   }, [dispatch]);
 
+  if (loading) return <Loader fullScreen />;
+
+  const recentChecks = Array.isArray(stats?.recentChecks) ? stats.recentChecks : [];
+
   return (
-    <div className={styles.container}>
-      <div className={styles.header}>
-        <h1>Dashboard</h1>
-        <Button variant="primary" onClick={() => navigate('/profile')}>
-          New Eligibility Check
-        </Button>
-      </div>
+    <>
+      <Section background="gradient" spacing="lg">
+        <Container>
+          <PageHeader
+            title="Welcome to Niti-Setu AjraSakha"
+            description="Your personalized dashboard for agricultural scheme eligibility"
+            actions={
+              <Button variant="primary" onClick={() => navigate('/check-eligibility')}>
+                Check Eligibility
+              </Button>
+            }
+          />
+        </Container>
+      </Section>
 
-      <div className={styles.stats}>
-        <Card className={styles.statCard}>
-          <h3>Total Checks</h3>
-          <p className={styles.statValue}>{formatNumber(history.length)}</p>
-        </Card>
-        <Card className={styles.statCard}>
-          <h3>Saved Schemes</h3>
-          <p className={styles.statValue}>{formatNumber(savedSchemes.length)}</p>
-        </Card>
-        <Card className={styles.statCard}>
-          <h3>Profile Status</h3>
-          <p className={styles.statValue}>{profile ? 'Complete' : 'Incomplete'}</p>
-        </Card>
-      </div>
-
-      <div className={styles.section}>
-        <h2>Recent Checks</h2>
-        {history.length === 0 ? (
-          <Card>
-            <p>No eligibility checks yet</p>
-          </Card>
-        ) : (
-          <div className={styles.list}>
-            {history.map((check: CheckHistoryItem) => (
-              <Card
-                key={check.checkId}
-                className={styles.checkCard}
-                onClick={() => navigate(`/results/${check.checkId}`)}
-                hoverable
-              >
-                <div className={styles.checkHeader}>
-                  <span className={styles.date}>{formatDate(check.createdAt)}</span>
-                  <span className={styles.count}>
-                    {check.totalEligible} eligible schemes
-                  </span>
-                </div>
-              </Card>
-            ))}
+      <Section>
+        <Container>
+          <div className={styles.statsGrid}>
+            <Card className={styles.statCard}>
+              <h3>Total Checks</h3>
+              <p className={styles.statValue}>{stats?.totalChecks || 0}</p>
+            </Card>
+            <Card className={styles.statCard}>
+              <h3>Eligible Schemes</h3>
+              <p className={styles.statValue}>{stats?.eligibleSchemes || 0}</p>
+            </Card>
+            <Card className={styles.statCard}>
+              <h3>Saved Schemes</h3>
+              <p className={styles.statValue}>{stats?.savedSchemes || 0}</p>
+            </Card>
           </div>
-        )}
-      </div>
 
-      <div className={styles.section}>
-        <h2>Saved Schemes</h2>
-        {savedSchemes.length === 0 ? (
-          <Card>
-            <p>No saved schemes</p>
-          </Card>
-        ) : (
-          <div className={styles.grid}>
-            {savedSchemes.map((scheme: Scheme) => (
-              <Card
-                key={scheme.id}
-                className={styles.schemeCard}
-                onClick={() => navigate(`/scheme/${scheme.id}`)}
-                hoverable
-              >
-                <h3>{scheme.name.en}</h3>
-                <p>{scheme.description.en.substring(0, 100)}...</p>
-              </Card>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
+          {recentChecks.length > 0 && (
+            <Card>
+              <h2 className={styles.sectionTitle}>Recent Eligibility Checks</h2>
+              <div className={styles.checksList}>
+                {recentChecks.map((check: RecentCheck) => (
+                  <div key={check.id} className={styles.checkItem}>
+                    <div>
+                      <h4>{check.schemeName}</h4>
+                      <p className={styles.checkDate}>
+                        {new Date(check.date).toLocaleDateString('en-IN')}
+                      </p>
+                    </div>
+                    <span className={check.eligible ? styles.eligible : styles.notEligible}>
+                      {check.eligible ? 'Eligible' : 'Not Eligible'}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </Card>
+          )}
+        </Container>
+      </Section>
+    </>
   );
 };
