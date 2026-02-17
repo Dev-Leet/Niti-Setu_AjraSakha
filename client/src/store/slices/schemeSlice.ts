@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+/* import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { schemeService, Scheme } from '@services/scheme.service';
 
 interface SchemeFilters {
@@ -62,6 +62,65 @@ const schemeSlice = createSlice({
         state.savedSchemes = action.payload;
       });
   },
+});
+
+export default schemeSlice.reducer; */
+
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import apiClient from '@/services/api';
+
+interface Scheme {
+  _id: string;
+  name: { en: string; hi: string; mr: string; ta: string };
+  ministry: string;
+  benefits?: {
+    financial?: { amount: number; unit: string };
+    description?: string;
+  };
+  applicationDeadline?: string;
+  status: string;
+}
+
+interface SchemeState {
+  schemes: Scheme[];
+  loading: boolean;
+  error: string | null;
+}
+
+const initialState: SchemeState = {
+  schemes: [],
+  loading: false,
+  error: null,
+};
+
+export const fetchSchemes = createAsyncThunk(
+  'scheme/fetchSchemes',
+  async () => {
+    const response = await apiClient.get('/schemes/list');
+    return response.data.data.schemes;
+  }
+);
+
+const schemeSlice = createSlice({
+  name: 'scheme',
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchSchemes.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchSchemes.fulfilled, (state, action) => {
+        state.loading = false;
+        state.schemes = action.payload;
+      })
+      .addCase(fetchSchemes.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || 'Failed to fetch schemes';
+      });
+  },
+  
 });
 
 export default schemeSlice.reducer;

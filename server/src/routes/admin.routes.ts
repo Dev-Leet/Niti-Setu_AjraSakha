@@ -59,8 +59,9 @@ router.post('/download-schemes', async (_req: AuthRequest, res: Response, next: 
 
 router.post('/download-schemes/:schemeId', async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const { schemeId } = req.params;
-    await schemeDownloaderService.downloadAndIngestOne(schemeId);
+    //const { schemeId } = req.params;
+    const schemeId = typeof req.params.schemeId === 'string' ? req.params.schemeId : req.params.schemeId[0];
+    await Scheme.findByIdAndDelete(schemeId);
     res.json({ success: true, message: `Scheme ${schemeId} ingested successfully` });
   } catch (error) {
     next(error);

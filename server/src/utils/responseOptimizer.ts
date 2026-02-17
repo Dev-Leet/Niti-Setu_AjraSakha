@@ -7,7 +7,7 @@ export const responseOptimizer = {
     if (Array.isArray(data)) {
       optimized = data.map(item => this.removeFields(item, fieldsToRemove));
     } else if (typeof data === 'object' && data !== null) {
-      optimized = this.removeFields(data, fieldsToRemove);
+      optimized = this.removeFields(data as Record<string, unknown>, fieldsToRemove);
     }
 
     res.json(optimized);

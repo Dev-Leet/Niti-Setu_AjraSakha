@@ -49,7 +49,13 @@ export const matcherService = {
     const ruleMatchConfidence = confidenceService.calculateRuleMatchConfidence(matchedRules, totalRules);
     const combinedConfidence = confidenceService.calculateCombinedConfidence(similarityScore, ruleMatchConfidence);
 
-    const explanation = await llamaService.explainEligibility(eligible, citation, profile);
+    //const explanation = await llamaService.explainEligibility(eligible, citation, profile);
+
+    const explanation = await llamaService.explainEligibility(
+        result.isEligible,
+        relevantChunks[0].chunkText,
+        profile
+    );
 
     const result = {
       eligible,

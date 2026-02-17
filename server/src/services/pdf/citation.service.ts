@@ -1,4 +1,4 @@
-import { PDFDocument } from 'pdf-lib';
+/* import { PDFDocument } from 'pdf-lib';
 import sharp from 'sharp';
 import { SchemeChunk } from '@models/SchemeChunk.model.js';
 
@@ -98,5 +98,52 @@ export const citationService = {
     </svg>`;
 
     return sharp(Buffer.from(svg)).png({ quality: 95 }).toBuffer();
+  },
+}; */
+
+import { SchemeChunk } from '@models/SchemeChunk.model.js';
+
+interface Citation {
+  text: string;
+  page: number;
+  section?: string;
+  confidence: number;
+}
+
+export const citationService = {
+  async findRelevantCitations(
+    schemeId: string,
+    queryEmbedding: number[],
+    limit = 3
+  ): Promise<Citation[]> {
+    const chunks = await SchemeChunk.aggregate([
+      {
+        $vectorSearch: {
+          index: 'scheme_vector_index',
+          path: 'embedding',
+          queryVector: queryEmbedding,
+          numCandidates: 100,
+          limit,
+          filter: { schemeId: { $eq: schemeId } },
+        },
+      },
+      {
+        $project: {
+          chunkText: 1,
+          pageNumber: 1,
+          sectionTitle: 1,
+          score: { $meta: 'vectorSearchScore' },
+        },
+      },
+    ]);
+
+    return chunks
+      .filter(chunk => chunk.chunkText && chunk.chunkText.en)
+      .map(chunk => ({
+        text: chunk.chunkText.en,
+        page: chunk.pageNumber,
+        section: chunk.sectionTitle?.en,
+        confidence: chunk.score || 0,
+      }));
   },
 };

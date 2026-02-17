@@ -36,7 +36,7 @@ export const SchemeComparison: React.FC = () => {
       <Container size="xl">
         <PageHeader
           title="Compare Schemes"
-          description="Side-by-side comparison of eligible schemes"
+          //description="Side-by-side comparison of eligible schemes"
         />
 
         {schemesList.length === 0 ? (

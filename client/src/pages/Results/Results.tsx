@@ -193,7 +193,7 @@ export const Results = () => {
                 <div className={styles.confidenceTrack}>
                   <div
                     className={styles.confidenceFill}
-                    style={{ width: `${result.confidence * 100}%` }}
+                    //style={{ width: `${result.confidence * 100}%` }}
                   />
                 </div>
               </div>

@@ -2,13 +2,10 @@ import { useState, useEffect } from 'react';
 import { networkDetection } from '@/utils/networkDetection';
 
 export const useNetworkOptimization = () => {
-  const [isSlowConnection, setIsSlowConnection] = useState(false);
-  const [connectionSpeed, setConnectionSpeed] = useState<'fast' | 'medium' | 'slow'>('medium');
+  const [isSlowConnection, setIsSlowConnection] = useState(() => networkDetection.isSlowConnection());
+  const [connectionSpeed, setConnectionSpeed] = useState<'fast' | 'medium' | 'slow'>(() => networkDetection.getConnectionSpeed());
 
   useEffect(() => {
-    setIsSlowConnection(networkDetection.isSlowConnection());
-    setConnectionSpeed(networkDetection.getConnectionSpeed());
-
     const connection = (navigator as Navigator & { connection?: EventTarget }).connection;
     if (!connection) return;
 

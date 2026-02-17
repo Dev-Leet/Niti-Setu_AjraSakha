@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+/* import { cn } from '@/lib/utils';
 
 interface PageHeaderProps {
   title: string;
@@ -21,6 +21,26 @@ export const PageHeader = ({ title, description, actions, className }: PageHeade
         </div>
         {actions && <div className="flex items-center gap-3">{actions}</div>}
       </div>
+    </div>
+  );
+}; */
+
+import styles from './PageHeader.module.css';
+
+interface PageHeaderProps {
+  title: string;
+  subtitle?: string;
+  children?: React.ReactNode;
+}
+
+export const PageHeader = ({ title, subtitle, children }: PageHeaderProps) => {
+  return (
+    <div className={styles.pageHeader}>
+      <div className={styles.headerContent}>
+        <h1 className={styles.title}>{title}</h1>
+        {subtitle && <p className={styles.subtitle}>{subtitle}</p>}
+      </div>
+      {children && <div className={styles.headerActions}>{children}</div>}
     </div>
   );
 };

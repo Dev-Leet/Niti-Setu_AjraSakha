@@ -2,7 +2,7 @@ import { Response, NextFunction } from 'express';
 import { FarmerProfile } from '@models/index.js';
 import { AuthRequest } from '@middleware/index.js';
 import { cacheKeys } from '@utils/index.js';
-import { redis } from '@config/redis.js';
+import { redisClient } from '@config/redis.js';
 import { AppError } from '@utils/index.js';
 
 export const profileController = {
@@ -18,7 +18,7 @@ export const profileController = {
         ...req.body,
       }); 
 
-      await redis.del(cacheKeys.profile(req.userId!));
+      await redisClient.del(cacheKeys.profile(req.userId!));
 
       res.status(201).json({
         success: true,
@@ -31,7 +31,7 @@ export const profileController = {
 
   async get(req: AuthRequest, res: Response, next: NextFunction): Promise<void> {
     try {
-      const cached = await redis.get(cacheKeys.profile(req.userId!));
+      const cached = await redisClient.get(cacheKeys.profile(req.userId!));
       if (cached) {
         res.json({
           success: true,
@@ -45,7 +45,7 @@ export const profileController = {
         throw new AppError('Profile not found', 404, 'PROFILE_NOT_FOUND');
       }
 
-      await redis.setex(cacheKeys.profile(req.userId!), 3600, JSON.stringify(profile));
+      await redisClient.setex(cacheKeys.profile(req.userId!), 3600, JSON.stringify(profile));
 
       res.json({
         success: true,
@@ -68,7 +68,7 @@ export const profileController = {
         throw new AppError('Profile not found', 404);
       }
 
-      await redis.del(cacheKeys.profile(req.userId!));
+      await redisClient.del(cacheKeys.profile(req.userId!));
 
       res.json({
         success: true,
@@ -86,7 +86,7 @@ export const profileController = {
         throw new AppError('Profile not found', 404);
       }
 
-      await redis.del(cacheKeys.profile(req.userId!));
+      await redisClient.del(cacheKeys.profile(req.userId!));
 
       res.json({
         success: true,
