@@ -8,6 +8,28 @@ export default defineConfig({
   plugins: [
     react(),
     tailwindcss(),
+    VitePWA({
+      registerType: 'autoUpdate',
+      includeAssets: ['icon-192.png', 'icon-512.png'],
+      manifest: {
+        name: 'Niti-Setu AjraSakha',
+        short_name: 'AjraSakha',
+        description: 'AI-powered agricultural scheme eligibility',
+        theme_color: '#2c5f2d',
+        icons: [
+          {
+            src: 'icon-192.png',
+            sizes: '192x192',
+            type: 'image/png',
+          },
+          {
+            src: 'icon-512.png',
+            sizes: '512x512',
+            type: 'image/png',
+          },
+        ],
+      },
+    }),
   ],
   //test: {
   //  globals: true,
@@ -39,5 +61,6 @@ export default defineConfig({
         },
       },
     },
+    chunkSizeWarningLimit: 1000,
   },
 });

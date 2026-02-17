@@ -6,6 +6,8 @@ import { loggerMiddleware } from '@middleware/index.js';
 import { errorHandler } from '@middleware/index.js';
 import { apiLimiter } from '@middleware/index.js';
 import routes from '@/routes/index.js';
+import { compressionMiddleware } from '@middleware/compression.middleware.js';
+import { cacheMiddleware } from '@middleware/cache.middleware.js';
 
 export const app = express(); 
 
@@ -15,12 +17,15 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
 app.use(loggerMiddleware);
+app.use(compressionMiddleware);
 
 app.get('/health', (_req, res) => {
   res.json({ status: 'OK', timestamp: new Date().toISOString() });
 });
 
 app.use('/api/v1', apiLimiter, routes);
+app.use('/api/v1/schemes', cacheMiddleware(300));
+app.use('/api/v1/analytics', cacheMiddleware(60));
 
 app.use(errorHandler);
 

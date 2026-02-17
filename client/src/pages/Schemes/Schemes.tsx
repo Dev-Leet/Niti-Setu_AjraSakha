@@ -1,50 +1,82 @@
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Container } from '@/components/layout/Container/Container';
+import { Section } from '@/components/layout/Section/Section';
+import { PageHeader } from '@/components/layout/PageHeader';
+import { SchemeCard } from '@/components/features/SchemeCard/SchemeCard';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 import { fetchSchemes } from '@store/slices/schemeSlice';
-import { Container } from '@/components/layout/Container';
-import { Section } from '@/components/layout/Section';
-import { PageHeader } from '@/components/layout/PageHeader';
-import { Card } from '@components/common/Card/Card';
-import { Loader } from '@components/common/Loader/Loader';
-import styles from './Schemes.module.css';
-import type { Scheme } from './types';
+import { useLanguage } from '@/hooks/useLanguage';
 
-export const Schemes: React.FC = () => {
-  const navigate = useNavigate();
+export const Schemes = () => {
   const dispatch = useAppDispatch();
-  const { schemes, loading } = useAppSelector((state) => state.scheme as { schemes: Scheme[]; loading: boolean });
+  const { schemes, loading, error } = useAppSelector(state => state.scheme);
+  const { language } = useLanguage();
+  const [filter, setFilter] = useState('all');
 
   useEffect(() => {
     dispatch(fetchSchemes());
   }, [dispatch]);
 
-  if (loading) return <Loader fullScreen />;
+  const filteredSchemes = Array.isArray(schemes)
+    ? schemes.filter(scheme => filter === 'all' || scheme.status === filter)
+    : [];
 
-  const schemesList = Array.isArray(schemes) ? schemes : [];
+  if (loading) {
+    return (
+      <Container>
+        <Section>
+          <div className="flex justify-center items-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+          </div>
+        </Section>
+      </Container>
+    );
+  }
 
   return (
-    <Section>
-      <Container>
+    <Container>
+      <Section>
         <PageHeader
-          title="Browse Schemes"
-          description="Explore all available agricultural schemes"
+          title="Agricultural Schemes"
+          subtitle="Explore government schemes and check your eligibility"
         />
 
-        <div className={styles.grid}>
-          {schemesList.map((scheme) => (
-            <Card
-              key={scheme.id}
-              onClick={() => navigate(`/scheme/${scheme.id}`)}
-              hoverable
-            >
-              <h3>{scheme.name.en}</h3>
-              <p className={styles.ministry}>{scheme.ministry}</p>
-              <p className={styles.description}>{scheme.description.en}</p>
-            </Card>
-          ))}
+        <div className="mb-6">
+          <div className="flex gap-2 flex-wrap">
+            {['all', 'active', 'upcoming', 'closed'].map(status => (
+              <button
+                key={status}
+                onClick={() => setFilter(status)}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  filter === status
+                    ? 'bg-primary text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                {status.charAt(0).toUpperCase() + status.slice(1)}
+              </button>
+            ))}
+          </div>
         </div>
-      </Container>
-    </Section>
+
+        {error && (
+          <div className="mb-6 p-4 bg-red-50 text-red-700 rounded">
+            {error}
+          </div>
+        )}
+
+        {filteredSchemes.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-gray-600">No schemes available</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredSchemes.map(scheme => (
+              <SchemeCard key={scheme._id} scheme={scheme} language={language} />
+            ))}
+          </div>
+        )}
+      </Section>
+    </Container>
   );
 };

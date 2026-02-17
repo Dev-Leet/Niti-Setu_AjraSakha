@@ -12,3 +12,4 @@ redisClient.on('connect', () => logger.info('Redis connected'));
 export const connectRedis = async (): Promise<void> => {
   await redisClient.connect();
 };
+

@@ -5,46 +5,55 @@ import { embeddingsService } from '@services/ml/embeddings.service.js';
 import { ruleExtractorService } from '@services/eligibility/ruleExtractor.service.js';
 import { translationService } from '@services/translation/translation.service.js';
 
+interface ChunkDocument {
+  schemeId: string;
+  schemeName: { en: string; hi: string; mr: string; ta: string };
+  chunkText: { en: string; hi: string; mr: string; ta: string };
+  sectionTitle: { en: string; hi: string; mr: string; ta: string };
+  pageNumber: number;
+  chunkIndex: number;
+  embedding: number[];
+  isEligibilitySection: boolean;
+  metadata: { tokenCount?: number; startPage?: number; endPage?: number };
+}
+
 export const pdfIngestionService = {
-  async ingestSchemePDF(schemeId: string, schemeName: string, pdfBuffer: Buffer, translateContent = true): Promise<void> => {
+  async ingestSchemePDF(
+    schemeId: string,
+    schemeName: string,
+    pdfBuffer: Buffer,
+    shouldTranslate = true
+  ): Promise<void> {
     await SchemeChunk.deleteMany({ schemeId });
     await SuggestedRule.deleteMany({ schemeId });
-    
+
     const chunks = await chunkerService.chunkPDF(pdfBuffer);
-    
+
     const texts = chunks.map(c => c.text);
     const embeddings = await embeddingsService.embedTexts(texts);
-    
-    const translatedSchemeNames = translateContent ? await translationService.translateSchemeContent({ en: schemeName }) : { en: schemeName, hi: '', mr: '', ta: '' };
-    
-    const documents: Array<{
-      schemeId: string;
-      schemeName: { en: string; hi: string; mr: string; ta: string };
-      chunkText: { en: string; hi: string; mr: string; ta: string };
-      sectionTitle: { en: string; hi: string; mr: string; ta: string };
-      pageNumber: number;
-      chunkIndex: number;
-      embedding: number[];
-      isEligibilitySection: boolean;
-      metadata: { tokenCount?: number; startPage?: number; endPage?: number };
-    }> = [];
-    
+
+    const translatedSchemeNames = shouldTranslate
+      ? await translationService.translateSchemeContent({ en: schemeName })
+      : { en: schemeName, hi: '', mr: '', ta: '' };
+
+    const documents: ChunkDocument[] = [];
+
     for (let idx = 0; idx < chunks.length; idx++) {
       const chunk = chunks[idx];
-      
-      const translatedContent = translateContent 
+
+      const translatedChunkText = shouldTranslate
         ? await translationService.translateSchemeContent({ en: chunk.text })
         : { en: chunk.text, hi: '', mr: '', ta: '' };
-      
-      const translatedTitle = chunk.sectionTitle && translateContent
+
+      const translatedSectionTitle = chunk.sectionTitle && shouldTranslate
         ? await translationService.translateSchemeContent({ en: chunk.sectionTitle })
         : { en: chunk.sectionTitle || '', hi: '', mr: '', ta: '' };
 
       documents.push({
         schemeId,
         schemeName: translatedSchemeNames,
-        chunkText: translatedContent,
-        sectionTitle: translatedTitle,
+        chunkText: translatedChunkText,
+        sectionTitle: translatedSectionTitle,
         pageNumber: chunk.pageNumber,
         chunkIndex: chunk.chunkIndex,
         embedding: embeddings[idx],
@@ -52,9 +61,9 @@ export const pdfIngestionService = {
         metadata: chunk.metadata,
       });
     }
-    
+
     const savedDocs = await SchemeChunk.insertMany(documents);
-    
+
     const allExtractedRules: Array<{
       field: string;
       operator: string;
@@ -64,23 +73,23 @@ export const pdfIngestionService = {
       sourceChunkId?: string;
       pageNumber?: number;
     }> = [];
-    
+
     for (const doc of savedDocs) {
       const rules = ruleExtractorService.extractRules(
         doc.chunkText.en,
         doc._id?.toString(),
         doc.pageNumber
       );
-      
+
       allExtractedRules.push(...rules);
     }
-    
+
     if (allExtractedRules.length > 0) {
       const overallConfidence = ruleExtractorService.calculateConfidence(allExtractedRules);
-      
+
       await SuggestedRule.create({
         schemeId,
-        schemeName: schemeName,
+        schemeName,
         rules: allExtractedRules,
         overallConfidence,
         status: 'pending',

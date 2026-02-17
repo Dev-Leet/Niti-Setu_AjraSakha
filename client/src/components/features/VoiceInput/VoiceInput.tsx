@@ -1,80 +1,165 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
+import { Button } from '@/components/common/Button/Button';
 
 interface VoiceInputProps {
   onTranscript: (text: string) => void;
-  language?: 'en-IN' | 'hi-IN';
+  language?: 'en-IN' | 'hi-IN' | 'mr-IN' | 'ta-IN';
+  continuous?: boolean;
 }
 
-interface SpeechRecognitionEvent {
-  results: {
-    [key: number]: {
-      [key: number]: {
-        transcript: string;
-      };
-    };
-  };
+interface SpeechRecognitionEvent extends Event {
+  results: SpeechRecognitionResultList;
+  resultIndex: number;
 }
 
-interface SpeechRecognitionInstance {
+interface SpeechRecognitionResultList {
+  length: number;
+  item(index: number): SpeechRecognitionResult;
+  [index: number]: SpeechRecognitionResult;
+}
+
+interface SpeechRecognitionResult {
+  isFinal: boolean;
+  length: number;
+  item(index: number): SpeechRecognitionAlternative;
+  [index: number]: SpeechRecognitionAlternative;
+}
+
+interface SpeechRecognitionAlternative {
+  transcript: string;
+  confidence: number;
+}
+
+interface SpeechRecognitionInstance extends EventTarget {
+  lang: string;
   continuous: boolean;
   interimResults: boolean;
-  lang: string;
-  onresult: (event: SpeechRecognitionEvent) => void;
-  onerror: () => void;
-  onend: () => void;
-  start: () => void;
-  stop: () => void;
+  maxAlternatives: number;
+  start(): void;
+  stop(): void;
+  abort(): void;
 }
 
-export const VoiceInput = ({ onTranscript, language = 'en-IN' }: VoiceInputProps) => {
+declare global {
+  interface Window {
+    SpeechRecognition?: new () => SpeechRecognitionInstance;
+    webkitSpeechRecognition?: new () => SpeechRecognitionInstance;
+  }
+}
+
+export const VoiceInput = ({ onTranscript, language = 'en-IN', continuous = false }: VoiceInputProps) => {
   const [isListening, setIsListening] = useState(false);
+  const [transcript, setTranscript] = useState('');
+  const [error, setError] = useState<string | null>(null);
   const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
 
-  const handleTranscript = useCallback((text: string) => {
-    onTranscript(text);
-    setIsListening(false);
-  }, [onTranscript]);
+  const initRecognition = useCallback(() => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    
+    if (!SpeechRecognition) {
+      setError('Speech recognition not supported in this browser');
+      return null;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = language;
+    recognition.continuous = continuous;
+    recognition.interimResults = true;
+    recognition.maxAlternatives = 1;
+
+    recognition.addEventListener('result', (event: Event) => {
+      const speechEvent = event as SpeechRecognitionEvent;
+      const results = speechEvent.results;
+      let interimTranscript = '';
+      let finalTranscript = '';
+
+      for (let i = speechEvent.resultIndex; i < results.length; i++) {
+        const result = results[i];
+        const transcriptText = result[0].transcript;
+        
+        if (result.isFinal) {
+          finalTranscript += transcriptText + ' ';
+        } else {
+          interimTranscript += transcriptText;
+        }
+      }
+
+      if (finalTranscript) {
+        setTranscript(prev => prev + finalTranscript);
+        onTranscript(finalTranscript.trim());
+      } else if (interimTranscript) {
+        setTranscript(prev => prev + interimTranscript);
+      }
+    });
+
+    recognition.addEventListener('end', () => {
+      setIsListening(false);
+    });
+
+    recognition.addEventListener('error', (event: Event) => {
+      const errorEvent = event as { error: string };
+      setError(`Speech recognition error: ${errorEvent.error}`);
+      setIsListening(false);
+    });
+
+    return recognition;
+  }, [language, continuous, onTranscript]);
 
   useEffect(() => {
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-      const SpeechRecognition = (window as { webkitSpeechRecognition?: new () => SpeechRecognitionInstance; SpeechRecognition?: new () => SpeechRecognitionInstance }).webkitSpeechRecognition || (window as { SpeechRecognition?: new () => SpeechRecognitionInstance }).SpeechRecognition;
-      
-      if (SpeechRecognition) {
-        const rec = new SpeechRecognition();
-        rec.continuous = false;
-        rec.interimResults = false;
-        rec.lang = language;
-        
-        rec.onresult = (event: SpeechRecognitionEvent) => {
-          const transcript = event.results[0][0].transcript;
-          handleTranscript(transcript);
-        };
-        
-        rec.onerror = () => setIsListening(false);
-        rec.onend = () => setIsListening(false);
-        
-        recognitionRef.current = rec;
-      }
-    }
-  }, [language, handleTranscript]);
+    recognitionRef.current = initRecognition();
+  }, [initRecognition]);
 
-  const toggleListening = () => {
-    if (!recognitionRef.current) return;
-    
-    if (isListening) {
-      recognitionRef.current.stop();
-    } else {
+  const startListening = () => {
+    if (!recognitionRef.current) {
+      recognitionRef.current = initRecognition();
+    }
+
+    if (recognitionRef.current) {
+      setTranscript('');
+      setError(null);
       recognitionRef.current.start();
       setIsListening(true);
     }
   };
 
+  const stopListening = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+    }
+  };
+
   return (
-    <button
-      onClick={toggleListening}
-      className={`px-4 py-2 rounded ${isListening ? 'bg-red-500' : 'bg-blue-500'} text-white`}
-    >
-      {isListening ? '🎤 Listening...' : '🎤 Speak'}
-    </button>
+    <div className="space-y-4">
+      <div className="flex gap-2">
+        <Button
+          onClick={isListening ? stopListening : startListening}
+          variant={isListening ? 'destructive' : 'primary'}
+          disabled={!!error && !isListening}
+        >
+          {isListening ? '⏹️ Stop' : '🎤 Start Voice Input'}
+        </Button>
+      </div>
+
+      {isListening && (
+        <div className="flex items-center gap-2 text-sm text-blue-600">
+          <span className="animate-pulse">🔴</span>
+          <span>Listening...</span>
+        </div>
+      )}
+
+      {transcript && (
+        <div className="p-4 bg-gray-50 rounded border border-gray-200">
+          <p className="text-sm font-medium mb-1">Transcript:</p>
+          <p className="text-gray-700">{transcript}</p>
+        </div>
+      )}
+
+      {error && (
+        <div className="p-3 bg-red-50 text-red-700 rounded text-sm">
+          {error}
+        </div>
+      )}
+    </div>
   );
 };

@@ -21,7 +21,15 @@
     "ml:start": "bash scripts/start-ml-services.sh",
     "ml:stop": "bash scripts/stop-ml-services.sh",
     "ml:setup": "cd python-ml && pip install -r requirements.txt && bash download_model.sh",
-    "ml:verify": "bash scripts/verify-ml-services.sh"
+    "ml:verify": "bash scripts/verify-ml-services.sh",
+    "db:seed": "tsx src/scripts/seed-schemes.ts",
+    "test:farmers": "tsx src/scripts/run-tests.ts",
+    "schemes:download": "tsx -e \"import('./src/services/schemes/scheme-downloader.service.js').then(m => m.schemeDownloaderService.downloadAndIngestAll())\"",
+    "test:voice": "npx tsx tests/voice-extraction.test.ts",
+    "test:llama": "npx tsx tests/llama-extraction.test.ts",
+    "test:vector": "npx tsx tests/vector-search.test.ts",
+    "test:langchain": "npx tsx tests/langchain-orchestration.test.ts",
+    "test:all": "bash scripts/test-all.sh"
   },
   "keywords": [],
   "author": "",
@@ -36,6 +44,7 @@
     "bcryptjs": "^3.0.3",
     "bull": "^4.16.5",
     "cheerio": "^1.2.0",
+    "compression": "^1.8.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "csv-writer": "^1.6.0",
@@ -66,6 +75,7 @@
   "devDependencies": {
     "@langchain/openai": "^1.2.7",
     "@types/bcrypt": "^6.0.0",
+    "@types/compression": "^1.8.1",
     "@types/cookie-parser": "^1.4.10",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",

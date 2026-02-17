@@ -25,6 +25,7 @@ dist/
 build/
 out/
 lib/
+!client/src/lib/utils.ts
 *.tsbuildinfo
 
 # ----------------------------------------------------------------------
@@ -81,6 +82,7 @@ server/uploads/
 server/storage/
 client/.vite/
 uploads/
+server/src/python-ml/models/
 
 # ----------------------------------------------------------------------
 # MISC
