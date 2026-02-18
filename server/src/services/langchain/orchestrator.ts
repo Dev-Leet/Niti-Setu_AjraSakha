@@ -4,12 +4,12 @@ import { LocalLlamaLLM } from './LocalLlamaLLM.js';
 import { eligibilityExplanationPrompt, nextStepsPrompt } from './prompts.js';
 import { embeddingsService } from '@services/ml/embeddings.service.js';
 import { SchemeChunk } from '@models/SchemeChunk.model.js';
-import { env } from '@config/env.js';
+//import { env } from '@config/env.js';
 import { withRetry } from './retry.js';
 import { langchainConfig } from '@config/langchain.config.js';
 
 const llm = new LocalLlamaLLM({
-  url: langchainConfig.llamaServiceUrl,
+  url: String(langchainConfig.llamaServiceUrl),
   maxTokens: langchainConfig.maxTokens,
   temperature: langchainConfig.temperature,
   timeout: langchainConfig.timeout,

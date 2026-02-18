@@ -65,7 +65,7 @@ export const CitationDisplay = ({ citations }: CitationDisplayProps) => {
                 </p>
               </div>
               <svg
-                className={`w-5 h-5 transition-transform ml-2 flex-shrink-0 ${
+                className={`w-5 h-5 transition-transform ml-2 shrink-0 ${
                   isExpanded ? 'rotate-180' : ''
                 }`}
                 fill="none"

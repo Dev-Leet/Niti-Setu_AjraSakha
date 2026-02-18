@@ -113,7 +113,7 @@
 // export const { clearCurrentCheck } = eligibilitySlice.actions;
 // export default eligibilitySlice.reducer;
 
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+/* import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import apiClient from '@/services/api';
 
 interface Citation {
@@ -173,6 +173,106 @@ const eligibilitySlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(fetchCheckById.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchCheckById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.currentCheck = action.payload;
+      })
+      .addCase(fetchCheckById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || 'Failed to fetch check';
+      });
+  },
+});
+
+export const { clearCurrentCheck } = eligibilitySlice.actions;
+export default eligibilitySlice.reducer; */
+
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import apiClient from '@/services/api';
+import { VoiceProfile } from '@/types/api.types';
+
+interface Citation {
+  text: string;
+  page: number;
+  confidence: number;
+  section?: string;
+}
+
+interface EligibilityResult {
+  schemeId: string;
+  schemeName: string;
+  ministry: string;
+  isEligible: boolean;
+  confidence: number;
+  reasoning: string;
+  citations: Citation[];
+}
+
+interface EligibilityCheck {
+  _id: string;
+  userId: string;
+  results: EligibilityResult[];
+  createdAt: string;
+  processingTime: number;
+}
+
+interface EligibilityState {
+  currentCheck: EligibilityCheck | null;
+  history: EligibilityCheck[];
+  loading: boolean;
+  error: string | null;
+}
+
+const initialState: EligibilityState = {
+  currentCheck: null,
+  history: [],
+  loading: false,
+  error: null,
+};
+
+export const checkEligibility = createAsyncThunk(
+  'eligibility/check',
+  async (payload: { schemeIds: string[]; profile: VoiceProfile }) => {
+  //async (payload: { schemeIds: string[]; profile: Record<string, unknown> }) => {
+    const response = await apiClient.post('/eligibility/check', payload);
+    return response.data.data;
+  }
+);
+
+export const fetchCheckById = createAsyncThunk(
+  'eligibility/fetchCheckById',
+  async (checkId: string) => {
+    const response = await apiClient.get(`/eligibility/${checkId}`);
+    return response.data.data;
+  }
+);
+
+const eligibilitySlice = createSlice({
+  name: 'eligibility',
+  initialState,
+  reducers: {
+    clearCurrentCheck: (state) => {
+      state.currentCheck = null;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(checkEligibility.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(checkEligibility.fulfilled, (state, action) => {
+        state.loading = false;
+        state.currentCheck = action.payload;
+      })
+      .addCase(checkEligibility.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || 'Failed to check eligibility';
+      })
       .addCase(fetchCheckById.pending, (state) => {
         state.loading = true;
         state.error = null;

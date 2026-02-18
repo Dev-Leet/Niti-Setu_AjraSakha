@@ -8,7 +8,7 @@ import { apiLimiter } from '@middleware/index.js';
 import routes from '@/routes/index.js';
 import { compressionMiddleware } from '@middleware/compression.middleware.js';
 import { cacheMiddleware } from '@middleware/cache.middleware.js';
-import healthRoutes from '@routes/health.routes.js';
+import healthRoutes from '@/routes/health.routes.js';
 
 export const app = express(); 
 

@@ -1,0 +1,29 @@
+.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #e5e7eb; /* tailwind gray-200 */
+  color: #6b7280; /* tailwind gray-500 */
+  font-size: 0.875rem;
+  padding: 0.5rem;
+  border-radius: 0.375rem;
+  min-width: 120px;
+  min-height: 80px;
+}
+
+/* Optional: when data attributes are present, give a reasonable max size */
+.placeholder[data-width]:not([data-width=""]) {
+  max-width: 100%;
+}
+
+.placeholder[data-height]:not([data-height=""]) {
+  max-height: 100%;
+}
+
+.slowConnectionText {
+  opacity: 0.9;
+}
+
+.imageWrapper {
+  display: inline-block;
+}

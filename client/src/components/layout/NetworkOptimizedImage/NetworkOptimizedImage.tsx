@@ -1,5 +1,6 @@
 import { LazyImage } from '@/components/common/LazyImage/LazyImage';
 import { useNetworkOptimization } from '@/hooks/useNetworkOptimization';
+import styles from './NetworkOptimizedImage.module.css';
 
 interface NetworkOptimizedImageProps {
   src: string;
@@ -15,8 +16,11 @@ export const NetworkOptimizedImage = ({ src, alt, className, width, height }: Ne
   if (!shouldLoadImages) {
     return (
       <div
-        className={`${className} bg-gray-200 flex items-center justify-center text-gray-500 text-sm`}
-        style={{ width, height }}
+        className={`${styles.placeholder} ${className || ''}`}
+        data-width={width ?? ''}
+        data-height={height ?? ''}
+        role="img"
+        aria-label="Image disabled on slow connection"
       >
         Image loading disabled on slow connection
       </div>

@@ -1,49 +1,29 @@
-import { useState, useCallback } from 'react';
-import { voiceService } from '@services/voice.service';
+import { useState } from 'react';
+import { voiceService } from '@/services/voice.service';
 
 export const useVoice = () => {
-  const [isRecording, setIsRecording] = useState(false);
-  const [transcript, setTranscript] = useState('');
+  const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
- 
-  const startRecording = useCallback(async () => {
+
+  const processTranscript = async (transcript: string) => {
+    setIsProcessing(true);
+    setError(null);
+
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const recorder = new MediaRecorder(stream);
-      const chunks: Blob[] = [];
-
-      recorder.ondataavailable = (e) => chunks.push(e.data);
-      recorder.onstop = async () => {
-        const audioBlob = new Blob(chunks, { type: 'audio/webm' });
-        try {
-          const result = await voiceService.transcribe(audioBlob);
-          setTranscript(result.transcript);
-        } catch (err: unknown) {               
-            if (err instanceof Error) {
-                setError(err.message);
-            } else {
-                setError('Transcription failed');
-            }
-        }
-      };
-
-      recorder.start();
-      setMediaRecorder(recorder);
-      setIsRecording(true);
-      setError(null);
-    } catch {
-      setError('Microphone access denied');
+      const result = await voiceService.extractProfile(transcript);
+      return result;
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to process voice input';
+      setError(errorMessage);
+      throw err;
+    } finally {
+      setIsProcessing(false);
     }
-  }, []);
+  };
 
-  const stopRecording = useCallback(() => {
-    if (mediaRecorder) {
-      mediaRecorder.stop();
-      mediaRecorder.stream.getTracks().forEach((track) => track.stop());
-      setIsRecording(false);
-    }
-  }, [mediaRecorder]);
-
-  return { isRecording, transcript, error, startRecording, stopRecording };
+  return {
+    processTranscript,
+    isProcessing,
+    error,
+  };
 };

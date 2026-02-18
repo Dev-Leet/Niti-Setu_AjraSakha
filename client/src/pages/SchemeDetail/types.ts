@@ -1,7 +1,9 @@
 export interface Citation {
-  page: number;
   text: string;
-  documentUrl: string;
+  page: number;
+  section?: string;
+  confidence: number;
+  documentUrl?: string;
 }
 
 export interface FinancialBenefit {

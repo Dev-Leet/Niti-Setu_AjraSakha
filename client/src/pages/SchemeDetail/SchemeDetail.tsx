@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+/* import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@store/hooks';
 import { fetchSchemeById, saveScheme } from '@store/slices/schemeSlice';
@@ -8,7 +8,7 @@ import { Loader } from '@components/common/Loader/Loader';
 import { CitationCard } from './CitationCard';
 import { formatCurrency } from '@utils/formatters';
 import styles from './SchemeDetail.module.css';
- 
+  
 export const SchemeDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -152,5 +152,107 @@ export const SchemeDetail: React.FC = () => {
         </Button>
       </div>
     </div>
+  );
+}; */
+
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '@store/hooks';
+import { fetchSchemeById, saveScheme } from '@store/slices/schemeSlice';
+import { Container } from '@/components/layout/Container/Container';
+import { Section } from '@/components/layout/Section/Section';
+import { PageHeader } from '@/components/layout/PageHeader';
+import { Button } from '@/components/common/Button/Button';
+import { CitationCard } from './CitationCard';
+import type { Citation } from './types';
+
+export const SchemeDetail = () => {
+  const { id } = useParams<{ id: string }>();
+  const dispatch = useAppDispatch();
+  const { currentScheme, loading } = useAppSelector(state => state.scheme);
+
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchSchemeById(id));
+    }
+  }, [id, dispatch]);
+
+  const handleSave = () => {
+    if (id) {
+      dispatch(saveScheme(id));
+    }
+  };
+
+  if (loading) {
+    return (
+      <Container>
+        <Section>
+          <div className="flex justify-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+          </div>
+        </Section>
+      </Container>
+    );
+  }
+
+  if (!currentScheme) {
+    return (
+      <Container>
+        <Section>
+          <p className="text-center text-gray-600">Scheme not found</p>
+        </Section>
+      </Container>
+    );
+  }
+
+  const mockCitations: Citation[] = [
+    {
+      text: 'Farmers with landholding less than 2 hectares are eligible',
+      page: 4,
+      section: 'Eligibility Criteria',
+      confidence: 0.95,
+      documentUrl: '/documents/scheme.pdf',
+    },
+  ];
+
+  return (
+    <Container>
+      <Section>
+        <PageHeader title={currentScheme.name.en}>
+          <Button onClick={handleSave}>Save Scheme</Button>
+        </PageHeader>
+
+        <div className="space-y-6">
+          <div className="bg-white p-6 rounded-lg shadow">
+            <h3 className="text-lg font-semibold mb-4">Ministry</h3>
+            <p>{currentScheme.ministry}</p>
+          </div>
+
+          {currentScheme.benefits && (
+            <div className="bg-white p-6 rounded-lg shadow">
+              <h3 className="text-lg font-semibold mb-4">Benefits</h3>
+              {currentScheme.benefits.financial && (
+                <p className="text-2xl font-bold text-green-600">
+                  ₹{currentScheme.benefits.financial.amount.toLocaleString()}
+                  {currentScheme.benefits.financial.unit && `/${currentScheme.benefits.financial.unit}`}
+                </p>
+              )}
+              {currentScheme.benefits.description && (
+                <p className="mt-2">{currentScheme.benefits.description}</p>
+              )}
+            </div>
+          )}
+
+          <div className="bg-white p-6 rounded-lg shadow">
+            <h3 className="text-lg font-semibold mb-4">Citations</h3>
+            <div className="space-y-4">
+              {mockCitations.map((citation, idx) => (
+<CitationCard key={idx} citation={citation} index={idx} />
+))}
+            </div>
+          </div>
+        </div>
+      </Section>
+    </Container>
   );
 };

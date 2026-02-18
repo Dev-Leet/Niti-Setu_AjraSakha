@@ -9,9 +9,9 @@ import { Card } from '@components/common/Card/Card';
 import { Button } from '@components/common/Button/Button';
 import { Loader } from '@components/common/Loader/Loader';
 import styles from './SchemeComparison.module.css';
-
+ 
 interface SavedScheme {
-  id: string;
+  _id: string;
   name: { en: string };
   ministry: string;
   benefits?: { financial?: { amount: number } };
@@ -55,7 +55,7 @@ export const SchemeComparison: React.FC = () => {
                 <tr>
                   <th>Feature</th>
                   {schemesList.map((scheme: SavedScheme) => (
-                    <th key={scheme.id}>{scheme.name.en}</th>
+                    <th key={scheme._id}>{scheme.name.en}</th>
                   ))}
                 </tr>
               </thead>
@@ -63,19 +63,19 @@ export const SchemeComparison: React.FC = () => {
                 <tr>
                   <td className={styles.featureLabel}>Ministry</td>
                   {schemesList.map((scheme: SavedScheme) => (
-                    <td key={scheme.id}>{scheme.ministry}</td>
+                    <td key={scheme._id}>{scheme.ministry}</td>
                   ))}
                 </tr>
                 <tr>
                   <td className={styles.featureLabel}>Financial Benefit</td>
                   {schemesList.map((scheme: SavedScheme) => (
-                    <td key={scheme.id}>₹{scheme.benefits?.financial?.amount || 'N/A'}</td>
+                    <td key={scheme._id}>₹{scheme.benefits?.financial?.amount || 'N/A'}</td>
                   ))}
                 </tr>
                 <tr>
                   <td className={styles.featureLabel}>Max Land Holding</td>
                   {schemesList.map((scheme: SavedScheme) => (
-                    <td key={scheme.id}>
+                    <td key={scheme._id}>
                       {scheme.eligibilityRules?.maxLandholding || 'No limit'}
                     </td>
                   ))}
@@ -83,11 +83,11 @@ export const SchemeComparison: React.FC = () => {
                 <tr>
                   <td className={styles.featureLabel}>Actions</td>
                   {schemesList.map((scheme: SavedScheme) => (
-                    <td key={scheme.id}>
+                    <td key={scheme._id}>
                       <Button
                         variant="outline"
                         size="sm"
-                        onClick={() => navigate(`/scheme/${scheme.id}`)}
+                        onClick={() => navigate(`/scheme/${scheme._id}`)}
                       >
                         View Details
                       </Button>

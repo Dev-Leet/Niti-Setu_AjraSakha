@@ -2,13 +2,14 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { describe, it, expect } from 'vitest';
 import { store } from '@/store';
-import { Login } from '@/pages/Auth/Login';
-
+import Login from '@/pages/Auth/Login';
+ 
 describe('Auth Flow', () => {
   it('completes login flow', async () => {
     render(
       <Provider store={store}>
-        <Login />
+        {/* supply a no‑op toggle handler so TS is happy */}
++        <Login onToggle={() => { /* nothing */ }} />
       </Provider>
     );
 
