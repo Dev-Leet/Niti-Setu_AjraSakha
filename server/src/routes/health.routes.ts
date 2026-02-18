@@ -3,10 +3,11 @@ import mongoose from 'mongoose';
 import { redisClient } from '@config/redis.js';
 import { embeddingsService } from '@services/ml/embeddings.service.js';
 import { llamaService } from '@services/ml/llama.service.js';
+import { checkLlamaServiceHealth } from '@services/langchain/health.js';
 
 const router = Router();
 
-router.get('/', async (_req, res: Response): Promise<void> => {
+/* router.get('/', async (_req, res: Response): Promise<void> => {
   const health = {
     status: 'ok',
     timestamp: new Date().toISOString(),
@@ -37,6 +38,44 @@ router.get('/', async (_req, res: Response): Promise<void> => {
   health.status = allHealthy ? 'ok' : 'degraded';
 
   res.status(allHealthy ? 200 : 503).json(health);
+}); */
+
+router.get('/', async (_req: Request, res: Response): Promise<void> => {
+  const mongoStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
+  
+  let redisStatus = 'disconnected';
+  try {
+    await redisClient.ping();
+    redisStatus = 'connected';
+  } catch {
+    redisStatus = 'error';
+  }
+
+  const llamaStatus = await checkLlamaServiceHealth() ? 'online' : 'offline';
+
+  const db = mongoose.connection.db;
+  let vectorIndexStatus = 'unknown';
+  
+  if (db) {
+    try {
+      const indexes = await db.collection('schemechunks').listSearchIndexes().toArray();
+      vectorIndexStatus = indexes.some((idx: { name: string }) => idx.name === 'scheme_vector_index') 
+        ? 'configured' 
+        : 'missing';
+    } catch {
+      vectorIndexStatus = 'unavailable';
+    }
+  }
+
+  res.json({
+    status: 'ok',
+    services: {
+      mongodb: mongoStatus,
+      redis: redisStatus,
+      llama: llamaStatus,
+      vectorSearch: vectorIndexStatus,
+    },
+  });
 });
 
 router.get('/mongodb', async (_req, res: Response): Promise<void> => {

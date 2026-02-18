@@ -13,15 +13,18 @@ router.get('/:id', eligibilityController.getCheckById);
 
 export default router;  */
 
-import { Router, Request, Response, NextFunction } from 'express';
-import { matcherService } from '@services/eligibility/matcher.service.js';
+/* import { Router, Request, Response, NextFunction } from 'express';
+//import { matcherService } from '@services/eligibility/matcher.service.js';
 import { EligibilityCheck } from '@models/EligibilityCheck.model.js';
 import { authenticate } from '@middleware/auth.middleware.js';
 import { AuthRequest } from '@middleware/auth.middleware.js';
+import { orchestratedMatcherService } from '@services/eligibility/orchestrated-matcher.service.js';
+import { Scheme } from '@models/Scheme.model.js';
+import { llmTimeoutMiddleware } from '@middleware/llm-timeout.middleware.js';
 
 const router = Router();
 
-router.post('/check', authenticate, async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
+/* router.post('/check', authenticate, async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { state, district, landholding, cropType, socialCategory, schemeId } = req.body;
     
@@ -73,31 +76,202 @@ router.post('/check', authenticate, async (req: AuthRequest, res: Response, next
   } catch (error) {
     next(error);
   }
-});
+}); */
 
-router.get('/history', authenticate, async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
+// router.post('/check', authenticate, async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
+//   try {
+//     const { schemeIds, profile } = req.body;
+//     const startTime = Date.now();
+
+//     if (!Array.isArray(schemeIds) || !profile) {
+//       res.status(400).json({ success: false, message: 'Invalid request' });
+//       return;
+//     }
+
+//     const schemes = await Scheme.find({ _id: { $in: schemeIds } });
+//     const results = [];
+
+//     for (const scheme of schemes) {
+//       const result = await orchestratedMatcherService.checkEligibility(
+//         scheme._id.toString(),
+//         scheme.name.en,
+//         profile
+//       );
+//       results.push(result);
+//     }
+
+//     const processingTime = Date.now() - startTime;
+
+//     const check = await EligibilityCheck.create({
+//       userId: req.userId!,
+//       results,
+//       processingTime,
+//       totalEligible: results.filter(r => r.isEligible).length,
+//     });
+
+//     res.json({
+//       success: true,
+//       data: {
+//         checkId: check._id,
+//         results,
+//         processingTime,
+//       },
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// });
+
+// router.post('/check', authenticate, llmTimeoutMiddleware(25000), async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
+//   try {
+//     const { schemeIds, profile } = req.body;
+//     const startTime = Date.now();
+
+//     if (!Array.isArray(schemeIds) || !profile) {
+//       res.status(400).json({ success: false, message: 'Invalid request' });
+//       return;
+//     }
+
+//     const schemes = await Scheme.find({ _id: { $in: schemeIds } });
+//     const results = [];
+
+//     for (const scheme of schemes) {
+//       const result = await orchestratedMatcherService.checkEligibility(
+//         scheme._id.toString(),
+//         scheme.name.en,
+//         profile
+//       );
+//       results.push(result);
+//     }
+
+//     const processingTime = Date.now() - startTime;
+
+//     const check = await EligibilityCheck.create({
+//       userId: req.userId!,
+//       results,
+//       processingTime,
+//       totalEligible: results.filter(r => r.isEligible).length,
+//     });
+
+//     res.json({
+//       success: true,
+//       data: {
+//         checkId: check._id,
+//         results,
+//         processingTime,
+//       },
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// });
+
+
+// router.get('/history', authenticate, async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
+//   try {
+//     const { page = 1, limit = 10 } = req.query;
+    
+//     const skip = (Number(page) - 1) * Number(limit);
+    
+//     const checks = await EligibilityCheck.find({ userId: req.userId })
+//       .sort({ createdAt: -1 })
+//       .skip(skip)
+//       .limit(Number(limit));
+    
+//     const total = await EligibilityCheck.countDocuments({ userId: req.userId });
+    
+//     res.json({
+//       success: true,
+//       data: {
+//         checks,
+//         pagination: {
+//           total,
+//           page: Number(page),
+//           limit: Number(limit),
+//           totalPages: Math.ceil(total / Number(limit)),
+//         },
+//       },
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// });
+
+// router.get('/:checkId', authenticate, async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
+//   try {
+//     const { checkId } = req.params;
+    
+//     const check = await EligibilityCheck.findOne({
+//       _id: checkId,
+//       userId: req.userId,
+//     });
+    
+//     if (!check) {
+//       res.status(404).json({ success: false, message: 'Eligibility check not found' });
+//       return;
+//     }
+    
+//     res.json({ success: true, data: check });
+//   } catch (error) {
+//     next(error);
+//   }
+// });
+
+// export default router; */
+
+import { Router, Response, NextFunction } from 'express';
+import { authenticate, AuthRequest } from '@middleware/auth.middleware.js';
+import { orchestratedMatcherService } from '@services/eligibility/orchestrated-matcher.service.js';
+import { llmTimeoutMiddleware } from '@middleware/llm-timeout.middleware.js';
+import { Scheme } from '@models/Scheme.model.js';
+import { EligibilityCheck } from '@models/EligibilityCheck.model.js';
+
+const router = Router();
+
+router.post('/check', authenticate, llmTimeoutMiddleware(25000), async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
   try {
-    const { page = 1, limit = 10 } = req.query;
-    
-    const skip = (Number(page) - 1) * Number(limit);
-    
-    const checks = await EligibilityCheck.find({ userId: req.userId })
-      .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(Number(limit));
-    
-    const total = await EligibilityCheck.countDocuments({ userId: req.userId });
-    
+    const { schemeIds, profile } = req.body;
+    const startTime = Date.now();
+
+    if (!Array.isArray(schemeIds) || !profile) {
+      res.status(400).json({ success: false, message: 'Invalid request body' });
+      return;
+    }
+
+    const schemes = await Scheme.find({ _id: { $in: schemeIds } });
+
+    if (schemes.length === 0) {
+      res.status(404).json({ success: false, message: 'No schemes found' });
+      return;
+    }
+
+    const results = [];
+
+    for (const scheme of schemes) {
+      const result = await orchestratedMatcherService.checkEligibility(
+        scheme._id.toString(),
+        scheme.name.en,
+        profile
+      );
+      results.push(result);
+    }
+
+    const processingTime = Date.now() - startTime;
+
+    const check = await EligibilityCheck.create({
+      userId: req.userId!,
+      results,
+      processingTime,
+      totalEligible: results.filter(r => r.isEligible).length,
+    });
+
     res.json({
       success: true,
       data: {
-        checks,
-        pagination: {
-          total,
-          page: Number(page),
-          limit: Number(limit),
-          totalPages: Math.ceil(total / Number(limit)),
-        },
+        checkId: check._id,
+        results,
+        processingTime,
+        totalEligible: check.totalEligible,
       },
     });
   } catch (error) {
@@ -108,21 +282,50 @@ router.get('/history', authenticate, async (req: AuthRequest, res: Response, nex
 router.get('/:checkId', authenticate, async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { checkId } = req.params;
-    
-    const check = await EligibilityCheck.findOne({
-      _id: checkId,
-      userId: req.userId,
-    });
-    
+
+    const check = await EligibilityCheck.findById(checkId);
+
     if (!check) {
-      res.status(404).json({ success: false, message: 'Eligibility check not found' });
+      res.status(404).json({ success: false, message: 'Check not found' });
       return;
     }
-    
+
     res.json({ success: true, data: check });
   } catch (error) {
     next(error);
   }
 });
 
+router.get('/history', authenticate, async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const userId = req.userId!;
+    const { limit = 10, page = 1 } = req.query;
+
+    const skip = (Number(page) - 1) * Number(limit);
+
+    const checks = await EligibilityCheck.find({ userId })
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(Number(limit));
+
+    const total = await EligibilityCheck.countDocuments({ userId });
+
+    res.json({
+      success: true,
+      data: {
+        checks,
+        pagination: {
+          page: Number(page),
+          limit: Number(limit),
+          total,
+          totalPages: Math.ceil(total / Number(limit)),
+        },
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 export default router;
+

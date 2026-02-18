@@ -18,3 +18,29 @@ export const logger = winston.createLogger({
     new winston.transports.File({ filename: 'logs/combined.log' }),
   ],
 });
+
+export const llmLogger = {
+  logPrompt(prompt: string, schemeId: string): void {
+    logger.debug('LLM Prompt', {
+      schemeId,
+      promptLength: prompt.length,
+      timestamp: new Date().toISOString(),
+    });
+  },
+
+  logResponse(response: string, duration: number): void {
+    logger.debug('LLM Response', {
+      responseLength: response.length,
+      duration,
+      timestamp: new Date().toISOString(),
+    });
+  },
+
+  logError(error: Error, context: string): void {
+    logger.error('LLM Error', {
+      error: error.message,
+      context,
+      timestamp: new Date().toISOString(),
+    });
+  },
+};

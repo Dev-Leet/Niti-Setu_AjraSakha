@@ -20,6 +20,10 @@ const envSchema = z.object({
   AWS_SECRET_ACCESS_KEY: z.string().optional(),
   S3_BUCKET: z.string().optional(),
   FRONTEND_URL: z.string().default('http://localhost:5173'),
+  LLAMA_SERVICE_URL: process.env.LLAMA_SERVICE_URL || 'http://localhost:5002',
+  EMBEDDING_SERVICE_URL: process.env.EMBEDDING_SERVICE_URL || 'http://localhost:5001',
+  LANGCHAIN_VERBOSE: z.string().default('false'),
+  LANGCHAIN_CALLBACKS_BACKGROUND: z.string().default('false'),
 });
 
 const parsed = envSchema.safeParse(process.env);

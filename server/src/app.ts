@@ -8,6 +8,7 @@ import { apiLimiter } from '@middleware/index.js';
 import routes from '@/routes/index.js';
 import { compressionMiddleware } from '@middleware/compression.middleware.js';
 import { cacheMiddleware } from '@middleware/cache.middleware.js';
+import healthRoutes from '@routes/health.routes.js';
 
 export const app = express(); 
 
@@ -26,6 +27,7 @@ app.get('/health', (_req, res) => {
 app.use('/api/v1', apiLimiter, routes);
 app.use('/api/v1/schemes', cacheMiddleware(300));
 app.use('/api/v1/analytics', cacheMiddleware(60));
+app.use('/api/v1/health', healthRoutes);
 
 app.use(errorHandler);
 

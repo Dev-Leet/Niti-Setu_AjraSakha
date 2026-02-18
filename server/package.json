@@ -28,8 +28,10 @@
     "test:voice": "npx tsx tests/voice-extraction.test.ts",
     "test:llama": "npx tsx tests/llama-extraction.test.ts",
     "test:vector": "npx tsx tests/vector-search.test.ts",
-    "test:langchain": "npx tsx tests/langchain-orchestration.test.ts",
-    "test:all": "bash scripts/test-all.sh"
+    "test:langchain": "npx tsx tests/langchain-integration.test.ts",
+    "test:all": "bash scripts/test-all.sh",
+    "seed:rules": "npx tsx scripts/seed-rules.ts",
+    "test:orchestrated": "npx tsx scripts/test-orchestrated-flow.ts"
   },
   "keywords": [],
   "author": "",
@@ -37,6 +39,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.987.0",
     "@google-cloud/speech": "^7.2.1",
+    "@langchain/core": "^1.1.19",
     "@pinecone-database/pinecone": "^7.0.0",
     "@types/swagger-jsdoc": "^6.0.4",
     "axios": "^1.13.5",
