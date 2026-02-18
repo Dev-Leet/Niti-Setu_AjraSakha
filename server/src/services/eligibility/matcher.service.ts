@@ -1,13 +1,13 @@
 import { rulesEngine } from './rules.engine.js';
 import { retrievalService } from '@services/rag/retrieval.service.js';
-import { citationService } from '@services/pdf/citation.service.js';
+import { citationService } from '@services/rag/citation.service.js';
 import { llamaService } from '@services/ml/llama.service.js';
 import { confidenceService } from './confidence.service.js';
 import { EligibilityRule } from '@models/EligibilityRule.model.js';
 import { cacheService } from '@services/performance/cache.service.js';
 import { benchmarkService } from '@services/performance/benchmark.service.js';
 import crypto from 'crypto';
-
+ 
 interface FarmerProfile {
   state: string;
   district: string;
@@ -51,15 +51,16 @@ export const matcherService = {
 
     //const explanation = await llamaService.explainEligibility(eligible, citation, profile);
 
+    // Explain using the computed `eligible` and the citation text
     const explanation = await llamaService.explainEligibility(
-        result.isEligible,
-        relevantChunks[0].chunkText,
+        eligible,
+        citation,
         profile
     );
 
     const result = {
       eligible,
-      schemeName: rule.schemeName,
+      schemeName: rule.schemeId,
       proof: { page: proof.page, paragraph: proof.paragraph, citation },
       explanation,
       nextSteps: eligible ? this.getNextSteps() : [],

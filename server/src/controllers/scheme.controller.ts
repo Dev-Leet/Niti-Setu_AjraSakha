@@ -3,7 +3,7 @@ import { Scheme } from '@models/Scheme.model.js';
 import { SavedScheme } from '@models/SavedScheme.model.js';
 import { AuthRequest } from '@middleware/auth.middleware.js';
 import { cacheKeys } from '@utils/cacheKey.utils.js';
-import { redis } from '@config/redis.js';
+import { redisClient } from '@config/redis.js';
  
 export const schemeController = {
   async getAll(req: AuthRequest, res: Response, next: NextFunction): Promise<void> {
@@ -16,7 +16,7 @@ export const schemeController = {
       if (category && typeof category === 'string') query.category = category;
 
       const cacheKey = cacheKeys.schemes(JSON.stringify(query));
-      const cached = await redis.get(cacheKey);
+      const cached = await redisClient.get(cacheKey);
 
       if (cached) {
         res.json({ success: true, data: JSON.parse(cached) });
@@ -24,7 +24,7 @@ export const schemeController = {
       }
 
       const schemes = await Scheme.find(query).select('-pdfDocuments');
-      await redis.setex(cacheKey, 3600, JSON.stringify(schemes));
+      await redisClient.setex(cacheKey, 3600, JSON.stringify(schemes));
 
       res.json({ success: true, data: schemes });
     } catch (error) {
@@ -37,7 +37,7 @@ export const schemeController = {
       const schemeId = Array.isArray(req.params.schemeId) ? req.params.schemeId[0] : req.params.schemeId;
       
       const cacheKey = cacheKeys.scheme(schemeId);
-      const cached = await redis.get(cacheKey);
+      const cached = await redisClient.get(cacheKey);
 
       if (cached) {
         res.json({ success: true, data: JSON.parse(cached) });
@@ -50,7 +50,7 @@ export const schemeController = {
         return;
       }
 
-      await redis.setex(cacheKey, 3600, JSON.stringify(scheme));
+      await redisClient.setex(cacheKey, 3600, JSON.stringify(scheme));
       res.json({ success: true, data: scheme });
     } catch (error) {
       next(error);

@@ -3,7 +3,7 @@ import { matcherService } from '@services/eligibility/matcher.service.js';
 import { TEST_FARMER_PROFILES } from '../data/test-farmer-profiles.js';
 import { logger } from '@utils/logger.js';
 import dotenv from 'dotenv';
-
+ 
 dotenv.config();
 
 interface TestResult {
@@ -40,17 +40,20 @@ async function runTests(): Promise<void> {
           schemeId
         );
 
+        // result may be a cached object with unknown shape; narrow it before accessing properties
+        const r: any = result as any;
+
         results.push({
           farmerId: farmer.id,
           farmerName: farmer.fullName,
           schemeId,
-          eligible: result.eligible,
-          confidence: result.confidence.combinedConfidence,
+          eligible: Boolean(r.eligible),
+          confidence: typeof r.confidence === 'object' ? r.confidence.combinedConfidence ?? 0 : (r.confidence ?? 0),
           processingTimeMs: Date.now() - start,
-          explanation: result.explanation,
+          explanation: r.explanation ?? '',
         });
 
-        logger.info(`${farmer.fullName} x ${schemeId}: ${result.eligible ? 'ELIGIBLE' : 'NOT ELIGIBLE'} (${Date.now() - start}ms)`);
+        logger.info(`${farmer.fullName} x ${schemeId}: ${r.eligible ? 'ELIGIBLE' : 'NOT ELIGIBLE'} (${Date.now() - start}ms)`);
       } catch (error: unknown) {
         const err = error as Error;
         results.push({
