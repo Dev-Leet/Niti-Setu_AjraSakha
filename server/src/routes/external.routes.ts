@@ -4,7 +4,7 @@ import { apisetuService } from '@services/external/apisetu.service.js';
 import { pdfScraperService } from '@services/external/pdf-scraper.service.js';
 import { autoDownloaderService } from '@services/schemes/auto-downloader.service.js';
 import { authenticate, requireRole, AuthRequest } from '@middleware/auth.middleware.js';
-
+ 
 const router = Router();
 
 router.get('/ogd/search', authenticate, async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
@@ -38,7 +38,7 @@ router.get('/apisetu/schemes', authenticate, async (req: AuthRequest, res: Respo
   }
 });
 
-router.post('/scrape/portals', authenticate, requireRole('admin'), async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
+router.post('/scrape/portals', authenticate, requireRole('admin'), async (_req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
   try {
     const pdfs = await pdfScraperService.scrapeAllPortals();
     res.json({ success: true, data: { count: pdfs.length, pdfs } });
@@ -47,7 +47,7 @@ router.post('/scrape/portals', authenticate, requireRole('admin'), async (req: A
   }
 });
 
-router.post('/auto-ingest', authenticate, requireRole('admin'), async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
+router.post('/auto-ingest', authenticate, requireRole('admin'), async (_req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
   try {
     const count = await autoDownloaderService.autoDiscoverAndIngestSchemes();
     res.json({ success: true, data: { ingestedCount: count } });

@@ -1,7 +1,7 @@
-import { ChatOpenAI } from '@langchain/openai';
+import { ChatOpenAI } from '@langchain/openai'; 
 import { PromptTemplate } from '@langchain/core/prompts';
-import { StringOutputParser } from '@langchain/core/output_parsers';
-import { RunnableSequence } from '@langchain/core/runnables';
+//import { StringOutputParser } from '@langchain/core/output_parsers';
+//import { RunnableSequence } from '@langchain/core/runnables';
 import { embeddingsService } from '@services/ml/embeddings.service.js';
 import { SchemeChunk } from '@models/SchemeChunk.model.js';
 
@@ -85,13 +85,7 @@ export const langchainOrchestratorService = {
       .map(chunk => `Page ${chunk.pageNumber}: ${chunk.chunkText.en}`)
       .join('\n\n');
 
-    const chain = RunnableSequence.from([
-      eligibilityPrompt,
-      llm,
-      new StringOutputParser(),
-    ]);
-
-    const result = await chain.invoke({
+        const formatted = await eligibilityPrompt.format({
       state: farmerProfile.state,
       district: farmerProfile.district,
       landholding: farmerProfile.landholding.toString(),
@@ -100,7 +94,9 @@ export const langchainOrchestratorService = {
       context,
     });
 
-    const parsed = JSON.parse(result);
+    const response = await llm.invoke(formatted);
+    const text = (response?.content ?? response) as string;
+    const parsed = JSON.parse(text);
     return parsed;
   },
 
@@ -133,12 +129,9 @@ Scheme Information:
 Provide a clear, concise answer in simple Hindi-English (Hinglish) suitable for farmers.
 `);
 
-    const chain = RunnableSequence.from([
-      explainPrompt,
-      llm,
-      new StringOutputParser(),
-    ]);
-
-    return await chain.invoke({ question, context });
+    const formatted = await explainPrompt.format({ question, context });
+    const response = await llm.invoke(formatted);
+    const text = (response?.content ?? response) as string;
+    return text;
   },
 };

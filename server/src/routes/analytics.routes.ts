@@ -2,7 +2,7 @@ import { Router, Response, NextFunction } from 'express';
 import { EligibilityCheck } from '@models/EligibilityCheck.model.js';
 import { Scheme } from '@models/Scheme.model.js';
 import { authenticate, AuthRequest } from '@middleware/auth.middleware.js';
-
+ 
 const router = Router();
 
 router.get('/dashboard', authenticate, async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
@@ -43,7 +43,7 @@ router.get('/dashboard', authenticate, async (req: AuthRequest, res: Response, n
   }
 });
 
-router.get('/metrics', authenticate, async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
+router.get('/metrics', authenticate, async (_req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
   try {
     const [totalSchemes, totalUsers, totalChecks, successRate] = await Promise.all([
       Scheme.countDocuments(),

@@ -4,14 +4,12 @@ import { logger } from '@utils/logger.js';
 const OGD_BASE_URL = 'https://api.data.gov.in';
 const OGD_API_KEY = process.env.OGD_API_KEY || '';
 
-interface OGDDataset {
-  resource_id: string;
-  title: string;
-  description: string;
+interface OGDRecord {
+  [key: string]: string | number | boolean;
 }
 
 export const ogdApiService = {
-  async searchAgriculturalSchemes(query: string): Promise<any[]> {
+  async searchAgriculturalSchemes(query: string): Promise<OGDRecord[]> {
     try {
       const response = await axios.get(`${OGD_BASE_URL}/resource`, {
         params: {
@@ -23,13 +21,13 @@ export const ogdApiService = {
       });
 
       return response.data.records || [];
-    } catch (error: any) {
-      logger.error('OGD API search error:', error.message);
+    } catch (error: unknown) {
+      logger.error('OGD API search error:', (error as Error).message);
       return [];
     }
   },
 
-  async getDatasetById(resourceId: string): Promise<any> {
+  async getDatasetById(resourceId: string): Promise<OGDRecord | null> {
     try {
       const response = await axios.get(`${OGD_BASE_URL}/resource/${resourceId}`, {
         params: {
@@ -40,8 +38,8 @@ export const ogdApiService = {
       });
 
       return response.data;
-    } catch (error: any) {
-      logger.error('OGD API fetch error:', error.message);
+    } catch (error: unknown) {
+      logger.error('OGD API fetch error:', (error as Error).message);
       return null;
     }
   },

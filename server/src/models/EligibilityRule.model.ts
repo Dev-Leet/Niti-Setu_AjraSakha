@@ -28,6 +28,7 @@ interface Rule {
 export interface IEligibilityRule extends Document {
   schemeId: string;
   rules: Rule[];
+  combinationLogic?: 'AND' | 'OR';
   createdAt: Date;
   updatedAt: Date;
 }
@@ -42,6 +43,7 @@ const eligibilityRuleSchema = new Schema<IEligibilityRule>(
         value: { type: Schema.Types.Mixed, required: true },
       },
     ],
+    combinationLogic: { type: String, enum: ['AND', 'OR'], default: 'AND' },
   },
   { timestamps: true }
 );

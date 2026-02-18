@@ -7,17 +7,12 @@ import { authenticate, AuthRequest } from '@middleware/auth.middleware.js';
 const router = Router();
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } });
 
-router.post('/transcribe', authenticate, upload.single('audio'), async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
+router.post('/transcribe', authenticate, upload.single('audio'), async (_req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
   try {
-    if (!req.file) {
-      res.status(400).json({ success: false, message: 'Audio file required' });
-      return;
-    }
-
-    const language = (req.body.language as 'en-IN' | 'hi-IN' | 'mr-IN' | 'ta-IN') || 'en-IN';
-    const transcript = await voiceService.transcribe(req.file.buffer, language);
-
-    res.json({ success: true, data: { transcript } });
+    res.status(501).json({
+      success: false,
+      message: 'Server-side transcription not available. Use browser Web Speech API on client.',
+    });
   } catch (error) {
     next(error);
   }

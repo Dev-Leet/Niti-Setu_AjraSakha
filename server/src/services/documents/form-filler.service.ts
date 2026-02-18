@@ -28,15 +28,13 @@ export const formFillerService = {
     return Buffer.from(await pdfDoc.save());
   },
 
-  async generatePreFilledApplication(schemeId: string, farmerData: any): Promise<Buffer> {
-    const templatePath = `./templates/${schemeId}.pdf`;
-    
-    const fields: FormField[] = [
-      { name: 'name', value: farmerData.fullName, page: 0, x: 100, y: 100 },
-      { name: 'state', value: farmerData.state, page: 0, x: 100, y: 130 },
-      { name: 'district', value: farmerData.district, page: 0, x: 100, y: 160 },
-      { name: 'landholding', value: farmerData.landholding.toString(), page: 0, x: 100, y: 190 },
-    ];
+  async generatePreFilledApplication(_schemeId: string, farmerData: Record<string, unknown>): Promise<Buffer> {
+  const fields: FormField[] = [
+    { name: 'name', value: String(farmerData.fullName || ''), page: 0, x: 100, y: 100 },
+    { name: 'state', value: String(farmerData.state || ''), page: 0, x: 100, y: 130 },
+    { name: 'district', value: String(farmerData.district || ''), page: 0, x: 100, y: 160 },
+    { name: 'landholding', value: String(farmerData.landholding || '0'), page: 0, x: 100, y: 190 },
+  ];
 
     const emptyPdf = await PDFDocument.create();
     const page = emptyPdf.addPage([595, 842]);

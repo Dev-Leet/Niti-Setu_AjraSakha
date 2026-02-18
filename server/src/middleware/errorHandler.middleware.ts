@@ -1,18 +1,18 @@
 import { Request, Response, NextFunction } from 'express';
 import { AppError } from '@utils/AppError.js';
 import { logger } from '@config/logger.js';
-
+ 
 export const errorHandler = (
-  err: Error | AppError,
-  req: Request,
+  err: Error,
+  _req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ): void => {
   logger.error('Error:', {
     message: err.message,
     stack: err.stack,
-    path: req.path,
-    method: req.method,
+    path: _req.path,
+    method: _req.method,
   }); 
 
   if (err instanceof AppError) {

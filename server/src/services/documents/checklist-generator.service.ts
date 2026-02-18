@@ -1,5 +1,5 @@
 import { EligibilityRule } from '@models/EligibilityRule.model.js';
-
+ 
 interface ChecklistItem {
   document: string;
   required: boolean;
@@ -8,7 +8,7 @@ interface ChecklistItem {
 }
 
 export const checklistGeneratorService = {
-  async generateDocumentChecklist(schemeId: string, farmerProfile: any): Promise<ChecklistItem[]> {
+  async generateDocumentChecklist(schemeId: string, _farmerProfile: any): Promise<ChecklistItem[]> {
     const checklist: ChecklistItem[] = [];
 
     checklist.push({

@@ -1,95 +1,85 @@
-import { rulesEngine } from './rules.engine.js';
-import { retrievalService } from '@services/rag/retrieval.service.js';
-import { citationService } from '@services/rag/citation.service.js';
+import rulesEngine from './rules.engine.js';
+import { embeddingsService } from '@services/ml/embeddings.service.js';
+import { SchemeChunk } from '@models/SchemeChunk.model.js';
 import { llamaService } from '@services/ml/llama.service.js';
-import { confidenceService } from './confidence.service.js';
-import { EligibilityRule } from '@models/EligibilityRule.model.js';
-import { cacheService } from '@services/performance/cache.service.js';
-import { benchmarkService } from '@services/performance/benchmark.service.js';
-import crypto from 'crypto';
- 
+
 interface FarmerProfile {
   state: string;
   district: string;
   landholding: number;
-  cropType: string;
+  cropTypes: string[];
   socialCategory: string;
-}
-
-function hashProfile(schemeId: string, profile: FarmerProfile): string {
-  return crypto
-    .createHash('md5')
-    .update(JSON.stringify({ schemeId, ...profile }))
-    .digest('hex');
+  [key: string]: string | number | string[];
 }
 
 export const matcherService = {
-  async checkEligibility(profile: FarmerProfile, schemeId: string) {
-    const profileHash = hashProfile(schemeId, profile);
-    const cacheKey = cacheService.eligibilityKey(schemeId, profileHash);
+  async checkEligibility(
+    schemeId: string,
+    schemeName: string,
+    profile: FarmerProfile
+  ): Promise<{
+    isEligible: boolean;
+    confidence: number;
+    reasoning: string;
+    matchedRules: string[];
+    citations: Array<{ text: string; page: number; confidence: number }>;
+  }> {
+    const eligibilityResult = await rulesEngine.checkEligibilityDetailed(schemeId, profile);
 
-    const cached = await cacheService.get(cacheKey);
-    if (cached) return { ...cached as object, cacheHit: true };
+    const queryText = `eligibility for ${profile.state} farmer ${profile.landholding} acres`;
+    const embeddings = await embeddingsService.embedTexts([queryText]);
 
-    const timer = benchmarkService.timer('eligibility_check', { schemeId });
-
-    const rule = await EligibilityRule.findOne({ schemeId });
-    if (!rule) throw new Error('No eligibility rules found for this scheme');
-
-    const [{ eligible, matchedRules, totalRules }, retrievalResults] = await Promise.all([
-      rulesEngine.checkEligibilityDetailed(schemeId, profile),
-      retrievalService.findWithStructuredQuery(profile, schemeId, 3),
+    const chunks = await SchemeChunk.aggregate([
+      {
+        $vectorSearch: {
+          index: 'scheme_vector_index',
+          path: 'embedding',
+          queryVector: embeddings[0],
+          numCandidates: 100,
+          limit: 3,
+          filter: { schemeId: { $eq: schemeId } },
+        },
+      },
+      {
+        $project: {
+          chunkText: 1,
+          pageNumber: 1,
+          score: { $meta: 'vectorSearchScore' },
+        },
+      },
     ]);
 
-    const bestChunk = retrievalResults[0];
-    const citation = citationService.formatCitation(bestChunk.chunk);
-    const proof = citationService.extractPageAndParagraph(bestChunk.chunk);
+    const citations = chunks.map((c: { chunkText: { en: string }; pageNumber: number; score: number }) => ({
+      text: c.chunkText.en,
+      page: c.pageNumber,
+      confidence: c.score,
+    }));
 
-    const similarityScore = confidenceService.calculateSimilarityScore(retrievalResults);
-    const ruleMatchConfidence = confidenceService.calculateRuleMatchConfidence(matchedRules, totalRules);
-    const combinedConfidence = confidenceService.calculateCombinedConfidence(similarityScore, ruleMatchConfidence);
-
-    //const explanation = await llamaService.explainEligibility(eligible, citation, profile);
-
-    // Explain using the computed `eligible` and the citation text
-    const explanation = await llamaService.explainEligibility(
-        eligible,
-        citation,
-        profile
+    const reasoning = await this.generateReasoning(
+      eligibilityResult.isEligible,
+      schemeName,
+      eligibilityResult.matchedRules
     );
 
-    const result = {
-      eligible,
-      schemeName: rule.schemeId,
-      proof: { page: proof.page, paragraph: proof.paragraph, citation },
-      explanation,
-      nextSteps: eligible ? this.getNextSteps() : [],
-      confidence: {
-        similarityScore: Math.round(similarityScore * 100) / 100,
-        ruleMatchConfidence: Math.round(ruleMatchConfidence * 100) / 100,
-        combinedConfidence,
-        level: confidenceService.getConfidenceLevel(combinedConfidence),
-      },
-      metadata: {
-        rulesMatched: matchedRules,
-        totalRules,
-        retrievalResultsCount: retrievalResults.length,
-      },
-      cacheHit: false,
+    return {
+      isEligible: eligibilityResult.isEligible,
+      confidence: eligibilityResult.confidence,
+      reasoning,
+      matchedRules: eligibilityResult.matchedRules,
+      citations,
     };
-
-    await cacheService.set(cacheKey, result, 600);
-    await timer.end();
-
-    return result;
   },
 
-  getNextSteps(): string[] {
-    return [
-      'Gather Aadhaar card and land records',
-      'Visit nearest CSC or agriculture office',
-      'Fill application form with details',
-      'Submit required documents',
-    ];
+  async generateReasoning(eligible: boolean, schemeName: string, matchedRules: string[]): Promise<string> {
+    const prompt = eligible
+      ? `Farmer is eligible for ${schemeName}. Rules matched: ${matchedRules.join(', ')}. Explain in 2 sentences.`
+      : `Farmer is not eligible for ${schemeName}. Explain why in 2 sentences.`;
+
+    try {
+      const response = await llamaService.generate(prompt, 100);
+      return response.trim() || (eligible ? 'Eligible based on rules.' : 'Not eligible.');
+    } catch {
+      return eligible ? 'Meets eligibility criteria.' : 'Does not meet eligibility criteria.';
+    }
   },
 };

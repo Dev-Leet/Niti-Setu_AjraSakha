@@ -1,6 +1,6 @@
 import { logger } from '@utils/logger.js';
 import { redisClient } from '@config/redis.js';
-
+ 
 interface BenchmarkEntry {
   operation: string;
   durationMs: number;
@@ -12,7 +12,7 @@ export const benchmarkService = {
   async record(entry: BenchmarkEntry): Promise<void> {
     try {
       const key = `benchmark:${entry.operation}`;
-      const existing = await redisClient.lRange(key, 0, 99);
+      //const _existing = await Benchmark.findOne({ operation });
       await redisClient.lPush(key, JSON.stringify(entry));
       await redisClient.lTrim(key, 0, 99);
       await redisClient.expire(key, 86400);

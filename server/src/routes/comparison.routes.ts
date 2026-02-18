@@ -4,7 +4,7 @@ import { EligibilityRule } from '@models/EligibilityRule.model.js';
 import { authenticate, AuthRequest } from '@middleware/auth.middleware.js';
 
 const router = Router();
-
+ 
 router.post('/compare', authenticate, async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
   try {
     const { schemeIds } = req.body;
@@ -37,7 +37,7 @@ router.post('/compare', authenticate, async (req: AuthRequest, res: Response, ne
   }
 });
 
-router.get('/matrix', authenticate, async (req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
+router.get('/matrix', authenticate, async (_req: AuthRequest, res: Response, next: NextFunction): Promise<void> => {
   try {
     const schemes = await Scheme.find().limit(10).lean();
     const features = ['Financial Benefit', 'Land Limit', 'Categories', 'States'];

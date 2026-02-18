@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-
+ 
 export const llmTimeoutMiddleware = (timeoutMs = 20000) => {
-  return (req: Request, res: Response, next: NextFunction): void => {
+  return (_req: Request, res: Response, next: NextFunction): void => {
     const timeout = setTimeout(() => {
       if (!res.headersSent) {
         res.status(503).json({

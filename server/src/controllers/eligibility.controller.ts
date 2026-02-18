@@ -5,62 +5,7 @@ import { AppError } from '@utils/index.js';
 import { eligibilityEngine } from '@services/rag/eligibilityEngine.service.js';
 import { cacheKeys } from '@utils/cacheKey.utils.js';
 import { redisClient } from '@config/redis.js';
-import { Schema } from 'mongoose';
 
-interface EligibilityResult {
-  schemeId: string;
-  schemeName: string;
-  isEligible: boolean;
-  confidence: number;
-  reasoning: string;
-  citations: Citation[];
-  metadata: {
-    ruleMatched: string;
-    contextUsed: boolean;
-  };
-  benefits?: any;
-}
-
-export interface IEligibilityCheck extends Document {
-  userId: string;
-  profileId?: string;
-  results: EligibilityResult[];
-  processingTime: number;
-  totalEligible: number;
-  totalBenefits?: number;
-  cacheHit?: boolean;
-  createdAt: Date;
-}
-
-const eligibilityCheckSchema = new Schema<IEligibilityCheck>(
-  {
-    userId: { type: String, required: true, index: true },
-    profileId: { type: Schema.Types.ObjectId, ref: 'FarmerProfile' },
-    results: [
-      {
-        schemeId: { type: String, required: true },
-        schemeName: { type: String, required: true },
-        isEligible: { type: Boolean, required: true },
-        confidence: { type: Number, required: true },
-        reasoning: { type: String, required: true },
-        benefits: { type: Schema.Types.Mixed, required: false },
-        citations: [
-          {
-            text: { type: String, required: true },
-            page: { type: Number, required: true },
-            section: { type: String },
-            confidence: { type: Number, required: true },
-          },
-        ],
-      },
-    ],
-    processingTime: { type: Number, required: true },
-    totalEligible: { type: Number, required: true },
-    totalBenefits: { type: Number, required: false },
-    cacheHit: { type: Boolean, required: false, default: false },
-  },
-  { timestamps: true }
-);
 
 export const eligibilityController = {
   async checkEligibility(req: AuthRequest, res: Response, next: NextFunction): Promise<void> {
@@ -88,22 +33,19 @@ export const eligibilityController = {
 
       const schemes = await Scheme.find({ status: 'active' });
 
-      const { results, totalEligible, totalBenefits } = await eligibilityEngine.checkEligibility(
-        profile,
-        schemes
-      );
+      const { results, totalEligible } = await eligibilityEngine.checkEligibility(
+  profile,
+  schemes
+);
 
-      const processingTime = Date.now() - startTime;
- 
-      const check = await EligibilityCheck.create({
-        userId: req.userId,
-        profileId: profile._id,
-        results,
-        totalEligible,
-        totalBenefits,
-        processingTime,
-        cacheHit: false,
-      });
+const processingTime = Date.now() - startTime;
+
+const check = await EligibilityCheck.create({
+  userId: req.userId!,
+  results,
+  processingTime,
+  totalEligible,
+});
 
       await redisClient.setex(cacheKeys.eligibilityCheck(profileId), 3600, JSON.stringify(check));
 

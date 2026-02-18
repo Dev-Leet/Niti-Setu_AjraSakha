@@ -12,11 +12,11 @@ export const analyticsController = {
         data: stats,
       });
     } catch (error) {
-      next(error);
+      next(error); 
     }
   }, 
 
-  async getSystemStats(req: AuthRequest, res: Response, next: NextFunction): Promise<void> {
+  async getSystemStats(_req: AuthRequest, res: Response, next: NextFunction): Promise<void> {
     try {
       const stats = await analyticsService.getSystemStats();
 

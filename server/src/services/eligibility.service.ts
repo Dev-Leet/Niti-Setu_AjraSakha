@@ -19,24 +19,21 @@ export const eligibilityService = {
       throw new AppError('Profile not found', 404);
     } 
 
-    const schemes = await Scheme.find({ status: 'active' });
+    const schemes = await Scheme.find({ status: 'active' }); 
 
-    const { results, totalEligible, totalBenefits } = await eligibilityEngine.checkEligibility(
-      profile,
-      schemes
-    );
+    const { results, totalEligible } = await eligibilityEngine.checkEligibility(
+  profile,
+  schemes
+);
 
-    const processingTime = Date.now() - startTime;
+const processingTime = Date.now() - startTime;
 
-    const check = await EligibilityCheck.create({
-      userId,
-      profileId: profile._id,
-      results,
-      totalEligible,
-      totalBenefits,
-      processingTime,
-      cacheHit: false,
-    });
+const check = await EligibilityCheck.create({
+  userId,
+  results,
+  processingTime,
+  totalEligible,
+});
 
     await cacheService.setEligibilityCheck(profileId, check);
     return check;
