@@ -18,7 +18,7 @@ export default function Login({ onToggle }: LoginProps) {
   const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
     e.preventDefault();
     dispatch(clearError());
-    
+
     const result = await dispatch(login({ email, password }));
     if (login.fulfilled.match(result)) {
       navigate('/dashboard');
@@ -28,12 +28,9 @@ export default function Login({ onToggle }: LoginProps) {
   return (
     <>
       <h2 className={styles.title}>Login</h2>
-      
-      {error && (
-        <div className={styles.error}>
-          {error}
-        </div>
-      )}
+      <p className={styles.subtitle}>Access your agricultural dashboard</p>
+
+      {error && <div className={styles.error}>{error}</div>}
 
       <form onSubmit={handleSubmit} className={styles.form}>
         <div>
@@ -64,11 +61,7 @@ export default function Login({ onToggle }: LoginProps) {
           />
         </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className={styles.button}
-        >
+        <button type="submit" disabled={loading} className={styles.button}>
           {loading ? 'Logging in...' : 'Login'}
         </button>
       </form>

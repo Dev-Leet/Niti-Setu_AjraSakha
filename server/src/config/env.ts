@@ -20,6 +20,7 @@ const envSchema = z.object({
   AWS_SECRET_ACCESS_KEY: z.string().optional(),
   S3_BUCKET: z.string().optional(),
   FRONTEND_URL: z.string().default('http://localhost:5173'),
+  OPENAI_API_KEY: z.string(), //added
 });
 
 const parsed = envSchema.safeParse(process.env);

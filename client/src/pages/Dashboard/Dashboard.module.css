@@ -1,3 +1,7 @@
+/* ========================================================= */
+/* ORIGINAL STYLES (KEPT) */
+/* ========================================================= */
+
 .container {
   /* max-width: 1200px; */
   width : 100%;
@@ -22,6 +26,12 @@
   grid-template-columns: repeat(3, 1fr);
   gap: var(--spacing-lg);
   margin-bottom: var(--spacing-2xl);
+}
+
+.statsGrid{
+  display: flex;
+  gap:2%;
+  margin-left: 1%;
 }
 
 .statCard {
@@ -105,4 +115,111 @@
   .stats {
     grid-template-columns: 1fr;
   }
+}
+
+/* ========================================================= */
+/* ===================== ENHANCEMENTS ====================== */
+/* ========================================================= */
+
+/* ---------- Make container feel centered and controlled ---------- */
+
+.container {
+  max-width: 1200px; /* previously commented */
+}
+
+/* ---------- Stronger stat cards ---------- */
+
+.statCard {
+  padding: var(--spacing-xl);
+  border-radius: var(--radius-lg);
+  background: white;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.25s ease;
+}
+
+.statCard:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ---------- Bigger stat numbers ---------- */
+
+.statValue {
+  font-size: 40px; /* upgraded from 32 */
+  font-weight: 800;
+  margin-top: 6px;
+}
+
+/* ---------- Recent checks card polish ---------- */
+
+.recentCard {
+  padding: var(--spacing-xl);
+  border-radius: var(--radius-lg);
+}
+
+/* ---------- Check item refinement ---------- */
+
+.checkItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-md) 0;
+  border-bottom: 1px solid #eee;
+}
+
+.checkItem:last-child {
+  border-bottom: none;
+}
+
+.checkDate {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+/* ---------- Eligibility badges ---------- */
+
+.eligible {
+  background: #e6f7ec;
+  color: #1e7e34;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.notEligible {
+  background: #fdeaea;
+  color: #c82333;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+/* ---------- Section title polish ---------- */
+
+.sectionTitle {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: var(--spacing-lg);
+}
+
+/* ---------- Responsive refinement ---------- */
+
+@media (max-width: 1024px) {
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+
+  .statCard {
+    padding: var(--spacing-lg);
+  }
+
+  .statValue {
+    font-size: 34px;
+  }
+
 }

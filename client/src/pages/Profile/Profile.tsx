@@ -125,9 +125,9 @@ export const Profile: React.FC = () => {
             <label>Social Category</label>
             <select {...register('socialCategory')} className={styles.select}>
               <option value="General">General</option>
+              <option value="OBC">OBC</option>
               <option value="SC">SC</option>
               <option value="ST">ST</option>
-              <option value="OBC">OBC</option>
             </select>
             {errors.socialCategory && (
               <span className={styles.error}>{errors.socialCategory.message}</span>

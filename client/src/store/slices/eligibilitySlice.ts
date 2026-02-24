@@ -54,6 +54,22 @@ export const checkEligibility = createAsyncThunk(
     return data.data;
   }
 );
+// export const checkEligibility = createAsyncThunk(
+//   'eligibility/check',
+//   async (profileId: string) => {
+//     const token = localStorage.getItem('accessToken');
+
+//     const { data } = await axios.post(
+//       `${import.meta.env.VITE_API_URL}/eligibility/check`,
+//       { profileId },
+//       {
+//         headers: { Authorization: `Bearer ${token}` },
+//       }
+//     );
+
+//     return data.data;
+//   }
+// );
 
 export const fetchCheckHistory = createAsyncThunk('eligibility/history', async () => {
   const token = localStorage.getItem('accessToken');

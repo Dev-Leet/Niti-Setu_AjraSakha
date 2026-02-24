@@ -1,3 +1,90 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* ================= SECTION ================= */
+
+.section {
+  background: white;
+  padding: 24px;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+}
+
+.sectionTitle {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 18px;
+  color: var(--primary-green);
+  letter-spacing: 0.3px;
+}
+
+/* ================= ROW ================= */
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+
+/* ================= FIELD ================= */
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field label {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+/* ================= SELECT ================= */
+
+.select {
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border-light);
+  background-color: #f9fafb;
+  font-size: 14px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.select:hover {
+  border-color: var(--primary-green);
+  background: white;
+}
+
+.select:focus {
+  outline: none;
+  border-color: var(--primary-green);
+  box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.15);
+}
+
+.select[multiple] {
+  min-height: 140px;
+}
+
+/* ================= ERROR ================= */
+
+.error {
+  font-size: 12px;
+  color: var(--error);
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 768px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+}
 .container {
   /* max-width: 800px; */
   width : 67%;

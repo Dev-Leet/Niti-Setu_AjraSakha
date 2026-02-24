@@ -61,13 +61,14 @@ export const Header: React.FC = () => {
               >
                 <option value="en">English</option>
                 <option value="hi">हिंदी</option>
+                <option value="mr">मराठी</option>
               </select>
-              <Link to="/login">
-                <Button variant="outline" size="sm">Login</Button>
+              <Link to="/Auth">
+                <Button variant="outline" size="sm">Login/Register</Button>
               </Link>
-              <Link to="/register">
+              {/* <Link to="/Auth">
                 <Button variant="primary" size="sm">Register</Button>
-              </Link>
+              </Link> */}
             </>
           )}
         </nav>

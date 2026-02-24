@@ -46,21 +46,29 @@
 }
 
 .select {
-  padding: 12px;
+  padding: 12px 14px;
   border: 1px solid var(--border-light);
-  border-radius: var(--radius-md);
-  font-size: 16px;
-  background: var(--bg-white);
+  border-radius: 10px;
+  font-size: 14px;
+  background-color: #f9fafb;
+  appearance: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.select:hover {
+  border-color: var(--primary-green);
+  background-color: #ffffff;
 }
 
 .select:focus {
   outline: none;
   border-color: var(--primary-green);
-  box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
+  box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.15);
 }
 
 .select[multiple] {
-  min-height: 120px;
+  min-height: 140px;
 }
 
 .error {

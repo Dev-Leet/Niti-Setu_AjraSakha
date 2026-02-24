@@ -5,7 +5,7 @@ import { env } from '@config/env.js';
 
 const llm = new ChatOpenAI({
   openAIApiKey: env.OPENAI_API_KEY,
-  modelName: 'gpt-4-turbo-preview',
+  modelName: 'gpt-4o',
   temperature: 0.1,
 });
 

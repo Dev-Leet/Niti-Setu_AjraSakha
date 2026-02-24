@@ -19,7 +19,7 @@ export default function Register({ onToggle }: RegisterProps) {
   const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement, SubmitEvent>) => {
     e.preventDefault();
     dispatch(clearError());
-    
+
     const result = await dispatch(register({ email, password, phone }));
     if (register.fulfilled.match(result)) {
       navigate('/dashboard');
@@ -29,12 +29,8 @@ export default function Register({ onToggle }: RegisterProps) {
   return (
     <>
       <h2 className={styles.title}>Register</h2>
-      
-      {error && (
-        <div className={styles.error}>
-          {error}
-        </div>
-      )}
+      <p className={styles.subtitle}>Create your account to check scheme eligibility</p>
+      {error && <div className={styles.error}>{error}</div>}
 
       <form onSubmit={handleSubmit} className={styles.form}>
         <div>
@@ -79,11 +75,7 @@ export default function Register({ onToggle }: RegisterProps) {
           />
         </div>
 
-        <button
-          type="submit"
-          disabled={loading}
-          className={styles.button}
-        >
+        <button type="submit" disabled={loading} className={styles.button}>
           {loading ? 'Registering...' : 'Register'}
         </button>
       </form>

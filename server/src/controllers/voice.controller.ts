@@ -4,7 +4,7 @@ import { AppError } from '@utils/AppError.js';
 
 const llm = new ChatOpenAI({
   openAIApiKey: process.env.OPENAI_API_KEY!,
-  modelName: 'gpt-4-turbo-preview',
+  modelName: 'gpt-4o',
   temperature: 0.1,
 }); 
 

@@ -13,6 +13,18 @@
     "error": "Error",
     "success": "Success"
   },
+
+  "dashboard": {
+    "welcomeTitle": "Welcome to Niti-Setu AjraSakha",
+    "description": "Your personalized dashboard for agricultural scheme eligibility",
+    "checkEligibility": "Check Eligibility",
+    "totalChecks": "Total Checks",
+    "eligibleSchemes": "Eligible Schemes",
+    "savedSchemes": "Saved Schemes",
+    "recentChecks": "Recent Eligibility Checks",
+    "eligible": "Eligible",
+    "notEligible": "Not Eligible"
+  },
   "home": {
     "title": "Find Your Eligible Agricultural Schemes",
     "subtitle": "Get instant eligibility results for 100+ government schemes with AI-powered analysis",
@@ -53,4 +65,4 @@
     "apply": "Apply Now",
     "save": "Save for Later"
   }
-} 
+}
